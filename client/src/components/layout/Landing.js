@@ -64,7 +64,7 @@ class Landing extends Component {
    checkArgs = array => {
       let result = false;
       array.forEach(elem => {
-         if (elem === undefined) result = true;
+         if (elem === undefined || elem === '') result = true;
       });
       return result;
    };
