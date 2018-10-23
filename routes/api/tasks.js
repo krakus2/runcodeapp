@@ -3,7 +3,7 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const validateProfileInput = require('../../validators/task');
 
-const { Task } = require('../../models/Task');
+const Task = require('../../models/Task');
 
 // @route   GET api/tasks/test
 // @desc    Test tasks route
@@ -35,6 +35,7 @@ router.post('/', async (req, res) => {
    }
 
    // Get fields
+   console.log('req.body', req.body);
    const taskFields = {};
    taskFields.tytulZadania = req.body.tytulZadania;
    taskFields.opisZadania = req.body.opisZadania;
@@ -44,7 +45,7 @@ router.post('/', async (req, res) => {
    profileFields.returnArgs = req.body.returnArgs;
    profileFields.wyniki = req.body.wyniki;
    profileFields.czyRekurencja = req.body.czyRekurencja;
-
+   console.log(taskFields);
    let task = new Task({ ...taskFields });
    console.log(task);
    task = await task.save();

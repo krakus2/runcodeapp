@@ -64,7 +64,7 @@ class Landing extends Component {
    checkArgs = array => {
       let result = false;
       array.forEach(elem => {
-         if (elem === undefined || elem === '') result = true;
+         if (elem === undefined || elem === '' || elem === null) result = true;
       });
       return result;
    };
@@ -145,7 +145,7 @@ class Landing extends Component {
       this.setState({ [arrayName]: args });
    };
 
-   handleWynikiChange = i => j => czyWynik => event => {
+   handleWynikiChange2 = i => j => czyWynik => event => {
       const wyniki = [...this.state.wyniki];
       const { iloscArg } = this.state;
       //console.log(i + 1, j + 1, 'pierwszy');
@@ -161,6 +161,12 @@ class Landing extends Component {
          }
       }
 
+      this.setState({ wyniki });
+   };
+
+   handleWynikiChange = i => e => {
+      const wyniki = [...this.state.wyniki];
+      wyniki[i] = e.target.value;
       this.setState({ wyniki });
    };
 

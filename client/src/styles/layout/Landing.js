@@ -38,3 +38,10 @@ export const RowWrapper = styled.div`
    width: 100%;
    ${props => props.leftMargin && 'margin-left'}: ${defaultTheme.spacing.unit * 2}px;
 `;
+
+export const GridWrapper = styled.div`
+   display: grid;
+   ${props => props.grid && 'grid-template-columns'}: ${props => props.grid};
+   grid-gap: 10px;
+   margin: ${defaultTheme.spacing.unit}px;
+`;

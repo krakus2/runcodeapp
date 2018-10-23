@@ -46,7 +46,7 @@ const Submit = ({ isInvalid, loading, onSubmitClick, classes }) => (
                         }}
                         unmountOnExit
                      >
-                        <CircularProgress color="inherit" size={25} className={classes.progress} />
+                        <CircularProgress color="inherit" size={24} />
                      </Fade>
                   ) : (
                      'Prześlij'
@@ -71,7 +71,7 @@ const Submit = ({ isInvalid, loading, onSubmitClick, classes }) => (
                   }}
                   unmountOnExit
                >
-                  <CircularProgress color="inherit" size={25} className={classes.progress} />
+                  <CircularProgress color="inherit" size={24} />
                </Fade>
             ) : (
                'Prześlij'
