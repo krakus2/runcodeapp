@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const validateProfileInput = require('../../validators/task');
+const splitArray = require('../../utils/utils');
 
 const Task = require('../../models/Task');
 
@@ -18,7 +19,25 @@ router.get('/test', (req, res) => {
 // @desc    Get all tasks
 // @access  Public
 router.get('/', async (req, res) => {
-   let tasks = await Task.find().sort({ tytulZadania: 1 });
+   let tasks = await Task.find()
+      .sort({ _id: -1 }) //zwróci od najnowszych
+      .limit(5);
+   let result = [];
+   // for(let i = 0; i < tasks.length; i++)
+   /*for(let i = 0; i < tasks.length; i++){
+      result[i]
+      result[i] = tasks.map((elem, i, array) => {
+         const object = {};
+         object.MethodName = elem.tytulZadania;
+         object.Parameters = []
+         elem.wyniki.forEach((elem2, i) => {
+            object.Parameters.push({
+               TypeName: `System.${}32`
+            })
+         })
+      })
+   }*/
+
    res.json(tasks);
 });
 
@@ -34,22 +53,18 @@ router.post('/', async (req, res) => {
       return res.status(400).json(errors);
    }
 
-   // Get fields
-   console.log('req.body', req.body);
-   const taskFields = {};
-   taskFields.tytulZadania = req.body.tytulZadania;
-   taskFields.opisZadania = req.body.opisZadania;
-   profileFields.iloscArg = req.body.iloscArg;
-   profileFields.iloscWynikow = req.body.iloscWynikow;
-   profileFields.args = req.body.args;
-   profileFields.returnArgs = req.body.returnArgs;
-   profileFields.wyniki = req.body.wyniki;
-   profileFields.czyRekurencja = req.body.czyRekurencja;
-   console.log(taskFields);
-   let task = new Task({ ...taskFields });
-   console.log(task);
+   let task = new Task({
+      tytulZadania: req.body.tytulZadania,
+      opisZadania: req.body.opisZadania,
+      iloscArg: req.body.iloscArg,
+      iloscWynikow: req.body.iloscWynikow,
+      args: req.body.args,
+      returnArgs: req.body.returnArgs,
+      wyniki: req.body.wyniki,
+      czyRekurencja: req.body.czyRekurencja
+   });
    task = await task.save();
-   res.send(result);
+   res.send(task);
 });
 
 module.exports = router;

@@ -1,0 +1,23 @@
+.array::before {
+    position: absolute;
+    content: "[";
+    font-size: 34px;
+    left: -3px;
+    top: -4px;
+}
+
+.array::after {
+    position: absolute;
+    font-size: 34px;
+    content: "]";
+    left: 72px;
+    top: -4px;
+}
+
+.array {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}

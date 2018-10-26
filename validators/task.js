@@ -16,11 +16,11 @@ module.exports = function validateProfileInput(data) {
       errors.opisZadania = 'Tytuł zadania jest wymagany';
    }
 
-   if (!Validator.isLength(data.opisZadania, { min: 1, max: 160 })) {
-      errors.opisZadania = 'Maksymalna długość tytuło to 160 znaków';
+   if (!Validator.isLength(data.opisZadania, { min: 5, max: 160 })) {
+      errors.opisZadania = 'Maksymalna długość opisu to 5, a maksymalna 160 znaków';
    }
 
-   if (Validator.isEmpty(data.iloscArg)) {
+   if (isEmpty(data.iloscArg)) {
       errors.iloscArg = 'Tytuł zadania jest wymagany';
    }
 
@@ -28,27 +28,27 @@ module.exports = function validateProfileInput(data) {
       errors.iloscArg = 'Ilość argumentów nie może być mniejsza niż 0 oraz większa niż 5';
    }
 
-   if (Validator.isEmpty(data.iloscWynikow)) {
+   if (isEmpty(data.iloscWynikow)) {
       errors.iloscWynikow = 'Tytuł zadania jest wymagany';
    }
 
-   if (data.iloscArg < 1) {
+   if (data.iloscWynikow < 1) {
       errors.iloscWynikow = 'Ilość danych do testu nie może być mniejsza niż 1';
    }
 
-   if (Validator.isEmpty(data.args)) {
+   if (isEmpty(data.args)) {
       errors.args = 'Typy paramtrów są wymagane';
    }
 
-   if (Validator.isEmpty(data.returnArgs)) {
+   if (isEmpty(data.returnArgs)) {
       errors.returnArgs = 'Typ zwracany przez funkcję jest wymagany';
    }
 
-   if (Validator.isEmpty(data.wyniki)) {
+   if (isEmpty(data.wyniki)) {
       errors.wyniki = 'Dane do testów są wymagane';
    }
 
-   if (Validator.isEmpty(data.czyRekurencja)) {
+   if (isEmpty(data.czyRekurencja)) {
       errors.czyRekurencja = 'Określenie, czy w funkcji zachodzi rekurencja jest wymagane';
    }
 
