@@ -55,7 +55,7 @@ class ResultRow extends Component {
         } else if ((i + 1) % (iloscArg + 1) === 0 && i !== 0) {
             object.label = "Wynik";
         } else {
-            object.label = `Arg ${i % (iloscArg + 1)}`;
+            object.label = `Arg ${(i % (iloscArg + 1)) + 1}`;
         }
         return object;
     };
@@ -87,7 +87,6 @@ class ResultRow extends Component {
                         <div className="array" key={i}>
                             <TextField
                                 {...this.generateLabel(i, iloscArg)}
-                                placeholder="Zadanie 10"
                                 type="text"
                                 className={classes.textField2}
                                 InputProps={{ classes: { input: classes.TheInput2 } }}
@@ -112,7 +111,6 @@ class ResultRow extends Component {
                     <div key={i}>
                         <TextField
                             {...this.generateLabel(i, iloscArg)}
-                            placeholder="Zadanie 10"
                             type="text"
                             className={classes.textField2}
                             InputProps={{ classes: { input: classes.TheInput2 } }}

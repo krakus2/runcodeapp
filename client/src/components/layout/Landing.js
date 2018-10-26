@@ -191,10 +191,20 @@ class Landing extends Component {
 
     handleArgTypeChange = i => j => arrayName => event => {
         let args = [...this.state[arrayName]];
-        //console.log(args)
+        const indeksyTablic = [...this.state.indeksyTablic];
+        const { iloscArg } = this.state;
+        console.log(arrayName);
         args[i * 2 + j] = event.target.value;
 
-        const indeksyTablic = [];
+        /*if (arrayName === "returnArgs") {
+            args.forEach((elem, i) => {
+                if (elem === "Tablica []") indeksyTablic.push((i + 1) * iloscArg);
+            });
+        } else {
+            args.forEach((elem, i) => {
+                if (elem === "Tablica []") indeksyTablic.push(i / 2);
+            });
+        }*/
         args.forEach((elem, i) => {
             if (elem === "Tablica []") indeksyTablic.push(i / 2);
         });
