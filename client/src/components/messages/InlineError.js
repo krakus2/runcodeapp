@@ -2,7 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { createMuiTheme } from '@material-ui/core/styles';
 
-const defaultTheme = createMuiTheme();
+const defaultTheme = createMuiTheme({
+    typography: {
+        useNextVariants: true
+    }
+});
 
 const InlineMessage = ({ text, isError, bigMargin, small }) => (
     <div

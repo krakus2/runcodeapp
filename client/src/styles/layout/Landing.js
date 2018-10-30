@@ -1,11 +1,13 @@
-import styled from "styled-components";
-import { createMuiTheme } from "@material-ui/core/styles";
-const defaultTheme = createMuiTheme();
+import styled from 'styled-components';
+import { createMuiTheme } from '@material-ui/core/styles';
+const defaultTheme = createMuiTheme({
+    typography: {
+        useNextVariants: true
+    }
+});
 
 export const Wrapper = styled.div`
     font-size: 18px;
-    margin-left: auto;
-    margin-right: auto;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -36,12 +38,12 @@ export const RowWrapper = styled.div`
     margin: ${defaultTheme.spacing.unit}px;
     position: relative;
     width: 100%;
-    ${props => props.leftMargin && "margin-left"}: ${defaultTheme.spacing.unit * 2}px;
+    ${props => props.leftMargin && 'margin-left'}: ${defaultTheme.spacing.unit * 2}px;
 `;
 
 export const GridWrapper = styled.div`
     display: grid;
-    ${props => props.grid && "grid-template-columns"}: ${props => props.grid};
+    ${props => props.grid && 'grid-template-columns'}: ${props => props.grid};
     grid-gap: 10px;
     margin: ${defaultTheme.spacing.unit}px;
 `;

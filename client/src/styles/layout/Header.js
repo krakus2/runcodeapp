@@ -1,13 +1,9 @@
 import styled from 'styled-components';
-import { createMuiTheme } from '@material-ui/core/styles';
-const defaultTheme = createMuiTheme();
 
 export const HeaderWrapper = styled.div`
     display: grid;
     grid-template-columns: 30% 70%;
 `;
-
-export const Form = styled.form``;
 
 export const FormWrapper = styled.div`
     justify-self: end;

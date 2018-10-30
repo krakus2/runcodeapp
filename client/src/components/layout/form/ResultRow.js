@@ -1,38 +1,38 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { GridWrapper } from "../../../styles/layout/Landing";
-import { withStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
-import Tooltip from "@material-ui/core/Tooltip";
-import Zoom from "@material-ui/core/Zoom";
-import "../../../styles/form/ResultRow.css";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { GridWrapper } from '../../../styles/layout/Landing';
+import { withStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+import Tooltip from '@material-ui/core/Tooltip';
+import Zoom from '@material-ui/core/Zoom';
+import '../../../styles/form/ResultRow.css';
 
 const styles = theme => ({
     textField2: {
         marginLeft: theme.spacing.unit,
-        marginTop: "5px",
-        marginBottom: "5px",
-        minWidth: "60px"
+        marginTop: '5px',
+        marginBottom: '5px',
+        minWidth: '60px'
     },
     textField3: {
         marginLeft: theme.spacing.unit,
-        marginTop: "5px",
-        marginBottom: "5px",
-        minWidth: "70px"
+        marginTop: '5px',
+        marginBottom: '5px',
+        minWidth: '70px'
     },
     TheInput2: {
         fontSize: 14,
-        padding: "10px 5px"
+        padding: '10px 5px'
     },
     TheLabel2: {
         fontSize: 14,
         fontWeight: 400,
-        transform: "translate(14px, 14px) scale(1)"
+        transform: 'translate(14px, 14px) scale(1)'
     },
     TheLabel3: {
         fontSize: 14,
         fontWeight: 400,
-        transform: "translate(12px, 14px) scale(1)"
+        transform: 'translate(12px, 14px) scale(1)'
     },
     tooltip: {
         fontSize: theme.spacing.tooltipSize
@@ -43,17 +43,17 @@ class ResultRow extends Component {
     generateGrid = number => {
         const array = [];
         for (let i = 0; i < number; i++) {
-            array.push("70px");
+            array.push('70px');
         }
-        return array.join(" ");
+        return array.join(' ');
     };
 
     generateLabel = (i, iloscArg) => {
         const object = {};
         if (i === 0 && iloscArg === 0) {
-            object.label = "Wynik";
+            object.label = 'Wynik';
         } else if ((i + 1) % (iloscArg + 1) === 0 && i !== 0) {
-            object.label = "Wynik";
+            object.label = 'Wynik';
         } else {
             object.label = `Arg ${(i % (iloscArg + 1)) + 1}`;
         }
@@ -79,6 +79,7 @@ class ResultRow extends Component {
             if (indeksyTablic.some(el => el === i)) {
                 fieldsArray.push(
                     <Tooltip
+                        key={i}
                         title="Wartości tablicy oddziel przecinkami"
                         classes={{ tooltip: classes.tooltip }}
                         TransitionComponent={Zoom}
@@ -86,6 +87,7 @@ class ResultRow extends Component {
                     >
                         <div className="array" key={i}>
                             <TextField
+                                key={i}
                                 {...this.generateLabel(i, iloscArg)}
                                 type="text"
                                 className={classes.textField2}
@@ -98,7 +100,7 @@ class ResultRow extends Component {
                                                 : classes.TheLabel2
                                     }
                                 }}
-                                value={wyniki[i] != undefined ? wyniki[i] : ""}
+                                value={wyniki[i] != undefined ? wyniki[i] : ''}
                                 onChange={handleWynikiChange(i)}
                                 margin="normal"
                                 variant="outlined"
@@ -110,6 +112,7 @@ class ResultRow extends Component {
                 fieldsArray.push(
                     <div key={i}>
                         <TextField
+                            key={i}
                             {...this.generateLabel(i, iloscArg)}
                             type="text"
                             className={classes.textField2}
@@ -122,7 +125,7 @@ class ResultRow extends Component {
                                             : classes.TheLabel2
                                 }
                             }}
-                            value={wyniki[i] != undefined ? wyniki[i] : ""}
+                            value={wyniki[i] != undefined ? wyniki[i] : ''}
                             onChange={handleWynikiChange(i)}
                             margin="normal"
                             variant="outlined"
