@@ -8,9 +8,9 @@
         "npm": "6.4.1"
     },
     "scripts": {
-        "start": "node server.js",
-        "my-start": "node dotenv/config server.js",
-        "server": "nodemon dotenv/config server.js",
+        "start": "node index.js",
+        "my-start": "node dotenv/config index.js",
+        "server": "nodemon dotenv/config index.js",
         "client-install": "npm install --prefix client",
         "client": "npm start --prefix client",
         "dev": "concurrently \"npm run server\" \"npm run client\"",
