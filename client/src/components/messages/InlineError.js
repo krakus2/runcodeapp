@@ -1,19 +1,19 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { createMuiTheme } from "@material-ui/core/styles";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { createMuiTheme } from '@material-ui/core/styles';
 
 const defaultTheme = createMuiTheme();
 
-const InlineMessage = ({ text, isError }) => (
+const InlineMessage = ({ text, isError, bigMargin, small }) => (
     <div
         style={{
-            color: isError ? "#ae5856" : defaultTheme.palette.primary.main,
-            fontSize: "14px",
-            width: "auto",
-            maxWidth: "450px",
-            margin: "5px auto 0 auto",
-            textAlign: "center",
-            whiteSpace: "pre"
+            color: isError ? defaultTheme.palette.error.main : defaultTheme.palette.primary.main,
+            fontSize: small ? '13px' : '14px',
+            width: 'auto',
+            maxWidth: '450px',
+            margin: bigMargin ? '5px auto 0 auto' : '0',
+            textAlign: 'center',
+            whiteSpace: 'pre'
         }}
     >
         {text}
