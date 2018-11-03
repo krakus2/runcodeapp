@@ -2,20 +2,25 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import InlineMessage from '../messages/InlineError';
-import Submit from './form/Submit';
+import SimpleInput from './form/SimpleInput';
+import SubmitButton from './form/SubmitButton';
 import SelectElem from './form/SelectElem';
 import MySlider from './form/MySlider';
-import ResultRow from './form/ResultRow';
+import WynikiRow from './form/WynikiRow';
 import AddRemoveButtons from './form/AddRemoveButtons';
-import { FormWrapper, Wrapper, RowWrapper } from '../../styles/layout/Landing';
+import { FormWrapper, Wrapper, RowWrapper, Span } from '../../styles/layout/Landing';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
+import RootRef from '@material-ui/core/RootRef';
 
 const styles = theme => ({
+    primaryColor: {
+        color: theme.palette.primary.main
+    },
     textField: {
         marginLeft: theme.spacing.unit,
         marginRight: theme.spacing.unit,
@@ -47,8 +52,12 @@ class Landing extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            imieINazwisko: '',
+            nazwaFunkcji: '',
+            zlaNazwaFunkcji: false,
             tytulZadania: '',
             opisZadania: '',
+            strukturaFunkcji: '',
             iloscArg: 1, //ile parametrów ma funkcja
             iloscWynikow: 1, //ile zestawów wartości do przeprowadzenia testu wysłał uzytkownik
             args: [...Array(2)], //typy parametrów funkcji np. string
@@ -62,9 +71,42 @@ class Landing extends Component {
         };
 
         this.onSubmit = this.onSubmit.bind(this);
+        this.handleTextInputChange = this.handleTextInputChange.bind(this);
+
+        //this.textInput = React.createRef();
     }
 
-    checkArgs = array => {
+    /*tabClick = () => {
+        // Explicitly focus the text input using the raw DOM API
+        // Note: we're accessing "current" to get the DOM node
+        const textarea = this.textInput.current;
+        textarea.onkeydown = function(e) {
+            //support tab on textarea
+            if (e.keyCode === 9) {
+                // tab was pressed
+
+                // get caret position/selection
+                var val = this.value,
+                    start = this.selectionStart,
+                    end = this.selectionEnd;
+
+                // set textarea value to: text before caret + tab + text after caret
+                this.value = val.substring(0, start) + '\t' + val.substring(end);
+
+                // put caret at right position again
+                this.selectionStart = this.selectionEnd = start + 1;
+
+                // prevent the focus lose
+                return false;
+            }
+        };
+    };
+
+    componentDidMount() {
+        this.tabClick();
+    }*/
+
+    isEmpty = array => {
         let result = false;
         array.forEach(elem => {
             if (elem === undefined || elem === '' || elem === null) result = true;
@@ -76,6 +118,8 @@ class Landing extends Component {
         e.preventDefault();
         const online = navigator.onLine;
         const {
+            imieINazwisko,
+            nazwaFunkcji,
             tytulZadania,
             opisZadania,
             iloscArg,
@@ -90,6 +134,8 @@ class Landing extends Component {
             argCopy[i] = args[i];
         }
         const values = {
+            imieINazwisko,
+            nazwaFunkcji,
             tytulZadania,
             opisZadania,
             iloscArg,
@@ -105,6 +151,8 @@ class Landing extends Component {
                 const res = await axios.post('/api/tasks', values);
                 this.setState(
                     {
+                        nazwaFunkcji: '',
+                        imieINazwisko: '',
                         tytulZadania: '',
                         opisZadania: '',
                         iloscArg: 1,
@@ -162,11 +210,35 @@ class Landing extends Component {
         }
     }
 
-    handleChange = name => event => {
-        this.setState({
-            [name]: event.target.value
-        });
-    };
+    handleTextInputChange(name) {
+        return event => {
+            if (name === 'nazwaFunkcji') {
+                const regex = /^[^\d]/gi;
+                const regex2 = /[^a-z0-9]+/gi;
+                if (
+                    event.target.value.length === 0 ||
+                    (regex.test(event.target.value) &&
+                        (!regex2.test(event.target.value.substr(1, event.target.value.length)) ||
+                            event.target.value.length === 1))
+                ) {
+                    console.log('1');
+                    return this.setState({
+                        [name]: event.target.value,
+                        zlaNazwaFunkcji: false
+                    });
+                } else {
+                    console.log('2');
+                    return this.setState({
+                        [name]: event.target.value,
+                        zlaNazwaFunkcji: true
+                    });
+                }
+            }
+            this.setState({
+                [name]: event.target.value
+            });
+        };
+    }
 
     handleSliderChange = value => {
         let args = [...this.state.args];
@@ -229,22 +301,6 @@ class Landing extends Component {
         return indeksyTablic;
     };
 
-    /*handleWynikiChange2 = i => j => czyWynik => event => {
-      const wyniki = [...this.state.wyniki];
-      const { iloscArg } = this.state;
-
-      if (czyWynik === true) {
-         wyniki[(i + 1) * (iloscArg + 1) - 1] = event.target.value;
-      } else if (czyWynik === false) {
-         if (i === 0) {
-            wyniki[j * i + j] = event.target.value;
-         } else {
-            // prettier-ignore
-            wyniki[(iloscArg + 1) * i + j] = event.target.value;
-         }
-      }
-   };*/
-
     handleWynikiChange = i => e => {
         const wyniki = [...this.state.wyniki];
         wyniki[i] = e.target.value; //.replace(/\s/, '');
@@ -277,6 +333,24 @@ class Landing extends Component {
         }
     };
 
+    wygenerujStruktureFunkcji() {
+        const { nazwaFunkcji, args, returnArgs } = this.state;
+        const args2 = [];
+        for (let i = 0; i < args.length; i = i + 2) {
+            if (args[i] === 'Tablica []') {
+                args2.push(`${args[i + 1]}[] Arg${i / 2 + 1}`);
+            } else {
+                args2.push(`${args[i + 1]} arg${i / 2 + 1}`);
+            }
+        }
+        let returnArgs2 =
+            returnArgs[0] === 'Tablica []'
+                ? `${returnArgs[1]}[] ${nazwaFunkcji}`
+                : `${returnArgs[1]} ${nazwaFunkcji}`;
+
+        return `${returnArgs2}(${args2.join(', ')})`;
+    }
+
     onSubmitClick = () => {
         this.setState({ loading: true, error: {} });
     };
@@ -284,6 +358,9 @@ class Landing extends Component {
     render() {
         const { classes } = this.props;
         const {
+            imieINazwisko,
+            nazwaFunkcji,
+            zlaNazwaFunkcji,
             tytulZadania,
             opisZadania,
             iloscArg,
@@ -297,33 +374,62 @@ class Landing extends Component {
             postSuccess,
             indeksyTablic
         } = this.state;
-        const argsCheck =
-            this.checkArgs(args) || this.checkArgs(returnArgs) || this.checkArgs(wyniki);
-        const isInvalid = opisZadania === '' || tytulZadania === '' || argsCheck;
+        const argsCheck = this.isEmpty(args) || this.isEmpty(returnArgs) || this.isEmpty(wyniki);
+        const isInvalid =
+            opisZadania === '' ||
+            tytulZadania === '' ||
+            nazwaFunkcji === '' ||
+            argsCheck ||
+            zlaNazwaFunkcji;
         return (
             <Wrapper>
                 <Paper classes={{ root: classes.paper }} elevation={1}>
                     <FormWrapper onSubmit={this.onSubmit}>
                         <TextField
-                            id="tytulZadania"
-                            label="Tytuł zadania"
-                            placeholder="Zadanie 10"
-                            //helperText={"This doesn't look like email adress"}
-                            type="text"
-                            error={error.types && error.types.some(elem => elem === 'tytulZadania')}
+                            label="Imię i Nazwisko"
+                            error={
+                                error.types && error.types.some(elem => elem === 'imieINazwisko')
+                            }
                             className={classes.textField}
                             InputProps={{ classes: { input: classes.TheInput } }}
                             InputLabelProps={{ classes: { root: classes.TheLabel } }}
-                            /*FormHelperTextProps={{
-                                classes: { root: classes.TheHelper }
-                            }}*/
-                            value={tytulZadania}
-                            onChange={this.handleChange('tytulZadania')}
+                            value={imieINazwisko}
+                            onChange={this.handleTextInputChange('imieINazwisko')}
                             margin="normal"
                             variant="outlined"
                         />
                         <TextField
-                            id="opis"
+                            label="Tytuł zadania"
+                            error={error.types && error.types.some(elem => elem === 'tytulZadania')}
+                            className={classes.textField}
+                            InputProps={{ classes: { input: classes.TheInput } }}
+                            InputLabelProps={{ classes: { root: classes.TheLabel } }}
+                            value={tytulZadania}
+                            onChange={this.handleTextInputChange('tytulZadania')}
+                            margin="normal"
+                            variant="outlined"
+                        />
+                        <TextField
+                            label="Nazwa funkcji"
+                            error={
+                                (error.types &&
+                                    error.types.some(elem => elem === 'nazwaFunkcji')) ||
+                                zlaNazwaFunkcji
+                            }
+                            className={classes.textField}
+                            helperText="Nazwa nie może zawierać znaków specjalnych oraz zaczynać się od cyfry"
+                            FormHelperTextProps={{
+                                classes: { root: classes.TheHelper }
+                            }}
+                            InputProps={{ classes: { input: classes.TheInput } }}
+                            InputLabelProps={{ classes: { root: classes.TheLabel } }}
+                            value={nazwaFunkcji}
+                            onChange={this.handleTextInputChange('nazwaFunkcji')}
+                            margin="normal"
+                            variant="outlined"
+                        />
+                        {/*<RootRef rootRef={this.textInput}>*/}
+                        <TextField
                             label="Opis zadania"
                             error={error.types && error.types.some(elem => elem === 'opisZadania')}
                             className={classes.textField}
@@ -331,15 +437,15 @@ class Landing extends Component {
                                 multiline: true,
                                 classes: { input: classes.textArea }
                             }}
+                            //inputRef={this.textInput}
                             InputLabelProps={{ classes: { root: classes.TheLabel } }}
-                            FormHelperTextProps={{
-                                classes: { root: classes.TheHelper }
-                            }}
                             value={opisZadania}
-                            onChange={this.handleChange('opisZadania')}
+                            onChange={this.handleTextInputChange('opisZadania')}
                             margin="normal"
                             variant="outlined"
                         />
+                        {/*</RootRef>*/}
+                        {/*<textarea ref={this.textInput} onClick={this.tabClick} />*/}
                         <MySlider
                             handleSliderChange={this.handleSliderChange}
                             iloscArg={iloscArg}
@@ -363,7 +469,18 @@ class Landing extends Component {
                                         args={args}
                                         argsName={'args'}
                                         secondColumn={true}
-                                        values={['Int', 'Double', 'Float', 'String', 'Boolean']}
+                                        values={[
+                                            'int',
+                                            'double',
+                                            'float',
+                                            'decimal',
+                                            'long',
+                                            'short',
+                                            'string',
+                                            'char',
+                                            'boolean',
+                                            'byte'
+                                        ]}
                                         title={`Typ B argumentu ${i + 1}`}
                                     />
                                 </RowWrapper>
@@ -388,14 +505,40 @@ class Landing extends Component {
                                 args={returnArgs}
                                 argsName={'returnArgs'}
                                 secondColumn={true}
-                                values={['Int', 'Double', 'Float', 'String', 'Boolean']}
+                                values={[
+                                    'int',
+                                    'double',
+                                    'float',
+                                    'decimal',
+                                    'long',
+                                    'short',
+                                    'string',
+                                    'char',
+                                    'boolean',
+                                    'byte'
+                                ]}
                                 title={`Typ zwracany B`}
                             />
                         </RowWrapper>
                         <RowWrapper>
+                            <Typography variant="h6">Struktura funkcji</Typography>
+                        </RowWrapper>
+                        <RowWrapper leftMargin>
+                            <Typography variant="subtitle1" gutterBottom>
+                                {nazwaFunkcji.length === 0 ||
+                                this.isEmpty(args) ||
+                                this.isEmpty(returnArgs) ? (
+                                    'int NazwaFunkcji(int A) - przykładowa nazwa - wypełnij wszystkie pola, aby wygenerować swoją'
+                                ) : (
+                                    <Span>{this.wygenerujStruktureFunkcji()}</Span>
+                                )}
+                            </Typography>
+                        </RowWrapper>
+
+                        <RowWrapper>
                             <Typography variant="h6">Wyniki</Typography>
                         </RowWrapper>
-                        <ResultRow
+                        <WynikiRow
                             handleWynikiChange={this.handleWynikiChange}
                             iloscWynikow={iloscWynikow}
                             iloscArg={iloscArg}
@@ -419,7 +562,7 @@ class Landing extends Component {
                                 }
                             />
                         </RowWrapper>
-                        <Submit
+                        <SubmitButton
                             isInvalid={isInvalid}
                             loading={loading}
                             onSubmitClick={this.onSubmitClick}

@@ -149,6 +149,8 @@ router.post('/', async (req, res) => {
     }
 
     let task = new Task({
+        imieINazwisko: req.body.imieINazwisko,
+        nazwaFunkcji: req.body.nazwaFunkcji,
         tytulZadania: req.body.tytulZadania,
         opisZadania: req.body.opisZadania,
         iloscArg: req.body.iloscArg,

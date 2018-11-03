@@ -47,3 +47,8 @@ export const GridWrapper = styled.div`
     grid-gap: 10px;
     margin: ${defaultTheme.spacing.unit}px;
 `;
+
+export const Span = styled.span`
+    color: ${defaultTheme.palette.primary.main};
+    font-weight: 600;
+`;

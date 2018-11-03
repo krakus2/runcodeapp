@@ -5,7 +5,7 @@ import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Tooltip from '@material-ui/core/Tooltip';
 import Zoom from '@material-ui/core/Zoom';
-import '../../../styles/form/ResultRow.css';
+import '../../../styles/form/WynikiRow.css';
 
 const styles = theme => ({
     textField2: {
@@ -39,7 +39,7 @@ const styles = theme => ({
     }
 });
 
-class ResultRow extends Component {
+class WynikiRow extends Component {
     generateGrid = number => {
         const array = [];
         for (let i = 0; i < number; i++) {
@@ -139,7 +139,7 @@ class ResultRow extends Component {
     }
 }
 
-ResultRow.propTypes = {
+WynikiRow.propTypes = {
     classes: PropTypes.object.isRequired,
     handleWynikiChange: PropTypes.func.isRequired,
     iloscWynikow: PropTypes.number.isRequired,
@@ -147,4 +147,4 @@ ResultRow.propTypes = {
     wyniki: PropTypes.array.isRequired
 };
 
-export default withStyles(styles)(ResultRow);
+export default withStyles(styles)(WynikiRow);

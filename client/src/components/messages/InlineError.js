@@ -14,8 +14,8 @@ const InlineMessage = ({ text, isError, bigMargin, small }) => (
             color: isError ? defaultTheme.palette.error.main : defaultTheme.palette.primary.main,
             fontSize: small ? '13px' : '14px',
             width: 'auto',
-            maxWidth: '450px',
-            margin: bigMargin ? '5px auto 0 auto' : '0',
+            maxWidth: '515px',
+            margin: bigMargin ? '5px auto 0 auto' : '0px',
             textAlign: 'center',
             whiteSpace: 'pre'
         }}

@@ -100,6 +100,7 @@ class Header extends Component {
                                     onChange={this.handleChange('email')}
                                     margin="normal"
                                     variant="outlined"
+                                    disabled
                                 />
                                 <TextField
                                     id="haslo"
@@ -117,12 +118,14 @@ class Header extends Component {
                                     onChange={this.handleChange('password')}
                                     margin="normal"
                                     variant="outlined"
+                                    disabled
                                 />
                                 <Button
                                     variant="contained"
                                     color="primary"
                                     type="submit"
                                     className={classes.button}
+                                    disabled
                                 >
                                     Zaloguj
                                 </Button>
