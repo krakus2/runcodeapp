@@ -597,7 +597,10 @@ class Landing extends Component {
                             wyniki={wyniki}
                             indeksyTablic={indeksyTablic}
                         />
-                        <AddRemoveButtons zmienIloscWynikow={this.zmienIloscWynikow} />
+                        <AddRemoveButtons
+                            zmienIloscWynikow={this.zmienIloscWynikow}
+                            iloscWynikow={iloscWynikow}
+                        />
                         <RowWrapper>
                             <Typography variant="h6">Czy w funkcji zachodzi rekurencja?</Typography>
                         </RowWrapper>

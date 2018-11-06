@@ -9,57 +9,58 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Zoom from '@material-ui/core/Zoom';
 
 const styles = theme => ({
-   button2: {
-      margin: theme.spacing.unit,
-      color: 'white'
-   },
-   tooltip: {
-      fontSize: theme.spacing.tooltipSize
-   }
+    button2: {
+        margin: theme.spacing.unit,
+        color: 'white'
+    },
+    tooltip: {
+        fontSize: theme.spacing.tooltipSize
+    }
 });
 
-const AddRemoveButtons = ({ zmienIloscWynikow, classes }) => (
-   <RowWrapper>
-      <Tooltip
-         title="Dodaj wiersz"
-         classes={{ tooltip: classes.tooltip }}
-         TransitionComponent={Zoom}
-         placement="bottom"
-      >
-         <Button
-            variant="fab"
-            mini
-            color="secondary"
-            aria-label="Add"
-            className={classes.button2}
-            onClick={zmienIloscWynikow('+')}
-         >
-            <AddIcon />
-         </Button>
-      </Tooltip>
-      <Tooltip
-         title="Usuń wiersz"
-         classes={{ tooltip: classes.tooltip }}
-         TransitionComponent={Zoom}
-         placement="bottom"
-      >
-         <Button
-            variant="fab"
-            mini
-            color="secondary"
-            aria-label="Add"
-            className={classes.button2}
-            onClick={zmienIloscWynikow('-')}
-         >
-            <RemoveIcon />
-         </Button>
-      </Tooltip>
-   </RowWrapper>
+const AddRemoveButtons = ({ zmienIloscWynikow, iloscWynikow, classes }) => (
+    <RowWrapper>
+        <Tooltip
+            title="Dodaj wiersz"
+            classes={{ tooltip: classes.tooltip }}
+            TransitionComponent={Zoom}
+            placement="bottom"
+        >
+            <Button
+                variant="fab"
+                mini
+                color="secondary"
+                aria-label="Add"
+                className={classes.button2}
+                onClick={zmienIloscWynikow('+')}
+            >
+                <AddIcon />
+            </Button>
+        </Tooltip>
+        <Tooltip
+            title="Usuń wiersz"
+            classes={{ tooltip: classes.tooltip }}
+            TransitionComponent={Zoom}
+            placement="bottom"
+        >
+            <Button
+                variant="fab"
+                mini
+                color="secondary"
+                aria-label="Add"
+                className={classes.button2}
+                onClick={zmienIloscWynikow('-')}
+                disabled={iloscWynikow === 1}
+            >
+                <RemoveIcon />
+            </Button>
+        </Tooltip>
+    </RowWrapper>
 );
 
 AddRemoveButtons.propTypes = {
-   classes: PropTypes.object.isRequired,
-   zmienIloscWynikow: PropTypes.func.isRequired
+    classes: PropTypes.object.isRequired,
+    zmienIloscWynikow: PropTypes.func.isRequired
 };
 
 export default withStyles(styles)(AddRemoveButtons);
