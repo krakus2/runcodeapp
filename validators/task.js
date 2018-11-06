@@ -35,6 +35,14 @@ module.exports = function validateProfileInput(data) {
         errors.opisZadania = 'Minimalna długość opisu to 5, a maksymalna 160 znaków';
     }
 
+    if (Validator.isEmpty(data.code)) {
+        errors.opisZadania = 'Przykładowy kod zadania jest wymagany';
+    }
+
+    if (!Validator.isLength(data.code, { min: 1, max: 1000 })) {
+        errors.opisZadania = 'Maksymalna długość kodu to 1000 znaków';
+    }
+
     if (isEmpty(data.iloscArg)) {
         errors.iloscArg = 'Podaj ilość argumentów';
     }

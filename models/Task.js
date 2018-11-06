@@ -47,6 +47,12 @@ const taskSchema = new mongoose.Schema({
         type: [String],
         required: true
     },
+    code: {
+        type: String,
+        required: true,
+        minlength: 1,
+        maxlength: 1000
+    },
     wyniki: {
         type: [String],
         required: true

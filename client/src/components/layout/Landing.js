@@ -16,6 +16,7 @@ import Typography from '@material-ui/core/Typography';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import RootRef from '@material-ui/core/RootRef';
+import MonacoEditor from 'react-monaco-editor';
 
 const styles = theme => ({
     primaryColor: {
@@ -67,7 +68,8 @@ class Landing extends Component {
             loading: false,
             error: {},
             postSuccess: false,
-            indeksyTablic: []
+            indeksyTablic: [],
+            code: ''
         };
 
         this.onSubmit = this.onSubmit.bind(this);
@@ -75,6 +77,15 @@ class Landing extends Component {
 
         //this.textInput = React.createRef();
     }
+
+    editorDidMount(editor, monaco) {
+        console.log('editorDidMount', editor);
+        editor.focus();
+    }
+    onEditorChange = (newValue, e) => {
+        this.setState({ code: newValue });
+        console.log('onChange', newValue, e);
+    };
 
     /*tabClick = () => {
         // Explicitly focus the text input using the raw DOM API
@@ -114,6 +125,20 @@ class Landing extends Component {
         return result;
     };
 
+    deleteSpaces = text => {
+        let newText = Array.from(text);
+        if (typeof text === 'string') {
+            Array.from(text).forEach((elem, i) => {
+                if (elem === ' ' && text[i + 1] === ' ') {
+                    newText[i] = '';
+                } else {
+                    newText[i] = elem;
+                }
+            });
+        }
+        return newText.join('');
+    };
+
     async onSubmit(e) {
         e.preventDefault();
         const online = navigator.onLine;
@@ -127,12 +152,12 @@ class Landing extends Component {
             args,
             returnArgs,
             wyniki,
-            czyRekurencja
+            czyRekurencja,
+            code
         } = this.state;
-        const argCopy = [];
-        for (let i = 0; i < iloscArg * 2; i++) {
-            argCopy[i] = args[i];
-        }
+
+        //const pureCode = code.replace(/[^\S ]/gi, ''); //wymazuje wszystkie biale znaki oprócz spacji z kodu
+        const pureCode = this.deleteSpaces(code);
         const values = {
             imieINazwisko,
             nazwaFunkcji,
@@ -143,8 +168,10 @@ class Landing extends Component {
             args,
             returnArgs,
             wyniki,
-            czyRekurencja
+            czyRekurencja,
+            code: pureCode
         };
+
         console.log('submit', values);
         if (online) {
             try {
@@ -163,7 +190,8 @@ class Landing extends Component {
                         czyRekurencja: false,
                         loading: false,
                         error: {},
-                        postSuccess: true
+                        postSuccess: true,
+                        code: ''
                     },
                     () =>
                         setTimeout(() => {
@@ -221,13 +249,11 @@ class Landing extends Component {
                         (!regex2.test(event.target.value.substr(1, event.target.value.length)) ||
                             event.target.value.length === 1))
                 ) {
-                    console.log('1');
                     return this.setState({
                         [name]: event.target.value,
                         zlaNazwaFunkcji: false
                     });
                 } else {
-                    console.log('2');
                     return this.setState({
                         [name]: event.target.value,
                         zlaNazwaFunkcji: true
@@ -372,15 +398,20 @@ class Landing extends Component {
             loading,
             error,
             postSuccess,
-            indeksyTablic
+            indeksyTablic,
+            code
         } = this.state;
         const argsCheck = this.isEmpty(args) || this.isEmpty(returnArgs) || this.isEmpty(wyniki);
         const isInvalid =
             opisZadania === '' ||
             tytulZadania === '' ||
             nazwaFunkcji === '' ||
+            code === '' ||
             argsCheck ||
             zlaNazwaFunkcji;
+        const options = {
+            selectOnLineNumbers: true
+        };
         return (
             <Wrapper>
                 <Paper classes={{ root: classes.paper }} elevation={1}>
@@ -534,7 +565,19 @@ class Landing extends Component {
                                 )}
                             </Typography>
                         </RowWrapper>
-
+                        <RowWrapper>
+                            <Typography variant="h6">Wprowadź przykładowe rozwiązanie</Typography>
+                            <MonacoEditor
+                                width="800"
+                                height="600"
+                                language="csharp"
+                                theme="vs-dark"
+                                value={code}
+                                options={options}
+                                onChange={this.onEditorChange}
+                                //editorDidMount={this.editorDidMount}
+                            />
+                        </RowWrapper>
                         <RowWrapper>
                             <Typography variant="h6">Wyniki</Typography>
                         </RowWrapper>

@@ -157,6 +157,7 @@ router.post('/', async (req, res) => {
         iloscWynikow: req.body.iloscWynikow,
         args: req.body.args,
         returnArgs: req.body.returnArgs,
+        code: req.body.code,
         wyniki: req.body.wyniki,
         czyRekurencja: req.body.czyRekurencja
     });
