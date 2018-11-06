@@ -18,6 +18,12 @@ export const FormWrapper = styled.form`
     width: 100%;
 `;
 
+export const EditorWrapper = styled.div`
+    margin-top: 8px;
+    width: 100%;
+    height: 600px;
+`;
+
 export const ButtonWrapper = styled.div`
     display: flex;
     flex-direction: row;

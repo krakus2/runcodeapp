@@ -8,7 +8,7 @@ import SelectElem from './form/SelectElem';
 import MySlider from './form/MySlider';
 import WynikiRow from './form/WynikiRow';
 import AddRemoveButtons from './form/AddRemoveButtons';
-import { FormWrapper, Wrapper, RowWrapper, Span } from '../../styles/layout/Landing';
+import { FormWrapper, Wrapper, RowWrapper, Span, EditorWrapper } from '../../styles/layout/Landing';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper';
@@ -576,16 +576,16 @@ class Landing extends Component {
                         </RowWrapper>
                         <RowWrapper>
                             <Typography variant="h6">Wprowadź przykładowe rozwiązanie</Typography>
-                            <MonacoEditor
-                                width="800"
-                                height="600"
-                                language="csharp"
-                                theme="vs-dark"
-                                value={code}
-                                options={options}
-                                onChange={this.onEditorChange}
-                                //editorDidMount={this.editorDidMount}
-                            />
+                            <EditorWrapper>
+                                <MonacoEditor
+                                    language="csharp"
+                                    theme="vs-dark"
+                                    value={code}
+                                    options={options}
+                                    onChange={this.onEditorChange}
+                                    //editorDidMount={this.editorDidMount}
+                                />
+                            </EditorWrapper>
                         </RowWrapper>
                         <RowWrapper>
                             <Typography variant="h6">Wyniki</Typography>
