@@ -78,10 +78,6 @@ class Landing extends Component {
         //this.textInput = React.createRef();
     }
 
-    editorDidMount(editor, monaco) {
-        console.log('editorDidMount', editor);
-        editor.focus();
-    }
     onEditorChange = (newValue, e) => {
         this.setState({ code: newValue });
         console.log('onChange', newValue, e);
@@ -241,28 +237,41 @@ class Landing extends Component {
     handleTextInputChange(name) {
         return event => {
             if (name === 'nazwaFunkcji') {
-                const regex = /^[^\d]/gi;
+                const regex = /^[a-z]/gi;
                 const regex2 = /[^a-z0-9]+/gi;
-                if (
-                    event.target.value.length === 0 ||
-                    (regex.test(event.target.value) &&
-                        (!regex2.test(event.target.value.substr(1, event.target.value.length)) ||
-                            event.target.value.length === 1))
-                ) {
+                if (event.target.value.length === 0) {
                     return this.setState({
                         [name]: event.target.value,
                         zlaNazwaFunkcji: false
                     });
+                } else if (event.target.value.length === 1) {
+                    if (!regex.test(event.target.value)) {
+                        return this.setState({
+                            [name]: event.target.value,
+                            zlaNazwaFunkcji: true
+                        });
+                    } else {
+                        return this.setState({
+                            [name]: event.target.value,
+                            zlaNazwaFunkcji: false
+                        });
+                    }
                 } else {
-                    return this.setState({
-                        [name]: event.target.value,
-                        zlaNazwaFunkcji: true
-                    });
+                    if (regex2.test(event.target.value) || !regex.test(event.target.value)) {
+                        return this.setState({
+                            [name]: event.target.value,
+                            zlaNazwaFunkcji: true
+                        });
+                    } else {
+                        return this.setState({
+                            [name]: event.target.value,
+                            zlaNazwaFunkcji: false
+                        });
+                    }
                 }
+            } else {
+                this.setState({ [name]: event.target.value });
             }
-            this.setState({
-                [name]: event.target.value
-            });
         };
     }
 
