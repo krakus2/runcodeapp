@@ -49,7 +49,7 @@ export const RowWrapper = styled.div`
 
 export const GridWrapper = styled.div`
     display: grid;
-    ${props => props.grid && 'grid-template-columns'}: ${props => props.grid};
+    grid-template-columns: ${props => props.grid};
     grid-gap: 10px;
     margin: ${defaultTheme.spacing.unit}px;
 `;
