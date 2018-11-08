@@ -1,10 +1,12 @@
 import React from "react";
+import MySlider from "./MySlider";
 import { RowWrapper } from "../../../styles/layout/Landing";
 import SelectElem from "./SelectElem";
 
-export default function Argumenty({ iloscArg, handleArgTypeChange, args }) {
+export default function Argumenty({ iloscArg, handleArgTypeChange, args, handleSliderChange }) {
     return (
         <>
+            <MySlider handleSliderChange={handleSliderChange} iloscArg={iloscArg} max={5} />
             {Array.from(Array(iloscArg)).map((elem, i) => (
                 <React.Fragment key={i}>
                     <RowWrapper>

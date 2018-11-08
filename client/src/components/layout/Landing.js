@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
-import MySlider from "./form/MySlider";
+import PolaTekstowe from "./form/PolaTekstowe";
 import Argumenty from "./form/Argumenty";
 import TypZwracany from "./form/TypZwracany";
 import SubmitButton from "./form/SubmitButton";
@@ -12,7 +12,6 @@ import Rekurencja from "./form/Rekurencja";
 import BladLubKomunikat from "./form/BladLubKomunikat";
 import { styles, FormWrapper, Wrapper } from "../../styles/layout/Landing";
 import { withStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
 import Paper from "@material-ui/core/Paper";
 
 class Landing extends Component {
@@ -353,89 +352,20 @@ class Landing extends Component {
             <Wrapper>
                 <Paper classes={{ root: classes.paper }} elevation={1}>
                     <FormWrapper onSubmit={this.onSubmit}>
-                        <TextField
-                            label="Imię i Nazwisko"
-                            error={
-                                error.types && error.types.some(elem => elem === "imieINazwisko")
-                            }
-                            helperText="Podaj imię i nazwisko - autorzy najciekawszych zadań otrzymają punkty bonusowe
-                            zwiększające ocenę końcową z przedmiotu Wstęp do programowania."
-                            className={classes.textField}
-                            InputProps={{ classes: { input: classes.TheInput } }}
-                            FormHelperTextProps={{
-                                classes: { root: classes.TheHelper }
-                            }}
-                            InputLabelProps={{ classes: { root: classes.TheLabel } }}
-                            value={imieINazwisko}
-                            onChange={this.handleTextInputChange("imieINazwisko")}
-                            margin="normal"
-                            variant="outlined"
-                        />
-                        <TextField
-                            label="Tytuł zadania"
-                            error={error.types && error.types.some(elem => elem === "tytulZadania")}
-                            helperText="Nadaj zadaniu odpowiedni tytuł"
-                            placeholder="Wyszukiwanie liczb"
-                            className={classes.textField}
-                            FormHelperTextProps={{
-                                classes: { root: classes.TheHelper }
-                            }}
-                            InputProps={{ classes: { input: classes.TheInput } }}
-                            InputLabelProps={{ classes: { root: classes.TheLabel } }}
-                            value={tytulZadania}
-                            onChange={this.handleTextInputChange("tytulZadania")}
-                            margin="normal"
-                            variant="outlined"
-                        />
-                        <TextField
-                            label="Nazwa funkcji"
-                            error={
-                                (error.types &&
-                                    error.types.some(elem => elem === "nazwaFunkcji")) ||
-                                zlaNazwaFunkcji
-                            }
-                            className={classes.textField}
-                            helperText="Podaj nazwę funkcji, która ma zostać stworzona,
-                            np. ZnajdzLiczbe lub SzukajWTablicy. Uwaga: Nazwa nie może zawierać spacji,
-                            znaków specjalnych oraz zaczynać się od cyfry."
-                            FormHelperTextProps={{
-                                classes: { root: classes.TheHelper }
-                            }}
-                            InputProps={{ classes: { input: classes.TheInput } }}
-                            InputLabelProps={{ classes: { root: classes.TheLabel } }}
-                            value={nazwaFunkcji}
-                            onChange={this.handleTextInputChange("nazwaFunkcji")}
-                            margin="normal"
-                            variant="outlined"
-                        />
-                        <TextField
-                            label="Opis zadania"
-                            error={error.types && error.types.some(elem => elem === "opisZadania")}
-                            helperText="Tu wpisz treść zadania, podając co najmniej nazwę funkcji do utworzenia,
-                            określając jej parametry i definiując jej wymagania np.: Stwórz funkcję int
-                            ZwrocPodwojona(int a). Funkcja zwraca podwojoną wartość liczby a."
-                            className={classes.textField}
-                            InputProps={{
-                                multiline: true,
-                                classes: { input: classes.textArea }
-                            }}
-                            FormHelperTextProps={{
-                                classes: { root: classes.TheHelper }
-                            }}
-                            InputLabelProps={{ classes: { root: classes.TheLabel } }}
-                            value={opisZadania}
-                            onChange={this.handleTextInputChange("opisZadania")}
-                            margin="normal"
-                            variant="outlined"
-                        />
-                        <MySlider
-                            handleSliderChange={this.handleSliderChange}
-                            iloscArg={iloscArg}
-                            max={5}
+                        <PolaTekstowe
+                            classes={classes}
+                            error={error}
+                            handleTextInputChange={this.handleTextInputChange}
+                            imieINazwisko={imieINazwisko}
+                            tytulZadania={tytulZadania}
+                            nazwaFunkcji={nazwaFunkcji}
+                            opisZadania={opisZadania}
+                            zlaNazwaFunkcji={zlaNazwaFunkcji}
                         />
                         <Argumenty
                             iloscArg={iloscArg}
                             handleArgTypeChange={this.handleArgTypeChange}
+                            handleSliderChange={this.handleSliderChange}
                             args={args}
                         />
                         <TypZwracany
