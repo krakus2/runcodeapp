@@ -33,6 +33,7 @@ router.get('/', async (req, res) => {
     for (let i = 0; i < tasks[0].iloscWynikow; i++) {
         let object = {};
         object.MethodName = tasks[0].tytulZadania;
+        object.code = tasks[0].code;
         object.Parameters = [];
         for (let j = 0; j < tasks[0].iloscArg; j++) {
             const paramObject = {};

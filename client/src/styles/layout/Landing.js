@@ -1,5 +1,37 @@
-import styled from 'styled-components';
-import { createMuiTheme } from '@material-ui/core/styles';
+import styled from "styled-components";
+import { createMuiTheme } from "@material-ui/core/styles";
+
+export const styles = theme => ({
+    primaryColor: {
+        color: theme.palette.primary.main
+    },
+    textField: {
+        marginLeft: theme.spacing.unit,
+        marginRight: theme.spacing.unit,
+        marginTop: 5,
+        marginBottom: 5,
+        width: "100%"
+    },
+    textArea: {
+        minHeight: 100
+    },
+    TheInput: {
+        fontSize: 18
+    },
+    TheLabel: {
+        fontSize: 18,
+        fontWeight: 400
+    },
+    TheHelper: {
+        fontSize: theme.typography.body2.fontSize
+    },
+    paper: {
+        margin: "20px 10px",
+        padding: "0px 25px 10px 10px",
+        width: 550
+    }
+});
+
 const defaultTheme = createMuiTheme({
     typography: {
         useNextVariants: true
@@ -44,7 +76,7 @@ export const RowWrapper = styled.div`
     margin: ${defaultTheme.spacing.unit}px;
     position: relative;
     width: 100%;
-    ${props => props.leftMargin && 'margin-left'}: ${defaultTheme.spacing.unit * 2}px;
+    ${props => props.leftMargin && "margin-left"}: ${defaultTheme.spacing.unit * 2}px;
 `;
 
 export const GridWrapper = styled.div`

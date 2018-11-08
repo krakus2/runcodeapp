@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const taskSchema = new mongoose.Schema({
     imieINazwisko: {
@@ -51,7 +51,7 @@ const taskSchema = new mongoose.Schema({
         type: String,
         required: true,
         minlength: 1,
-        maxlength: 1000
+        maxlength: 10000
     },
     wyniki: {
         type: [String],
@@ -63,6 +63,6 @@ const taskSchema = new mongoose.Schema({
     }
 });
 
-const Task = mongoose.model('task', taskSchema);
+const Task = mongoose.model("task", taskSchema);
 
 module.exports = Task;

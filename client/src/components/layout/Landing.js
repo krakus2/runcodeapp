@@ -1,64 +1,30 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import axios from 'axios';
-import InlineMessage from '../messages/InlineError';
-import SimpleInput from './form/SimpleInput';
-import SubmitButton from './form/SubmitButton';
-import SelectElem from './form/SelectElem';
-import MySlider from './form/MySlider';
-import WynikiRow from './form/WynikiRow';
-import AddRemoveButtons from './form/AddRemoveButtons';
-import { FormWrapper, Wrapper, RowWrapper, Span, EditorWrapper } from '../../styles/layout/Landing';
-import { withStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Switch from '@material-ui/core/Switch';
-import RootRef from '@material-ui/core/RootRef';
-import MonacoEditor from 'react-monaco-editor';
-
-const styles = theme => ({
-    primaryColor: {
-        color: theme.palette.primary.main
-    },
-    textField: {
-        marginLeft: theme.spacing.unit,
-        marginRight: theme.spacing.unit,
-        marginTop: 5,
-        marginBottom: 5,
-        width: '100%'
-    },
-    textArea: {
-        minHeight: 100
-    },
-    TheInput: {
-        fontSize: 18
-    },
-    TheLabel: {
-        fontSize: 18,
-        fontWeight: 400
-    },
-    TheHelper: {
-        fontSize: 11
-    },
-    paper: {
-        margin: '20px 10px',
-        padding: '0px 25px 10px 10px',
-        width: 550
-    }
-});
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import axios from "axios";
+import MySlider from "./form/MySlider";
+import Argumenty from "./form/Argumenty";
+import TypZwracany from "./form/TypZwracany";
+import SubmitButton from "./form/SubmitButton";
+import StrukturaFunkcji from "./form/StrukturaFunkcji";
+import Editor from "./form/Editor";
+import Testy from "./form/Testy";
+import Rekurencja from "./form/Rekurencja";
+import BladLubKomunikat from "./form/BladLubKomunikat";
+import { styles, FormWrapper, Wrapper } from "../../styles/layout/Landing";
+import { withStyles } from "@material-ui/core/styles";
+import TextField from "@material-ui/core/TextField";
+import Paper from "@material-ui/core/Paper";
 
 class Landing extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            imieINazwisko: '',
-            nazwaFunkcji: '',
+            imieINazwisko: "",
+            nazwaFunkcji: "",
             zlaNazwaFunkcji: false,
-            tytulZadania: '',
-            opisZadania: '',
-            strukturaFunkcji: '',
+            tytulZadania: "",
+            opisZadania: "",
+            strukturaFunkcji: "",
             iloscArg: 1, //ile parametrów ma funkcja
             iloscWynikow: 1, //ile zestawów wartości do przeprowadzenia testu wysłał uzytkownik
             args: [...Array(2)], //typy parametrów funkcji np. string
@@ -69,70 +35,37 @@ class Landing extends Component {
             error: {},
             postSuccess: false,
             indeksyTablic: [],
-            code: ''
+            code: ""
         };
 
         this.onSubmit = this.onSubmit.bind(this);
-        this.handleTextInputChange = this.handleTextInputChange.bind(this);
-
-        //this.textInput = React.createRef();
     }
 
     onEditorChange = (newValue, e) => {
         this.setState({ code: newValue });
-        console.log('onChange', newValue, e);
+        //console.log("onChange", newValue, e);
     };
-
-    /*tabClick = () => {
-        // Explicitly focus the text input using the raw DOM API
-        // Note: we're accessing "current" to get the DOM node
-        const textarea = this.textInput.current;
-        textarea.onkeydown = function(e) {
-            //support tab on textarea
-            if (e.keyCode === 9) {
-                // tab was pressed
-
-                // get caret position/selection
-                var val = this.value,
-                    start = this.selectionStart,
-                    end = this.selectionEnd;
-
-                // set textarea value to: text before caret + tab + text after caret
-                this.value = val.substring(0, start) + '\t' + val.substring(end);
-
-                // put caret at right position again
-                this.selectionStart = this.selectionEnd = start + 1;
-
-                // prevent the focus lose
-                return false;
-            }
-        };
-    };
-
-    componentDidMount() {
-        this.tabClick();
-    }*/
 
     isEmpty = array => {
         let result = false;
         array.forEach(elem => {
-            if (elem === undefined || elem === '' || elem === null) result = true;
+            if (elem === undefined || elem === "" || elem === null) result = true;
         });
         return result;
     };
 
     deleteSpaces = text => {
         let newText = Array.from(text);
-        if (typeof text === 'string') {
+        if (typeof text === "string") {
             Array.from(text).forEach((elem, i) => {
-                if (elem === ' ' && text[i + 1] === ' ') {
-                    newText[i] = '';
+                if (elem === " " && text[i + 1] === " ") {
+                    newText[i] = "";
                 } else {
                     newText[i] = elem;
                 }
             });
         }
-        return newText.join('');
+        return newText.join("");
     };
 
     async onSubmit(e) {
@@ -165,19 +98,19 @@ class Landing extends Component {
             returnArgs,
             wyniki,
             czyRekurencja,
-            code: pureCode
+            code
         };
 
-        console.log('submit', values);
+        console.log("submit", values);
         if (online) {
             try {
-                const res = await axios.post('/api/tasks', values);
+                const res = await axios.post("/api/tasks", values);
                 this.setState(
                     {
-                        nazwaFunkcji: '',
-                        imieINazwisko: '',
-                        tytulZadania: '',
-                        opisZadania: '',
+                        nazwaFunkcji: "",
+                        imieINazwisko: "",
+                        tytulZadania: "",
+                        opisZadania: "",
                         iloscArg: 1,
                         iloscWynikow: 1,
                         args: [...Array(2)],
@@ -187,14 +120,14 @@ class Landing extends Component {
                         loading: false,
                         error: {},
                         postSuccess: true,
-                        code: ''
+                        code: ""
                     },
                     () =>
                         setTimeout(() => {
                             this.setState({ postSuccess: false });
                         }, 5000)
                 );
-                console.log('Submit succesed', res);
+                console.log("Submit succesed", res);
             } catch (err) {
                 let error = {};
                 if (err.response) {
@@ -203,13 +136,13 @@ class Landing extends Component {
                     console.log(err.response.data);
                     console.log(err.response.status);
                     console.log(err.response.headers);
-                    if (typeof err.response.data === 'string') {
+                    if (typeof err.response.data === "string") {
                         error.messages = [err.response.data];
                     } else {
                         error.messages = [...Object.values(err.response.data)];
                         error.types = [...Object.keys(err.response.data)];
                     }
-                    error.type = 'response';
+                    error.type = "response";
                     //console.log("types i messages", types, messages);
                 } else if (err.request) {
                     // The request was made but no response was received
@@ -217,12 +150,12 @@ class Landing extends Component {
                     // http.ClientRequest in node.js
                     console.log(err.request);
                     error.messages = [...Object.values(err.request)];
-                    error.type = 'request';
+                    error.type = "request";
                 } else {
                     // Something happened in setting up the request that triggered an Error
-                    console.log('Error', err.message);
+                    console.log("Error", err.message);
                     error.messages = [err.message];
-                    error.type = 'other';
+                    error.type = "other";
                 }
                 this.setState({ loading: false, error });
             }
@@ -234,46 +167,44 @@ class Landing extends Component {
         }
     }
 
-    handleTextInputChange(name) {
-        return event => {
-            if (name === 'nazwaFunkcji') {
-                const regex = /^[a-z]/gi;
-                const regex2 = /[^a-z0-9]+/gi;
-                if (event.target.value.length === 0) {
+    handleTextInputChange = name => event => {
+        if (name === "nazwaFunkcji") {
+            const regex = /^[a-z]/gi;
+            const regex2 = /[^a-z0-9]+/gi;
+            if (event.target.value.length === 0) {
+                return this.setState({
+                    [name]: event.target.value,
+                    zlaNazwaFunkcji: false
+                });
+            } else if (event.target.value.length === 1) {
+                if (!regex.test(event.target.value)) {
+                    return this.setState({
+                        [name]: event.target.value,
+                        zlaNazwaFunkcji: true
+                    });
+                } else {
                     return this.setState({
                         [name]: event.target.value,
                         zlaNazwaFunkcji: false
                     });
-                } else if (event.target.value.length === 1) {
-                    if (!regex.test(event.target.value)) {
-                        return this.setState({
-                            [name]: event.target.value,
-                            zlaNazwaFunkcji: true
-                        });
-                    } else {
-                        return this.setState({
-                            [name]: event.target.value,
-                            zlaNazwaFunkcji: false
-                        });
-                    }
-                } else {
-                    if (regex2.test(event.target.value) || !regex.test(event.target.value)) {
-                        return this.setState({
-                            [name]: event.target.value,
-                            zlaNazwaFunkcji: true
-                        });
-                    } else {
-                        return this.setState({
-                            [name]: event.target.value,
-                            zlaNazwaFunkcji: false
-                        });
-                    }
                 }
             } else {
-                this.setState({ [name]: event.target.value });
+                if (regex2.test(event.target.value) || !regex.test(event.target.value)) {
+                    return this.setState({
+                        [name]: event.target.value,
+                        zlaNazwaFunkcji: true
+                    });
+                } else {
+                    return this.setState({
+                        [name]: event.target.value,
+                        zlaNazwaFunkcji: false
+                    });
+                }
             }
-        };
-    }
+        } else {
+            this.setState({ [name]: event.target.value });
+        }
+    };
 
     handleSliderChange = value => {
         let args = [...this.state.args];
@@ -319,7 +250,7 @@ class Landing extends Component {
         const indeksyTablic = [];
 
         args.forEach((elem, i) => {
-            if (elem === 'Tablica []') indeksyTablic.push(i / 2);
+            if (elem === "Tablica []") indeksyTablic.push(i / 2);
         });
         for (let i = 0; i < iloscWynikow - 1; i++) {
             indeksyTablic.forEach((elem, j) => {
@@ -327,7 +258,7 @@ class Landing extends Component {
             });
         }
 
-        if (returnArgs[0] === 'Tablica []') {
+        if (returnArgs[0] === "Tablica []") {
             for (let i = 0; i < iloscWynikow; i++) {
                 indeksyTablic.push((i + 1) * (iloscArg + 1) - 1);
             }
@@ -345,7 +276,7 @@ class Landing extends Component {
     zmienIloscWynikow = znak => () => {
         const { iloscWynikow, iloscArg } = this.state;
         const wyniki = [...this.state.wyniki];
-        if (znak === '+') {
+        if (znak === "+") {
             this.setState(
                 {
                     iloscWynikow: iloscWynikow + 1,
@@ -356,7 +287,7 @@ class Landing extends Component {
                     this.setState({ indeksyTablic });
                 }
             );
-        } else if (znak === '-' && iloscWynikow !== 1) {
+        } else if (znak === "-" && iloscWynikow !== 1) {
             const ucieteWyniki = [];
             for (let i = 0; i < (iloscArg + 1) * (iloscWynikow - 1); i++) {
                 ucieteWyniki.push(wyniki[i]);
@@ -368,23 +299,23 @@ class Landing extends Component {
         }
     };
 
-    wygenerujStruktureFunkcji() {
+    wygenerujStruktureFunkcji = () => {
         const { nazwaFunkcji, args, returnArgs } = this.state;
         const args2 = [];
         for (let i = 0; i < args.length; i = i + 2) {
-            if (args[i] === 'Tablica []') {
+            if (args[i] === "Tablica []") {
                 args2.push(`${args[i + 1]}[] Arg${i / 2 + 1}`);
             } else {
                 args2.push(`${args[i + 1]} arg${i / 2 + 1}`);
             }
         }
         let returnArgs2 =
-            returnArgs[0] === 'Tablica []'
+            returnArgs[0] === "Tablica []"
                 ? `${returnArgs[1]}[] ${nazwaFunkcji}`
                 : `${returnArgs[1]} ${nazwaFunkcji}`;
 
-        return `${returnArgs2}(${args2.join(', ')})`;
-    }
+        return `${returnArgs2}(${args2.join(", ")})`;
+    };
 
     onSubmitClick = () => {
         this.setState({ loading: true, error: {} });
@@ -412,15 +343,12 @@ class Landing extends Component {
         } = this.state;
         const argsCheck = this.isEmpty(args) || this.isEmpty(returnArgs) || this.isEmpty(wyniki);
         const isInvalid =
-            opisZadania === '' ||
-            tytulZadania === '' ||
-            nazwaFunkcji === '' ||
-            code === '' ||
+            opisZadania === "" ||
+            tytulZadania === "" ||
+            nazwaFunkcji === "" ||
+            code === "" ||
             argsCheck ||
             zlaNazwaFunkcji;
-        const options = {
-            selectOnLineNumbers: true
-        };
         return (
             <Wrapper>
                 <Paper classes={{ root: classes.paper }} elevation={1}>
@@ -428,24 +356,34 @@ class Landing extends Component {
                         <TextField
                             label="Imię i Nazwisko"
                             error={
-                                error.types && error.types.some(elem => elem === 'imieINazwisko')
+                                error.types && error.types.some(elem => elem === "imieINazwisko")
                             }
+                            helperText="Podaj imię i nazwisko - autorzy najciekawszych zadań otrzymają punkty bonusowe
+                            zwiększające ocenę końcową z przedmiotu Wstęp do programowania."
                             className={classes.textField}
                             InputProps={{ classes: { input: classes.TheInput } }}
+                            FormHelperTextProps={{
+                                classes: { root: classes.TheHelper }
+                            }}
                             InputLabelProps={{ classes: { root: classes.TheLabel } }}
                             value={imieINazwisko}
-                            onChange={this.handleTextInputChange('imieINazwisko')}
+                            onChange={this.handleTextInputChange("imieINazwisko")}
                             margin="normal"
                             variant="outlined"
                         />
                         <TextField
                             label="Tytuł zadania"
-                            error={error.types && error.types.some(elem => elem === 'tytulZadania')}
+                            error={error.types && error.types.some(elem => elem === "tytulZadania")}
+                            helperText="Nadaj zadaniu odpowiedni tytuł"
+                            placeholder="Wyszukiwanie liczb"
                             className={classes.textField}
+                            FormHelperTextProps={{
+                                classes: { root: classes.TheHelper }
+                            }}
                             InputProps={{ classes: { input: classes.TheInput } }}
                             InputLabelProps={{ classes: { root: classes.TheLabel } }}
                             value={tytulZadania}
-                            onChange={this.handleTextInputChange('tytulZadania')}
+                            onChange={this.handleTextInputChange("tytulZadania")}
                             margin="normal"
                             variant="outlined"
                         />
@@ -453,186 +391,84 @@ class Landing extends Component {
                             label="Nazwa funkcji"
                             error={
                                 (error.types &&
-                                    error.types.some(elem => elem === 'nazwaFunkcji')) ||
+                                    error.types.some(elem => elem === "nazwaFunkcji")) ||
                                 zlaNazwaFunkcji
                             }
                             className={classes.textField}
-                            helperText="Nazwa nie może zawierać znaków specjalnych oraz zaczynać się od cyfry"
+                            helperText="Podaj nazwę funkcji, która ma zostać stworzona,
+                            np. ZnajdzLiczbe lub SzukajWTablicy. Uwaga: Nazwa nie może zawierać spacji,
+                            znaków specjalnych oraz zaczynać się od cyfry."
                             FormHelperTextProps={{
                                 classes: { root: classes.TheHelper }
                             }}
                             InputProps={{ classes: { input: classes.TheInput } }}
                             InputLabelProps={{ classes: { root: classes.TheLabel } }}
                             value={nazwaFunkcji}
-                            onChange={this.handleTextInputChange('nazwaFunkcji')}
+                            onChange={this.handleTextInputChange("nazwaFunkcji")}
                             margin="normal"
                             variant="outlined"
                         />
-                        {/*<RootRef rootRef={this.textInput}>*/}
                         <TextField
                             label="Opis zadania"
-                            error={error.types && error.types.some(elem => elem === 'opisZadania')}
+                            error={error.types && error.types.some(elem => elem === "opisZadania")}
+                            helperText="Tu wpisz treść zadania, podając co najmniej nazwę funkcji do utworzenia,
+                            określając jej parametry i definiując jej wymagania np.: Stwórz funkcję int
+                            ZwrocPodwojona(int a). Funkcja zwraca podwojoną wartość liczby a."
                             className={classes.textField}
                             InputProps={{
                                 multiline: true,
                                 classes: { input: classes.textArea }
                             }}
-                            //inputRef={this.textInput}
+                            FormHelperTextProps={{
+                                classes: { root: classes.TheHelper }
+                            }}
                             InputLabelProps={{ classes: { root: classes.TheLabel } }}
                             value={opisZadania}
-                            onChange={this.handleTextInputChange('opisZadania')}
+                            onChange={this.handleTextInputChange("opisZadania")}
                             margin="normal"
                             variant="outlined"
                         />
-                        {/*</RootRef>*/}
-                        {/*<textarea ref={this.textInput} onClick={this.tabClick} />*/}
                         <MySlider
                             handleSliderChange={this.handleSliderChange}
                             iloscArg={iloscArg}
                             max={5}
                         />
-                        {Array.from(Array(iloscArg)).map((elem, i) => (
-                            <React.Fragment key={i}>
-                                <RowWrapper>
-                                    <SelectElem
-                                        i={i}
-                                        handleArgTypeChange={this.handleArgTypeChange}
-                                        args={args}
-                                        argsName={'args'}
-                                        secondColumn={false}
-                                        values={['Typ prosty', 'Tablica []']}
-                                        title={`Typ A argumentu ${i + 1}`}
-                                    />
-                                    <SelectElem
-                                        i={i}
-                                        handleArgTypeChange={this.handleArgTypeChange}
-                                        args={args}
-                                        argsName={'args'}
-                                        secondColumn={true}
-                                        values={[
-                                            'int',
-                                            'double',
-                                            'float',
-                                            'decimal',
-                                            'long',
-                                            'short',
-                                            'string',
-                                            'char',
-                                            'boolean',
-                                            'byte'
-                                        ]}
-                                        title={`Typ B argumentu ${i + 1}`}
-                                    />
-                                </RowWrapper>
-                            </React.Fragment>
-                        ))}
-                        <RowWrapper>
-                            <Typography variant="h6">Typ zwracany</Typography>
-                        </RowWrapper>
-                        <RowWrapper>
-                            <SelectElem
-                                i={0}
-                                handleArgTypeChange={this.handleArgTypeChange}
-                                args={returnArgs}
-                                argsName={'returnArgs'}
-                                secondColumn={false}
-                                values={['Typ prosty', 'Tablica []']}
-                                title={`Typ zwracany A`}
-                            />
-                            <SelectElem
-                                i={0}
-                                handleArgTypeChange={this.handleArgTypeChange}
-                                args={returnArgs}
-                                argsName={'returnArgs'}
-                                secondColumn={true}
-                                values={[
-                                    'int',
-                                    'double',
-                                    'float',
-                                    'decimal',
-                                    'long',
-                                    'short',
-                                    'string',
-                                    'char',
-                                    'boolean',
-                                    'byte'
-                                ]}
-                                title={`Typ zwracany B`}
-                            />
-                        </RowWrapper>
-                        <RowWrapper>
-                            <Typography variant="h6">Struktura funkcji</Typography>
-                        </RowWrapper>
-                        <RowWrapper leftMargin>
-                            <Typography variant="subtitle1" gutterBottom>
-                                {nazwaFunkcji.length === 0 ||
-                                this.isEmpty(args) ||
-                                this.isEmpty(returnArgs) ? (
-                                    'int NazwaFunkcji(int A) - przykładowa nazwa - wypełnij wszystkie pola, aby wygenerować swoją'
-                                ) : (
-                                    <Span>{this.wygenerujStruktureFunkcji()}</Span>
-                                )}
-                            </Typography>
-                        </RowWrapper>
-                        <RowWrapper>
-                            <Typography variant="h6">Wprowadź przykładowe rozwiązanie</Typography>
-                            <EditorWrapper>
-                                <MonacoEditor
-                                    language="csharp"
-                                    theme="vs-dark"
-                                    value={code}
-                                    options={options}
-                                    onChange={this.onEditorChange}
-                                    //editorDidMount={this.editorDidMount}
-                                />
-                            </EditorWrapper>
-                        </RowWrapper>
-                        <RowWrapper>
-                            <Typography variant="h6">Wyniki</Typography>
-                        </RowWrapper>
-                        <WynikiRow
+                        <Argumenty
+                            iloscArg={iloscArg}
+                            handleArgTypeChange={this.handleArgTypeChange}
+                            args={args}
+                        />
+                        <TypZwracany
+                            handleArgTypeChange={this.handleArgTypeChange}
+                            returnArgs={returnArgs}
+                        />
+                        <StrukturaFunkcji
+                            nazwaFunkcji={nazwaFunkcji}
+                            returnArgs={returnArgs}
+                            isEmpty={this.isEmpty}
+                            wygenerujStruktureFunkcji={this.wygenerujStruktureFunkcji}
+                            args={args}
+                        />
+                        <Editor code={code} onEditorChange={this.onEditorChange} />
+                        <Testy
                             handleWynikiChange={this.handleWynikiChange}
                             iloscWynikow={iloscWynikow}
                             iloscArg={iloscArg}
                             wyniki={wyniki}
                             indeksyTablic={indeksyTablic}
-                        />
-                        <AddRemoveButtons
                             zmienIloscWynikow={this.zmienIloscWynikow}
-                            iloscWynikow={iloscWynikow}
                         />
-                        <RowWrapper>
-                            <Typography variant="h6">Czy w funkcji zachodzi rekurencja?</Typography>
-                        </RowWrapper>
-                        <RowWrapper leftMargin>
-                            <FormControlLabel
-                                //label="czyRekurencja"
-                                control={
-                                    <Switch
-                                        checked={czyRekurencja}
-                                        onChange={this.handleSwitchChange('czyRekurencja')}
-                                        value="czyRekurencja"
-                                        color="secondary"
-                                    />
-                                }
-                            />
-                        </RowWrapper>
+                        <Rekurencja
+                            czyRekurencja={czyRekurencja}
+                            handleSwitchChange={this.handleSwitchChange}
+                        />
                         <SubmitButton
                             isInvalid={isInvalid}
                             loading={loading}
                             onSubmitClick={this.onSubmitClick}
                         />
                     </FormWrapper>
-                    {!!Object.keys(error).length && (
-                        <InlineMessage
-                            isError={true}
-                            text={`Something went wrong. Try again. Message: \n${error.messages &&
-                                error.messages.join('\n')}`}
-                        />
-                    )}
-                    {!!postSuccess && (
-                        <InlineMessage isError={false} text={'Zadanie dodano do bazy'} />
-                    )}
+                    <BladLubKomunikat error={error} postSuccess={postSuccess} />
                 </Paper>
             </Wrapper>
         );
