@@ -136,7 +136,7 @@ class Testy extends Component {
 
         return (
             <>
-                <RowWrapper>
+                <RowWrapper column>
                     <Typography variant="h6">Zestawy testów i wartość zwracana</Typography>
                     <Typography variant="body2" gutterBottom>
                         Zdefiniuj testy. Podaj wartości parametrów wywołania funkcji oraz wartość

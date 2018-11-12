@@ -1,6 +1,9 @@
 import styled from "styled-components";
 import { createMuiTheme } from "@material-ui/core/styles";
 
+const isMobile = /iPhone|Android/i.test(navigator.userAgent);
+// to nie jest rozwiazanie dynamiczne, moze sprobowac zaimplementowac gdzies w komponencie
+
 export const styles = theme => ({
     primaryColor: {
         color: theme.palette.primary.main
@@ -28,7 +31,7 @@ export const styles = theme => ({
     paper: {
         margin: "20px 10px",
         padding: "0px 25px 10px 10px",
-        width: 550
+        width: isMobile ? 'auto' : 550
     }
 });
 
@@ -71,7 +74,7 @@ export const SliderWrapper = styled.div`
 
 export const RowWrapper = styled.div`
     display: flex;
-    flex-direction: row;
+    flex-direction: ${props => props.column ? "column" : "row"}
     flex-wrap: wrap;
     margin: ${defaultTheme.spacing.unit}px;
     position: relative;

@@ -11,8 +11,8 @@ import { HeaderWrapper, FormWrapper } from '../../styles/layout/Header';
 import InlineMessage from '../messages/InlineError';
 
 const styles = theme => ({
-    root: {
-        flexGrow: 1
+    AppBar: {
+        margin: '5px'
     },
     textField: {
         marginRight: theme.spacing.unit,
@@ -73,7 +73,7 @@ class Header extends Component {
         const { classes } = this.props;
         const { email, emailErr, loginErr, password, passwordErr } = this.state;
         return (
-            <div className={classes.root}>
+            <div /*style={{margin: '5px'}}*/>
                 <AppBar position="static" color="default">
                     <HeaderWrapper>
                         <Toolbar>
