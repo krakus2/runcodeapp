@@ -2,11 +2,13 @@ import React from "react";
 import { RowWrapper, EditorWrapper } from "../../../styles/layout/Landing.js";
 import Typography from "@material-ui/core/Typography";
 import MonacoEditor from "react-monaco-editor";
+//import withContext from "../../../context/Context_HOC";
 
 export default function Editor({ code, onEditorChange }) {
     const options = {
         selectOnLineNumbers: true
     };
+    //const { code, onEditorChange } = context;
     return (
         <RowWrapper>
             <Typography variant="h6">Wklej kod rozwiązania</Typography>

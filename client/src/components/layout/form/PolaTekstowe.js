@@ -1,7 +1,7 @@
 import React from "react";
 import TextField from "@material-ui/core/TextField";
 //import { compose } from "recompose";
-import { withContext } from "../../../context/context";
+//import withContext from "../../../context/Context_HOC";
 
 const PolaTekstowe = ({
     classes,
@@ -11,10 +11,9 @@ const PolaTekstowe = ({
     tytulZadania,
     nazwaFunkcji,
     opisZadania,
-    zlaNazwaFunkcji,
-    context
+    zlaNazwaFunkcji
+    //context
 }) => {
-    console.log(context);
     return (
         <>
             <TextField
@@ -93,4 +92,4 @@ const PolaTekstowe = ({
     );
 };
 
-export default withContext(PolaTekstowe);
+export default PolaTekstowe;

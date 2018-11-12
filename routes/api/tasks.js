@@ -29,112 +29,196 @@ router.get('/all', async (req, res) => {
 // @access  Public
 router.get('/', async (req, res) => {
     let tasks = await Task.find().sort({ _id: -1 }); //zwróci od najnowszych
-    let result = [];
-    for (let i = 0; i < tasks[0].iloscWynikow; i++) {
-        let object = {};
-        object.MethodName = tasks[0].tytulZadania;
-        object.code = tasks[0].code;
-        object.Parameters = [];
-        for (let j = 0; j < tasks[0].iloscArg; j++) {
-            const paramObject = {};
-            paramObject.TypeName =
-                tasks[0].args[j * 2] === 'Typ prosty'
-                    ? `System.${tasks[0].args[j * 2 + 1]}32`
-                    : `System.${tasks[0].args[j * 2 + 1]}32[]`;
-            paramObject.Value =
-                tasks[0].args[j * 2] === 'Typ prosty'
-                    ? `${tasks[0].wyniki[j]}`
-                    : `[${tasks[0].wyniki[j]}]`;
-        }
-        object.ResultTypeName =
-            tasks[0].returnArgs[0] === 'Typ prosty'
-                ? `System.${tasks[0].returnArgs[1]}`
-                : `System.${tasks[0].returnArgs[1]}[]`;
+    let resultAll = [];
+    for(let k = 0; k < tasks.length; k++) {
+        let result = [];
+        for (let i = 0; i < tasks[k].iloscWynikow; i++) {
+            let object = {};
+            object.MethodName = tasks[k].nazwaFunkcji;
+            object.code = tasks[k].code.replace((/  |\r\n|\n|\r/gm),"") //usuwa wszystkie tabulacje i znaki nowej linii
+            object.Parameters = [];
+            for (let j = 0; j < tasks[k].iloscArg; j++) {
+                const paramObject = {};
+                paramObject.TypeName =
+                    tasks[k].args[j * 2] === 'Typ prosty'
+                        ? `System.${tasks[k].args[j * 2 + 1]}`
+                        : `System.${tasks[k].args[j * 2 + 1]}[]`;
+                paramObject.Value =
+                    tasks[k].args[j * 2] === 'Typ prosty'
+                        ? `${tasks[k].wyniki[j]}`
+                        : `[${tasks[k].wyniki[j]}]`;
+                object.Parameters.push(paramObject)
+            }
+            object.ResultTypeName =
+                tasks[k].returnArgs[k] === 'Typ prosty'
+                    ? `System.${tasks[k].returnArgs[1]}`
+                    : `System.${tasks[k].returnArgs[1]}[]`;
 
-        object.ExpectedResult = tasks[0].wyniki[(tasks[0].iloscArg + 1) * (i + 1)] === 'Typ prosty';
-        object.CodeChecks = tasks[0].czyRekurencja;
-        result.push(object);
+            object.ExpectedResult = 
+                tasks[k].returnArgs[k] === 'Typ prosty'
+                    ? `${tasks[k].wyniki[(tasks[k].iloscArg + 1) * (i + 1) - 1]}`
+                    : `[${tasks[k].wyniki[(tasks[k].iloscArg + 1) * (i + 1) - 1]}]`;
+            object.CodeChecks = tasks[k].czyRekurencja ? ["RecursionCheck"] : []; 
+            result.push(object);
+        }
+        resultAll.push(result)
     }
 
-    res.json(result);
+    res.json(resultAll);
 });
 
 // @route   GET api/tasks/
 // @desc    Get x last tasks
 // @access  Public
-router.get('/:x', async (req, res) => {
-    let tasks = await Task.find()
+router.get('/ileostatnich/:x', async (req, res) => {
+    const ile = parseInt(req.params.x)
+    if(!Number.isInteger(ile) || ile <= 0){
+        return res.status(400).send("Podałeś błędny parametr, to musi być liczba całkowita większa od 0");
+    } else {
+        let tasks = await Task.find()
         .sort({ _id: -1 }) //zwróci od najnowszych
-        .limit(5);
-    let result = [];
-    // for(let i = 0; i < tasks.length; i++)
-    /*for(let i = 0; i < tasks.length; i++){
-      result[i]
-      result[i] = tasks.map((elem, i, array) => {
-         const object = {};
-         object.MethodName = elem.tytulZadania;
-         object.Parameters = []
-         elem.wyniki.forEach((elem2, i) => {
-            object.Parameters.push({
-               TypeName: `System.${}32`
-            })
-         })
-      })
-   }*/
+        .limit(Number(req.params.x));
 
-    res.json(tasks);
+        let resultAll = [];
+        for(let k = 0; k < tasks.length; k++) {
+            let result = [];
+            for (let i = 0; i < tasks[k].iloscWynikow; i++) {
+                let object = {};
+                object.MethodName = tasks[k].nazwaFunkcji;
+                object.code = tasks[k].code.replace((/  |\r\n|\n|\r/gm),"") //usuwa wszystkie tabulacje i znaki nowej linii
+                object.Parameters = [];
+                for (let j = 0; j < tasks[k].iloscArg; j++) {
+                    const paramObject = {};
+                    paramObject.TypeName =
+                        tasks[k].args[j * 2] === 'Typ prosty'
+                            ? `System.${tasks[k].args[j * 2 + 1]}`
+                            : `System.${tasks[k].args[j * 2 + 1]}[]`;
+                    paramObject.Value =
+                        tasks[k].args[j * 2] === 'Typ prosty'
+                            ? `${tasks[k].wyniki[j]}`
+                            : `[${tasks[k].wyniki[j]}]`;
+                    object.Parameters.push(paramObject)
+                }
+                object.ResultTypeName =
+                    tasks[k].returnArgs[k] === 'Typ prosty'
+                        ? `System.${tasks[k].returnArgs[1]}`
+                        : `System.${tasks[k].returnArgs[1]}[]`;
+
+                object.ExpectedResult = 
+                    tasks[k].returnArgs[k] === 'Typ prosty'
+                        ? `${tasks[k].wyniki[(tasks[k].iloscArg + 1) * (i + 1) - 1]}`
+                        : `[${tasks[k].wyniki[(tasks[k].iloscArg + 1) * (i + 1) - 1]}]`;
+                object.CodeChecks = tasks[k].czyRekurencja ? ["RecursionCheck"] : []; 
+                result.push(object);
+            }
+            resultAll.push(result)
+        }
+
+        return res.json(resultAll);
+    }
+
+    
 });
 
 // @route   GET api/tasks/
 // @desc    Get all unread tasks
 // @access  Public
 router.get('/unread', async (req, res) => {
-    let tasks = await Task.find()
-        .sort({ _id: -1 }) //zwróci od najnowszych
-        .limit(5);
-    let result = [];
-    // for(let i = 0; i < tasks.length; i++)
-    /*for(let i = 0; i < tasks.length; i++){
-      result[i]
-      result[i] = tasks.map((elem, i, array) => {
-         const object = {};
-         object.MethodName = elem.tytulZadania;
-         object.Parameters = []
-         elem.wyniki.forEach((elem2, i) => {
-            object.Parameters.push({
-               TypeName: `System.${}32`
-            })
-         })
-      })
-   }*/
+    let tasks = await Task.find({ czyPrzeczytano: false }).sort({ _id: -1 }); //zwróci od najnowszych
+    let resultAll = [];
+    for(let k = 0; k < tasks.length; k++) {
+        let result = [];
+        for (let i = 0; i < tasks[k].iloscWynikow; i++) {
+            let object = {};
+            object.MethodName = tasks[k].nazwaFunkcji;
+            object.code = tasks[k].code.replace((/  |\r\n|\n|\r/gm),"") //usuwa wszystkie tabulacje i znaki nowej linii
+            object.Parameters = [];
+            for (let j = 0; j < tasks[k].iloscArg; j++) {
+                const paramObject = {};
+                paramObject.TypeName =
+                    tasks[k].args[j * 2] === 'Typ prosty'
+                        ? `System.${tasks[k].args[j * 2 + 1]}`
+                        : `System.${tasks[k].args[j * 2 + 1]}[]`;
+                paramObject.Value =
+                    tasks[k].args[j * 2] === 'Typ prosty'
+                        ? `${tasks[k].wyniki[j]}`
+                        : `[${tasks[k].wyniki[j]}]`;
+                object.Parameters.push(paramObject)
+            }
+            object.ResultTypeName =
+                tasks[k].returnArgs[k] === 'Typ prosty'
+                    ? `System.${tasks[k].returnArgs[1]}`
+                    : `System.${tasks[k].returnArgs[1]}[]`;
 
-    res.json(tasks);
+            object.ExpectedResult = 
+                tasks[k].returnArgs[k] === 'Typ prosty'
+                    ? `${tasks[k].wyniki[(tasks[k].iloscArg + 1) * (i + 1) - 1]}`
+                    : `[${tasks[k].wyniki[(tasks[k].iloscArg + 1) * (i + 1) - 1]}]`;
+            object.CodeChecks = tasks[k].czyRekurencja ? ["RecursionCheck"] : []; 
+            result.push(object);
+        }
+        resultAll.push(result)
+    }
+
+    await Task.updateMany(
+        { czyPrzeczytano: false }, 
+        { $set: { czyPrzeczytano: true } }
+    ) 
+
+    res.json(resultAll);
 });
 
 // @route   GET api/tasks/
 // @desc    Get all tasks from x days
 // @access  Public
 router.get('/days/:x', async (req, res) => {
-    let tasks = await Task.find()
-        .sort({ _id: -1 }) //zwróci od najnowszych
-        .limit(5);
-    let result = [];
-    // for(let i = 0; i < tasks.length; i++)
-    /*for(let i = 0; i < tasks.length; i++){
-      result[i]
-      result[i] = tasks.map((elem, i, array) => {
-         const object = {};
-         object.MethodName = elem.tytulZadania;
-         object.Parameters = []
-         elem.wyniki.forEach((elem2, i) => {
-            object.Parameters.push({
-               TypeName: `System.${}32`
-            })
-         })
-      })
-   }*/
+    const ile = parseInt(req.params.x)
+    const date = new Date()
+    const olderDate = new Date (date.setDate(date.getDate() - ile))
 
-    res.json(tasks);
+    if(!Number.isInteger(ile) || ile < 0){
+        return res.status(400).send("Podałeś błędny parametr, to musi być liczba całkowita większa od 0");
+    } else {
+        let tasks = await Task.find({date: {$gte: olderDate } })
+            .sort({ _id: -1 }) //zwróci od najnowszych
+        
+        let resultAll = [];
+        for(let k = 0; k < tasks.length; k++) {
+            let result = [];
+            for (let i = 0; i < tasks[k].iloscWynikow; i++) {
+                let object = {};
+                object.MethodName = tasks[k].nazwaFunkcji;
+                object.code = tasks[k].code.replace((/  |\r\n|\n|\r/gm),"") //usuwa wszystkie tabulacje i znaki nowej linii
+                object.Parameters = [];
+                for (let j = 0; j < tasks[k].iloscArg; j++) {
+                    const paramObject = {};
+                    paramObject.TypeName =
+                        tasks[k].args[j * 2] === 'Typ prosty'
+                            ? `System.${tasks[k].args[j * 2 + 1]}`
+                            : `System.${tasks[k].args[j * 2 + 1]}[]`;
+                    paramObject.Value =
+                        tasks[k].args[j * 2] === 'Typ prosty'
+                            ? `${tasks[k].wyniki[j]}`
+                            : `[${tasks[k].wyniki[j]}]`;
+                    object.Parameters.push(paramObject)
+                }
+                object.ResultTypeName =
+                    tasks[k].returnArgs[k] === 'Typ prosty'
+                        ? `System.${tasks[k].returnArgs[1]}`
+                        : `System.${tasks[k].returnArgs[1]}[]`;
+
+                object.ExpectedResult = 
+                    tasks[k].returnArgs[k] === 'Typ prosty'
+                        ? `${tasks[k].wyniki[(tasks[k].iloscArg + 1) * (i + 1) - 1]}`
+                        : `[${tasks[k].wyniki[(tasks[k].iloscArg + 1) * (i + 1) - 1]}]`;
+                object.CodeChecks = tasks[k].czyRekurencja ? ["RecursionCheck"] : []; 
+                result.push(object);
+            }
+            resultAll.push(result)
+        }
+            
+            res.json(resultAll);
+    }
 });
 
 // @route   POST api/tasks/

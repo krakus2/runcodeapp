@@ -60,6 +60,16 @@ const taskSchema = new mongoose.Schema({
     czyRekurencja: {
         type: Boolean,
         required: true
+    },
+    date: { 
+        type: Date, 
+        default: Date.now(), 
+        required: true 
+    },
+    czyPrzeczytano: {
+        type: Boolean,
+        default: false,
+        required: true
     }
 });
 

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./App.css";
-import MyProvider from "./context/MyProvider";
+//import MyProvider from "./context/MyProvider";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import indigo from "@material-ui/core/colors/indigo";
@@ -25,17 +25,17 @@ const theme = createMuiTheme({
 class App extends Component {
     render() {
         return (
-            <MyProvider>
-                <Router>
-                    <React.Fragment>
-                        <MuiThemeProvider theme={theme}>
-                            <Header />
-                            <Route exact path="/" component={Landing} />
-                            <Footer />
-                        </MuiThemeProvider>
-                    </React.Fragment>
-                </Router>
-            </MyProvider>
+            //<MyProvider>
+            <Router>
+                <React.Fragment>
+                    <MuiThemeProvider theme={theme}>
+                        <Header />
+                        <Route exact path="/" component={Landing} />
+                        <Footer />
+                    </MuiThemeProvider>
+                </React.Fragment>
+            </Router>
+            //</MyProvider>
         );
     }
 }

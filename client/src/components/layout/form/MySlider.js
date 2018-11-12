@@ -1,6 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Slider } from "antd";
+//import { Slider } from "antd"; //babel-plugin-import importuje tylko to co potrzebne, wiec rozmiar jest duzo mniejszy
+import Slider from "antd/es/slider";
+import "antd/lib/slider/style";
 import { SliderWrapper } from "../../../styles/layout/Landing";
 import Typography from "@material-ui/core/Typography";
 
