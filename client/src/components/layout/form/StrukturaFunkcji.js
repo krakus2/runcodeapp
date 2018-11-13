@@ -5,6 +5,7 @@ import Typography from "@material-ui/core/Typography";
 export default function StrukturaFunkcji({
     nazwaFunkcji,
     returnArgs,
+    iloscArg,
     isEmpty,
     wygenerujStruktureFunkcji,
     args
@@ -16,7 +17,7 @@ export default function StrukturaFunkcji({
             </RowWrapper>
             <RowWrapper leftMargin>
                 <Typography variant="subtitle1" gutterBottom>
-                    {nazwaFunkcji.length === 0 || isEmpty(args) || isEmpty(returnArgs) ? (
+                    {nazwaFunkcji.length === 0 || (isEmpty(args) && iloscArg !== 0) || isEmpty(returnArgs) ? (
                         "int NazwaFunkcji(int A) - przykładowa nazwa - wypełnij wszystkie pola, aby wygenerować swoją"
                     ) : (
                         <Span>{wygenerujStruktureFunkcji()}</Span>

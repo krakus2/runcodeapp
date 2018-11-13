@@ -302,15 +302,20 @@ class Landing extends Component {
     };
 
     wygenerujStruktureFunkcji = () => {
-        const { nazwaFunkcji, args, returnArgs } = this.state;
+        const { nazwaFunkcji, args, returnArgs, iloscArg } = this.state;
         const args2 = [];
-        for (let i = 0; i < args.length; i = i + 2) {
-            if (args[i] === 'Tablica []') {
-                args2.push(`${args[i + 1]}[] Arg${i / 2 + 1}`);
-            } else {
-                args2.push(`${args[i + 1]} arg${i / 2 + 1}`);
+        if(iloscArg === 0){
+            args2.push("")
+        } else {
+            for (let i = 0; i < args.length; i = i + 2) {
+                if (args[i] === 'Tablica []') {
+                    args2.push(`${args[i + 1]}[] Arg${i / 2 + 1}`);
+                } else {
+                    args2.push(`${args[i + 1]} arg${i / 2 + 1}`);
+                }
             }
         }
+
         let returnArgs2 =
             returnArgs[0] === 'Tablica []'
                 ? `${returnArgs[1]}[] ${nazwaFunkcji}`
@@ -343,7 +348,7 @@ class Landing extends Component {
             indeksyTablic,
             code
         } = this.state;
-        const argsCheck = this.isEmpty(args) || this.isEmpty(returnArgs) || this.isEmpty(wyniki);
+        const argsCheck = (this.isEmpty(args) && iloscArg !== 0) || this.isEmpty(returnArgs) || this.isEmpty(wyniki);
         const isInvalid =
             opisZadania === '' ||
             tytulZadania === '' ||
@@ -380,6 +385,7 @@ class Landing extends Component {
                         <StrukturaFunkcji
                             nazwaFunkcji={nazwaFunkcji}
                             returnArgs={returnArgs}
+                            iloscArg={iloscArg}
                             isEmpty={this.isEmpty}
                             wygenerujStruktureFunkcji={this.wygenerujStruktureFunkcji}
                             args={args}
