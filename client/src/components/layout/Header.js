@@ -8,8 +8,7 @@ import TextField from '@material-ui/core/TextField';
 //import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-import { HeaderWrapper, FormWrapper, MyAppBar } from '../../styles/layout/Header';
+import { HeaderWrapper, FormWrapper, MyAppBar, Title } from '../../styles/layout/Header';
 import InlineMessage from '../messages/InlineMessage';
 
 const styles = theme => ({
@@ -78,9 +77,9 @@ class Header extends Component {
             <MyAppBar /*position="static" color="secondary"*/ isMobile={context.isMobile}>
                 <HeaderWrapper>
                     <Toolbar>
-                        <Typography variant="h6" color="inherit">
-                            RunCode App
-                        </Typography>
+                        <Title>
+                            RUNCODE
+                        </Title>
                     </Toolbar>
                     <FormWrapper error={emailErr || passwordErr || loginErr}>
                         <form onSubmit={this.onSubmit}>

@@ -18,4 +18,14 @@ export const MyAppBar = styled.div`
     background: #fff;
     border: 1px solid #e0e4e7;
     border-radius: 4px;
+    padding: 0 50px;
 `;
+
+export const Title = styled.span`
+    display: inline-block;
+    font-size: 1.25rem;
+    font-family: 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+`;
+
