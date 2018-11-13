@@ -1,31 +1,30 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import axios from "axios";
-import { compose } from "recompose";
-import withContext from "../../context/Context_HOC";
-import PolaTekstowe from "./form/PolaTekstowe";
-import Argumenty from "./form/Argumenty";
-import TypZwracany from "./form/TypZwracany";
-import SubmitButton from "./form/SubmitButton";
-import StrukturaFunkcji from "./form/StrukturaFunkcji";
-import Editor from "./form/Editor";
-import Testy from "./form/Testy";
-import Rekurencja from "./form/Rekurencja";
-import BladLubKomunikat from "./form/BladLubKomunikat";
-import { styles, FormWrapper, Wrapper, MyPaper } from "../../styles/layout/Landing";
-import { withStyles } from "@material-ui/core/styles";
-import Paper from "@material-ui/core/Paper";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import axios from 'axios';
+import { compose } from 'recompose';
+import withContext from '../../context/Context_HOC';
+import PolaTekstowe from './form/PolaTekstowe';
+import Argumenty from './form/Argumenty';
+import TypZwracany from './form/TypZwracany';
+import SubmitButton from './form/SubmitButton';
+import StrukturaFunkcji from './form/StrukturaFunkcji';
+import Editor from './form/Editor';
+import Testy from './form/Testy';
+import Rekurencja from './form/Rekurencja';
+import BladLubKomunikat from './form/BladLubKomunikat';
+import { styles, FormWrapper, Wrapper, MyPaper } from '../../styles/layout/Landing';
+import { withStyles } from '@material-ui/core/styles';
 
 class Landing extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            imieINazwisko: "",
-            nazwaFunkcji: "",
+            imieINazwisko: '',
+            nazwaFunkcji: '',
             zlaNazwaFunkcji: false,
-            tytulZadania: "",
-            opisZadania: "",
-            strukturaFunkcji: "",
+            tytulZadania: '',
+            opisZadania: '',
+            strukturaFunkcji: '',
             iloscArg: 1, //ile parametrów ma funkcja
             iloscWynikow: 1, //ile zestawów wartości do przeprowadzenia testu wysłał uzytkownik
             args: [...Array(2)], //typy parametrów funkcji np. string
@@ -36,7 +35,7 @@ class Landing extends Component {
             error: {},
             postSuccess: false,
             indeksyTablic: [],
-            code: "",
+            code: ''
         };
 
         this.onSubmit = this.onSubmit.bind(this);
@@ -47,30 +46,28 @@ class Landing extends Component {
         //console.log("onChange", newValue, e);
     };
 
-    componentDidMount() {
-
-    }
+    componentDidMount() {}
 
     isEmpty = array => {
         let result = false;
         array.forEach(elem => {
-            if (elem === undefined || elem === "" || elem === null) result = true;
+            if (elem === undefined || elem === '' || elem === null) result = true;
         });
         return result;
     };
 
     deleteSpaces = text => {
         let newText = Array.from(text);
-        if (typeof text === "string") {
+        if (typeof text === 'string') {
             Array.from(text).forEach((elem, i) => {
-                if (elem === " " && text[i + 1] === " ") {
-                    newText[i] = "";
+                if (elem === ' ' && text[i + 1] === ' ') {
+                    newText[i] = '';
                 } else {
                     newText[i] = elem;
                 }
             });
         }
-        return newText.join("");
+        return newText.join('');
     };
 
     async onSubmit(e) {
@@ -106,16 +103,16 @@ class Landing extends Component {
             code
         };
 
-        console.log("submit", values);
+        console.log('submit', values);
         if (online) {
             try {
-                const res = await axios.post("/api/tasks", values);
+                const res = await axios.post('/api/tasks', values);
                 this.setState(
                     {
-                        nazwaFunkcji: "",
-                        imieINazwisko: "",
-                        tytulZadania: "",
-                        opisZadania: "",
+                        nazwaFunkcji: '',
+                        imieINazwisko: '',
+                        tytulZadania: '',
+                        opisZadania: '',
                         iloscArg: 1,
                         iloscWynikow: 1,
                         args: [...Array(2)],
@@ -125,14 +122,14 @@ class Landing extends Component {
                         loading: false,
                         error: {},
                         postSuccess: true,
-                        code: ""
+                        code: ''
                     },
                     () =>
                         setTimeout(() => {
                             this.setState({ postSuccess: false });
                         }, 5000)
                 );
-                console.log("Submit succesed", res);
+                console.log('Submit succesed', res);
             } catch (err) {
                 let error = {};
                 if (err.response) {
@@ -141,13 +138,13 @@ class Landing extends Component {
                     console.log(err.response.data);
                     console.log(err.response.status);
                     console.log(err.response.headers);
-                    if (typeof err.response.data === "string") {
+                    if (typeof err.response.data === 'string') {
                         error.messages = [err.response.data];
                     } else {
                         error.messages = [...Object.values(err.response.data)];
                         error.types = [...Object.keys(err.response.data)];
                     }
-                    error.type = "response";
+                    error.type = 'response';
                     //console.log("types i messages", types, messages);
                 } else if (err.request) {
                     // The request was made but no response was received
@@ -155,12 +152,12 @@ class Landing extends Component {
                     // http.ClientRequest in node.js
                     console.log(err.request);
                     error.messages = [...Object.values(err.request)];
-                    error.type = "request";
+                    error.type = 'request';
                 } else {
                     // Something happened in setting up the request that triggered an Error
-                    console.log("Error", err.message);
+                    console.log('Error', err.message);
                     error.messages = [err.message];
-                    error.type = "other";
+                    error.type = 'other';
                 }
                 this.setState({ loading: false, error });
             }
@@ -173,7 +170,7 @@ class Landing extends Component {
     }
 
     handleTextInputChange = name => event => {
-        if (name === "nazwaFunkcji") {
+        if (name === 'nazwaFunkcji') {
             const regex = /^[a-z]/gi;
             const regex2 = /[^a-z0-9]+/gi;
             if (event.target.value.length === 0) {
@@ -255,7 +252,7 @@ class Landing extends Component {
         const indeksyTablic = [];
 
         args.forEach((elem, i) => {
-            if (elem === "Tablica []") indeksyTablic.push(i / 2);
+            if (elem === 'Tablica []') indeksyTablic.push(i / 2);
         });
         for (let i = 0; i < iloscWynikow - 1; i++) {
             indeksyTablic.forEach((elem, j) => {
@@ -263,7 +260,7 @@ class Landing extends Component {
             });
         }
 
-        if (returnArgs[0] === "Tablica []") {
+        if (returnArgs[0] === 'Tablica []') {
             for (let i = 0; i < iloscWynikow; i++) {
                 indeksyTablic.push((i + 1) * (iloscArg + 1) - 1);
             }
@@ -281,7 +278,7 @@ class Landing extends Component {
     zmienIloscWynikow = znak => () => {
         const { iloscWynikow, iloscArg } = this.state;
         const wyniki = [...this.state.wyniki];
-        if (znak === "+") {
+        if (znak === '+') {
             this.setState(
                 {
                     iloscWynikow: iloscWynikow + 1,
@@ -292,7 +289,7 @@ class Landing extends Component {
                     this.setState({ indeksyTablic });
                 }
             );
-        } else if (znak === "-" && iloscWynikow !== 1) {
+        } else if (znak === '-' && iloscWynikow !== 1) {
             const ucieteWyniki = [];
             for (let i = 0; i < (iloscArg + 1) * (iloscWynikow - 1); i++) {
                 ucieteWyniki.push(wyniki[i]);
@@ -308,18 +305,18 @@ class Landing extends Component {
         const { nazwaFunkcji, args, returnArgs } = this.state;
         const args2 = [];
         for (let i = 0; i < args.length; i = i + 2) {
-            if (args[i] === "Tablica []") {
+            if (args[i] === 'Tablica []') {
                 args2.push(`${args[i + 1]}[] Arg${i / 2 + 1}`);
             } else {
                 args2.push(`${args[i + 1]} arg${i / 2 + 1}`);
             }
         }
         let returnArgs2 =
-            returnArgs[0] === "Tablica []"
+            returnArgs[0] === 'Tablica []'
                 ? `${returnArgs[1]}[] ${nazwaFunkcji}`
                 : `${returnArgs[1]} ${nazwaFunkcji}`;
 
-        return `${returnArgs2}(${args2.join(", ")})`;
+        return `${returnArgs2}(${args2.join(', ')})`;
     };
 
     onSubmitClick = () => {
@@ -348,15 +345,17 @@ class Landing extends Component {
         } = this.state;
         const argsCheck = this.isEmpty(args) || this.isEmpty(returnArgs) || this.isEmpty(wyniki);
         const isInvalid =
-            opisZadania === "" ||
-            tytulZadania === "" ||
-            nazwaFunkcji === "" ||
-            code === "" ||
+            opisZadania === '' ||
+            tytulZadania === '' ||
+            nazwaFunkcji === '' ||
+            code === '' ||
             argsCheck ||
             zlaNazwaFunkcji;
         return (
             <Wrapper>
-                <MyPaper isMobile={context.isMobile} /*classes={{ root: classes.paper }} elevation={1}*/>
+                <MyPaper
+                    isMobile={context.isMobile} /*classes={{ root: classes.paper }} elevation={1}*/
+                >
                     <FormWrapper onSubmit={this.onSubmit}>
                         <PolaTekstowe
                             classes={classes}

@@ -10,7 +10,7 @@ export default function Rekurencja({ czyRekurencja, handleSwitchChange }) {
             <RowWrapper>
                 <Typography variant="h6">Zadanie wymaga rozwiązania rekurencyjnego</Typography>
             </RowWrapper>
-            <RowWrapper leftMargin>
+            <RowWrapper leftMargin={true}>
                 <FormControlLabel
                     control={
                         <Switch

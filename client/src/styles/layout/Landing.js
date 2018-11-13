@@ -87,19 +87,18 @@ export const SliderWrapper = styled.div`
 
 export const RowWrapper = styled.div`
     display: flex;
-    flex-direction: ${props => props.column ? "column" : "row"}
+    flex-direction: ${props => props.column ? "column" : "row"};
     flex-wrap: wrap;
     margin: ${defaultTheme.spacing.unit}px;
     position: relative;
     width: 100%;
-    ${props => props.leftMargin && "margin-left"}: ${defaultTheme.spacing.unit * 2}px;
+    margin-left: ${props => props.leftMargin ? `${defaultTheme.spacing.unit}px`  : "0px"};
 `;
 
 export const GridWrapper = styled.div`
     display: grid;
     grid-template-columns: ${props => props.isMobile ? "repeat(auto-fill, 70px)" : props.grid};
     grid-gap: 10px;
-    margin: ${defaultTheme.spacing.unit}px;
 `;
 
 export const Span = styled.span`

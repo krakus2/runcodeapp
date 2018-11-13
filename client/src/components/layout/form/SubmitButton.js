@@ -31,7 +31,7 @@ const Submit = ({ isInvalid, loading, onSubmitClick, classes }) => (
                 <div>
                     <Button
                         variant="contained"
-                        color="primary"
+                        color="secondary"
                         className={classes.button}
                         size="large"
                         type="submit"

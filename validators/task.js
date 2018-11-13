@@ -23,8 +23,8 @@ module.exports = function validateProfileInput(data) {
         errors.tytulZadania = 'Tytuł zadania jest wymagany';
     }
 
-    if (!Validator.isLength(data.tytulZadania, { min: 1, max: 20 })) {
-        errors.tytulZadania = 'Maksymalna długość tytułu to 20 znaków';
+    if (!Validator.isLength(data.tytulZadania, { min: 1, max: 40 })) {
+        errors.tytulZadania = 'Maksymalna długość tytułu to 40 znaków';
     }
 
     if (Validator.isEmpty(data.opisZadania)) {
@@ -39,8 +39,8 @@ module.exports = function validateProfileInput(data) {
         errors.opisZadania = 'Przykładowy kod zadania jest wymagany';
     }
 
-    if (!Validator.isLength(data.code, { min: 1, max: 1000 })) {
-        errors.opisZadania = 'Maksymalna długość kodu to 1000 znaków';
+    if (!Validator.isLength(data.code, { min: 1, max: 10000 })) {
+        errors.opisZadania = 'Maksymalna długość kodu to 10000 znaków';
     }
 
     if (isEmpty(data.iloscArg)) {

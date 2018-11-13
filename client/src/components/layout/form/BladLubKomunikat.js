@@ -1,5 +1,5 @@
 import React from "react";
-import InlineMessage from "../../messages/InlineError";
+import InlineMessage from "../../messages/InlineMessage";
 
 export default function BladLubKomunikat({ error, postSuccess }) {
     return (

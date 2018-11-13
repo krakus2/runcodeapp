@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { compose } from "recompose";
-import withContext from "../../context/Context_HOC";
+import { compose } from 'recompose';
+import withContext from '../../context/Context_HOC';
 import { validateEmail } from '../../utils/utils.js';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import AppBar from '@material-ui/core/AppBar';
+//import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { HeaderWrapper, FormWrapper, MyAppBar } from '../../styles/layout/Header';
-import InlineMessage from '../messages/InlineError';
+import InlineMessage from '../messages/InlineMessage';
 
 const styles = theme => ({
     AppBar: {
@@ -75,73 +75,73 @@ class Header extends Component {
         const { classes, context } = this.props;
         const { email, emailErr, loginErr, password, passwordErr } = this.state;
         return (
-                <MyAppBar /*position="static" color="secondary"*/ isMobile={context.isMobile}>
-                    <HeaderWrapper>
-                        <Toolbar>
-                            <Typography variant="h6" color="inherit">
-                                RunCode App
-                            </Typography>
-                        </Toolbar>
-                        <FormWrapper error={emailErr || passwordErr || loginErr}>
-                            <form onSubmit={this.onSubmit}>
-                                <TextField
-                                    id="email"
-                                    label="Adres email"
-                                    type="text"
-                                    placeholder="example@example.com"
-                                    error={emailErr ? true : false}
-                                    helperText={emailErr ? 'To nie wygląda na email' : ''}
-                                    className={classes.textField}
-                                    InputProps={{ classes: { input: classes.TheInput } }}
-                                    InputLabelProps={{ classes: { root: classes.TheLabel } }}
-                                    FormHelperTextProps={{
-                                        classes: { root: classes.TheHelper }
-                                    }}
-                                    value={email}
-                                    onChange={this.handleChange('email')}
-                                    margin="normal"
-                                    variant="outlined"
-                                    disabled
-                                />
-                                <TextField
-                                    id="haslo"
-                                    label="Hasło"
-                                    type="password"
-                                    error={passwordErr}
-                                    helperText={passwordErr ? 'Wprowadź hasło' : ''}
-                                    className={classes.textField}
-                                    InputProps={{ classes: { input: classes.TheInput } }}
-                                    InputLabelProps={{ classes: { root: classes.TheLabel } }}
-                                    FormHelperTextProps={{
-                                        classes: { root: classes.TheHelper }
-                                    }}
-                                    value={password}
-                                    onChange={this.handleChange('password')}
-                                    margin="normal"
-                                    variant="outlined"
-                                    disabled
-                                />
-                                <Button
-                                    variant="contained"
-                                    color="primary"
-                                    type="submit"
-                                    className={classes.button}
-                                    disabled
-                                >
-                                    Zaloguj
-                                </Button>
-                            </form>
-                            {loginErr && (
-                                <InlineMessage
-                                    isError={true}
-                                    text={'Nie udało się zalogować. Spróbuj ponownie'}
-                                    bigMargin={false}
-                                    small={true}
-                                />
-                            )}
-                        </FormWrapper>
-                    </HeaderWrapper>
-                </MyAppBar>
+            <MyAppBar /*position="static" color="secondary"*/ isMobile={context.isMobile}>
+                <HeaderWrapper>
+                    <Toolbar>
+                        <Typography variant="h6" color="inherit">
+                            RunCode App
+                        </Typography>
+                    </Toolbar>
+                    <FormWrapper error={emailErr || passwordErr || loginErr}>
+                        <form onSubmit={this.onSubmit}>
+                            <TextField
+                                id="email"
+                                label="Adres email"
+                                type="text"
+                                placeholder="example@example.com"
+                                error={emailErr ? true : false}
+                                helperText={emailErr ? 'To nie wygląda na email' : ''}
+                                className={classes.textField}
+                                InputProps={{ classes: { input: classes.TheInput } }}
+                                InputLabelProps={{ classes: { root: classes.TheLabel } }}
+                                FormHelperTextProps={{
+                                    classes: { root: classes.TheHelper }
+                                }}
+                                value={email}
+                                onChange={this.handleChange('email')}
+                                margin="normal"
+                                variant="outlined"
+                                disabled
+                            />
+                            <TextField
+                                id="haslo"
+                                label="Hasło"
+                                type="password"
+                                error={passwordErr}
+                                helperText={passwordErr ? 'Wprowadź hasło' : ''}
+                                className={classes.textField}
+                                InputProps={{ classes: { input: classes.TheInput } }}
+                                InputLabelProps={{ classes: { root: classes.TheLabel } }}
+                                FormHelperTextProps={{
+                                    classes: { root: classes.TheHelper }
+                                }}
+                                value={password}
+                                onChange={this.handleChange('password')}
+                                margin="normal"
+                                variant="outlined"
+                                disabled
+                            />
+                            <Button
+                                variant="contained"
+                                color="secondary"
+                                type="submit"
+                                className={classes.button}
+                                disabled
+                            >
+                                Zaloguj
+                            </Button>
+                        </form>
+                        {loginErr && (
+                            <InlineMessage
+                                isError={true}
+                                text={'Nie udało się zalogować. Spróbuj ponownie'}
+                                bigMargin={false}
+                                small={true}
+                            />
+                        )}
+                    </FormWrapper>
+                </HeaderWrapper>
+            </MyAppBar>
         );
     }
 }
