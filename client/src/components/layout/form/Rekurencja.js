@@ -17,7 +17,7 @@ export default function Rekurencja({ czyRekurencja, handleSwitchChange }) {
                             checked={czyRekurencja}
                             onChange={handleSwitchChange("czyRekurencja")}
                             value="czyRekurencja"
-                            color="secondary"
+                            color="primary"
                         />
                     }
                 />

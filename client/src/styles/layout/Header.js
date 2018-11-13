@@ -18,7 +18,7 @@ export const MyAppBar = styled.div`
     background: #fff;
     border: 1px solid #e0e4e7;
     border-radius: 4px;
-    padding: 0 50px;
+    padding: 0 30px;
 `;
 
 export const Title = styled.span`
