@@ -23,9 +23,9 @@ const PolaTekstowe = ({
                 zwiększające ocenę końcową z przedmiotu Wstęp do programowania."
                 className={classes.textField}
                 InputProps={{ classes: { input: classes.TheInput } }}
-                FormHelperTextProps={{
+                /*FormHelperTextProps={{
                     classes: { root: classes.TheHelper }
-                }}
+                }}*/
                 InputLabelProps={{ classes: { root: classes.TheLabel } }}
                 value={imieINazwisko}
                 onChange={handleTextInputChange("imieINazwisko")}
@@ -38,9 +38,6 @@ const PolaTekstowe = ({
                 helperText="Nadaj zadaniu odpowiedni tytuł"
                 placeholder="Wyszukiwanie liczb"
                 className={classes.textField}
-                FormHelperTextProps={{
-                    classes: { root: classes.TheHelper }
-                }}
                 InputProps={{ classes: { input: classes.TheInput } }}
                 InputLabelProps={{ classes: { root: classes.TheLabel } }}
                 value={tytulZadania}
@@ -58,9 +55,6 @@ const PolaTekstowe = ({
                 helperText="Podaj nazwę funkcji, która ma zostać stworzona,
                 np. ZnajdzLiczbe lub SzukajWTablicy. Uwaga: Nazwa nie może zawierać spacji,
                 znaków specjalnych oraz zaczynać się od cyfry."
-                FormHelperTextProps={{
-                    classes: { root: classes.TheHelper }
-                }}
                 InputProps={{ classes: { input: classes.TheInput } }}
                 InputLabelProps={{ classes: { root: classes.TheLabel } }}
                 value={nazwaFunkcji}
@@ -78,9 +72,6 @@ const PolaTekstowe = ({
                 InputProps={{
                     multiline: true,
                     classes: { input: classes.textArea }
-                }}
-                FormHelperTextProps={{
-                    classes: { root: classes.TheHelper }
                 }}
                 InputLabelProps={{ classes: { root: classes.TheLabel } }}
                 value={opisZadania}

@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { compose } from "recompose";
+import withContext from "../../context/Context_HOC";
 import { validateEmail } from '../../utils/utils.js';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
@@ -7,7 +9,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import { HeaderWrapper, FormWrapper } from '../../styles/layout/Header';
+import { HeaderWrapper, FormWrapper, MyAppBar } from '../../styles/layout/Header';
 import InlineMessage from '../messages/InlineError';
 
 const styles = theme => ({
@@ -70,11 +72,10 @@ class Header extends Component {
     };
 
     render() {
-        const { classes } = this.props;
+        const { classes, context } = this.props;
         const { email, emailErr, loginErr, password, passwordErr } = this.state;
         return (
-            <div /*style={{margin: '5px'}}*/>
-                <AppBar position="static" color="default">
+                <MyAppBar /*position="static" color="secondary"*/ isMobile={context.isMobile}>
                     <HeaderWrapper>
                         <Toolbar>
                             <Typography variant="h6" color="inherit">
@@ -140,8 +141,7 @@ class Header extends Component {
                             )}
                         </FormWrapper>
                     </HeaderWrapper>
-                </AppBar>
-            </div>
+                </MyAppBar>
         );
     }
 }
@@ -150,4 +150,9 @@ Header.propTypes = {
     classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(Header);
+const withCompose = compose(
+    withStyles(styles),
+    withContext
+);
+
+export default withCompose(Header);

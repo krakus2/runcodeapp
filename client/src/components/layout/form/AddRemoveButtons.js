@@ -30,7 +30,7 @@ const AddRemoveButtons = ({ zmienIloscWynikow, iloscWynikow, classes }) => (
             <Button
                 variant="fab"
                 mini
-                color="secondary"
+                color="primary"
                 aria-label="Add"
                 className={classes.button2}
                 onClick={zmienIloscWynikow("+")}
@@ -47,8 +47,8 @@ const AddRemoveButtons = ({ zmienIloscWynikow, iloscWynikow, classes }) => (
             <Button
                 variant="fab"
                 mini
-                color="secondary"
-                aria-label="Add"
+                color="primary"
+                aria-label="Delete"
                 className={classes.button2}
                 onClick={zmienIloscWynikow("-")}
                 disabled={iloscWynikow === 1}

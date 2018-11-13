@@ -10,7 +10,7 @@ const MySlider = ({ handleSliderChange, iloscArg, max }) => {
     return (
         <SliderWrapper>
             <Typography variant="h6">Liczba i typ argumentów funkcji</Typography>
-            <Typography variant="body2" gutterBottom>
+            <Typography variant="caption" gutterBottom>
                 Określ liczbę i typy parametrów wymaganych przez funkcję.
             </Typography>
             <Slider min={0} max={max} dots value={iloscArg} onChange={handleSliderChange} />

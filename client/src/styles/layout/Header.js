@@ -12,3 +12,10 @@ export const FormWrapper = styled.div`
     padding-top: 13px;
     ${props => !props.error && 'padding-bottom: 19px'};
 `;
+
+export const MyAppBar = styled.div`
+    width: 100%;
+    background: #fff;
+    border: 1px solid #e0e4e7;
+    border-radius: 4px;
+`;

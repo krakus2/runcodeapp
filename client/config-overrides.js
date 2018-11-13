@@ -12,6 +12,7 @@ const defaultTheme = createMuiTheme({
 });
 
 module.exports = function override(config, env) {
+    console.log(defaultTheme.palette.primary.main);
     if (!config.plugins) {
         config.plugins = [];
     }
@@ -25,7 +26,7 @@ module.exports = function override(config, env) {
         config
     );
     config = rewireLess.withLoaderOptions({
-        modifyVars: { "@primary-color": `${defaultTheme.palette.primary.main}` },
+        modifyVars: { "@primary-color": "#009688" }, //`${defaultTheme.palette.primary.main}`
         javascriptEnabled: true
     })(config, env);
 

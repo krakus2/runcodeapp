@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
+import { compose } from "recompose";
+import withContext from "../../context/Context_HOC";
 import PolaTekstowe from "./form/PolaTekstowe";
 import Argumenty from "./form/Argumenty";
 import TypZwracany from "./form/TypZwracany";
@@ -10,7 +12,7 @@ import Editor from "./form/Editor";
 import Testy from "./form/Testy";
 import Rekurencja from "./form/Rekurencja";
 import BladLubKomunikat from "./form/BladLubKomunikat";
-import { styles, FormWrapper, Wrapper } from "../../styles/layout/Landing";
+import { styles, FormWrapper, Wrapper, MyPaper } from "../../styles/layout/Landing";
 import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 
@@ -34,7 +36,7 @@ class Landing extends Component {
             error: {},
             postSuccess: false,
             indeksyTablic: [],
-            code: ""
+            code: "",
         };
 
         this.onSubmit = this.onSubmit.bind(this);
@@ -44,6 +46,10 @@ class Landing extends Component {
         this.setState({ code: newValue });
         //console.log("onChange", newValue, e);
     };
+
+    componentDidMount() {
+
+    }
 
     isEmpty = array => {
         let result = false;
@@ -321,7 +327,7 @@ class Landing extends Component {
     };
 
     render() {
-        const { classes } = this.props;
+        const { classes, context } = this.props;
         const {
             imieINazwisko,
             nazwaFunkcji,
@@ -350,7 +356,7 @@ class Landing extends Component {
             zlaNazwaFunkcji;
         return (
             <Wrapper>
-                <Paper classes={{ root: classes.paper }} elevation={1}>
+                <MyPaper isMobile={context.isMobile} /*classes={{ root: classes.paper }} elevation={1}*/>
                     <FormWrapper onSubmit={this.onSubmit}>
                         <PolaTekstowe
                             classes={classes}
@@ -399,7 +405,7 @@ class Landing extends Component {
                         />
                     </FormWrapper>
                     <BladLubKomunikat error={error} postSuccess={postSuccess} />
-                </Paper>
+                </MyPaper>
             </Wrapper>
         );
     }
@@ -409,4 +415,9 @@ Landing.propTypes = {
     classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(Landing);
+const withCompose = compose(
+    withStyles(styles),
+    withContext
+);
+
+export default withCompose(Landing);

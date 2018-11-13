@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import { createMuiTheme } from "@material-ui/core/styles";
 
-const isMobile = /iPhone|Android/i.test(navigator.userAgent);
-// to nie jest rozwiazanie dynamiczne, moze sprobowac zaimplementowac gdzies w komponencie
+/*const isMobile = /iPhone|Android/i.test(navigator.userAgent);*/
+// to nie jest rozwiazanie dynamiczne, moze sprobowac zaimplementowac gdzies w komponencie - done
 
 export const styles = theme => ({
     primaryColor: {
@@ -25,14 +25,14 @@ export const styles = theme => ({
         fontSize: 18,
         fontWeight: 400
     },
-    TheHelper: {
+    /*TheHelper: {
         fontSize: theme.typography.body2.fontSize
     },
     paper: {
         margin: "20px 10px",
-        padding: "0px 25px 10px 10px",
-        width: isMobile ? 'auto' : 550
-    }
+        padding: "32px 63px 32px 48px",
+        width: isMobile ? 'auto' : 600
+    }*/
 });
 
 const defaultTheme = createMuiTheme({
@@ -46,6 +46,19 @@ export const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+    background-color: #F7F7F8;
+`;
+
+export const MyPaper = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: #fff;
+    border: 1px solid #e0e4e7;
+    border-radius: 4px;
+    margin: ${props => props.isMobile ? "20px auto" : "20px 10px"};
+    padding: ${props => props.isMobile ? "10px 20px 10px 5px" : "32px 63px 32px 48px"};
+    width: ${props => props.isMobile ? "100vw" : "600px"};
 `;
 
 export const FormWrapper = styled.form`
@@ -84,7 +97,7 @@ export const RowWrapper = styled.div`
 
 export const GridWrapper = styled.div`
     display: grid;
-    grid-template-columns: ${props => props.grid};
+    grid-template-columns: ${props => props.isMobile ? "repeat(auto-fill, 70px)" : props.grid};
     grid-gap: 10px;
     margin: ${defaultTheme.spacing.unit}px;
 `;

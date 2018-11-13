@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { compose } from "recompose";
+import withContext from "../../../context/Context_HOC";
 import AddRemoveButtons from "./AddRemoveButtons";
 import { GridWrapper, RowWrapper } from "../../../styles/layout/Landing";
 import { withStyles } from "@material-ui/core/styles";
@@ -70,7 +72,8 @@ class Testy extends Component {
             iloscArg,
             wyniki,
             indeksyTablic,
-            classes
+            classes,
+            context
         } = this.props;
         const fieldsArray = [];
 
@@ -138,12 +141,12 @@ class Testy extends Component {
             <>
                 <RowWrapper column>
                     <Typography variant="h6">Zestawy testów i wartość zwracana</Typography>
-                    <Typography variant="body2" gutterBottom>
+                    <Typography variant="caption" gutterBottom>
                         Zdefiniuj testy. Podaj wartości parametrów wywołania funkcji oraz wartość
                         zwracaną przez funkcję dla tych parametrów.
                     </Typography>
                 </RowWrapper>
-                <GridWrapper grid={this.generateGrid(iloscArg + 1)}>{fieldsArray}</GridWrapper>
+                <GridWrapper isMobile={context.isMobile} grid={this.generateGrid(iloscArg + 1)}>{fieldsArray}</GridWrapper>
                 <AddRemoveButtons
                     zmienIloscWynikow={zmienIloscWynikow}
                     iloscWynikow={iloscWynikow}
@@ -161,4 +164,9 @@ Testy.propTypes = {
     wyniki: PropTypes.array.isRequired
 };
 
-export default withStyles(styles)(Testy);
+const withCompose = compose(
+    withStyles(styles),
+    withContext
+);
+
+export default withCompose(Testy);
