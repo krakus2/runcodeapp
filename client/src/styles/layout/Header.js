@@ -16,8 +16,7 @@ export const FormWrapper = styled.div`
 export const MyAppBar = styled.div`
     width: 100%;
     background: #fff;
-    border: 1px solid #e0e4e7;
-    border-radius: 4px;
+    border-bottom: 1px solid #e0e4e7;
     padding: 0 30px;
 `;
 
