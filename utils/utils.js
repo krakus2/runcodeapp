@@ -12,4 +12,12 @@ const splitArray = (inputArray, perChunk) => {
    }, []);
 };
 
+const zmienNazwyTypow = typ => {
+    let returnType = typ;
+    if(returnType === 'long') returnType = 'int64';
+    if(returnType === 'int') returnType = 'int32';
+    if(returnType   === 'long') returnType = 'int64';
+
+}
+
 exports.splitArray = splitArray;
