@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const validateProfileInput = require('../../validators/task');
-const splitArray = require('../../utils/utils');
+const zmienNazwyTypow = require('../../utils/utils');
 
 const Task = require('../../models/Task');
 
@@ -41,8 +41,8 @@ router.get('/', async (req, res) => {
                 const paramObject = {};
                 paramObject.TypeName =
                     tasks[k].args[j * 2] === 'Typ prosty'
-                        ? `System.${tasks[k].args[j * 2 + 1]}`
-                        : `System.${tasks[k].args[j * 2 + 1]}[]`;
+                        ? `${zmienNazwyTypow(tasks[k].args[j * 2 + 1])}`
+                        : `${zmienNazwyTypow(tasks[k].args[j * 2 + 1])}[]`;
                 paramObject.Value =
                     tasks[k].args[j * 2] === 'Typ prosty'
                         ? `${tasks[k].wyniki[j]}`
@@ -51,8 +51,8 @@ router.get('/', async (req, res) => {
             }
             object.ResultTypeName =
                 tasks[k].returnArgs[k] === 'Typ prosty'
-                    ? `System.${tasks[k].returnArgs[1]}`
-                    : `System.${tasks[k].returnArgs[1]}[]`;
+                    ? `${zmienNazwyTypow(tasks[k].args[j * 2 + 1])}`
+                    : `${zmienNazwyTypow(tasks[k].args[j * 2 + 1])}[]`;
 
             object.ExpectedResult = 
                 tasks[k].returnArgs[k] === 'Typ prosty'
@@ -91,8 +91,8 @@ router.get('/ileostatnich/:x', async (req, res) => {
                     const paramObject = {};
                     paramObject.TypeName =
                         tasks[k].args[j * 2] === 'Typ prosty'
-                            ? `System.${tasks[k].args[j * 2 + 1]}`
-                            : `System.${tasks[k].args[j * 2 + 1]}[]`;
+                            ? `${zmienNazwyTypow(tasks[k].args[j * 2 + 1])}`
+                            : `${zmienNazwyTypow(tasks[k].args[j * 2 + 1])}[]`;
                     paramObject.Value =
                         tasks[k].args[j * 2] === 'Typ prosty'
                             ? `${tasks[k].wyniki[j]}`
@@ -101,8 +101,8 @@ router.get('/ileostatnich/:x', async (req, res) => {
                 }
                 object.ResultTypeName =
                     tasks[k].returnArgs[k] === 'Typ prosty'
-                        ? `System.${tasks[k].returnArgs[1]}`
-                        : `System.${tasks[k].returnArgs[1]}[]`;
+                        ? `${zmienNazwyTypow(tasks[k].args[j * 2 + 1])}`
+                        : `${zmienNazwyTypow(tasks[k].args[j * 2 + 1])}[]`;
 
                 object.ExpectedResult = 
                     tasks[k].returnArgs[k] === 'Typ prosty'
@@ -137,8 +137,8 @@ router.get('/unread', async (req, res) => {
                 const paramObject = {};
                 paramObject.TypeName =
                     tasks[k].args[j * 2] === 'Typ prosty'
-                        ? `System.${tasks[k].args[j * 2 + 1]}`
-                        : `System.${tasks[k].args[j * 2 + 1]}[]`;
+                        ? `${zmienNazwyTypow(tasks[k].args[j * 2 + 1])}`
+                        : `${zmienNazwyTypow(tasks[k].args[j * 2 + 1])}[]`;
                 paramObject.Value =
                     tasks[k].args[j * 2] === 'Typ prosty'
                         ? `${tasks[k].wyniki[j]}`
@@ -147,8 +147,8 @@ router.get('/unread', async (req, res) => {
             }
             object.ResultTypeName =
                 tasks[k].returnArgs[k] === 'Typ prosty'
-                    ? `System.${tasks[k].returnArgs[1]}`
-                    : `System.${tasks[k].returnArgs[1]}[]`;
+                    ? `${zmienNazwyTypow(tasks[k].args[j * 2 + 1])}`
+                    : `${zmienNazwyTypow(tasks[k].args[j * 2 + 1])}[]`;
 
             object.ExpectedResult = 
                 tasks[k].returnArgs[k] === 'Typ prosty'
@@ -194,8 +194,8 @@ router.get('/days/:x', async (req, res) => {
                     const paramObject = {};
                     paramObject.TypeName =
                         tasks[k].args[j * 2] === 'Typ prosty'
-                            ? `System.${tasks[k].args[j * 2 + 1]}`
-                            : `System.${tasks[k].args[j * 2 + 1]}[]`;
+                            ? `${zmienNazwyTypow(tasks[k].args[j * 2 + 1])}`
+                            : `${zmienNazwyTypow(tasks[k].args[j * 2 + 1])}[]`;
                     paramObject.Value =
                         tasks[k].args[j * 2] === 'Typ prosty'
                             ? `${tasks[k].wyniki[j]}`
@@ -204,8 +204,8 @@ router.get('/days/:x', async (req, res) => {
                 }
                 object.ResultTypeName =
                     tasks[k].returnArgs[k] === 'Typ prosty'
-                        ? `System.${tasks[k].returnArgs[1]}`
-                        : `System.${tasks[k].returnArgs[1]}[]`;
+                        ? `${zmienNazwyTypow(tasks[k].args[j * 2 + 1])}`
+                        : `${zmienNazwyTypow(tasks[k].args[j * 2 + 1])}[]`;
 
                 object.ExpectedResult = 
                     tasks[k].returnArgs[k] === 'Typ prosty'
