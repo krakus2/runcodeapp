@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const validateProfileInput = require('../../validators/task');
-const zmienNazwyTypow = require('../../utils/utils');
+const utils = require('../../utils/utils');
 
 const Task = require('../../models/Task');
 
@@ -41,8 +41,8 @@ router.get('/', async (req, res) => {
                 const paramObject = {};
                 paramObject.TypeName =
                     tasks[k].args[j * 2] === 'Typ prosty'
-                        ? `${zmienNazwyTypow(tasks[k].args[j * 2 + 1])}`
-                        : `${zmienNazwyTypow(tasks[k].args[j * 2 + 1])}[]`;
+                        ? `${utils.zmienNazwyTypow(tasks[k].args[j * 2 + 1])}`
+                        : `${utils.zmienNazwyTypow(tasks[k].args[j * 2 + 1])}[]`;
                 paramObject.Value =
                     tasks[k].args[j * 2] === 'Typ prosty'
                         ? `${tasks[k].wyniki[j]}`
@@ -51,14 +51,14 @@ router.get('/', async (req, res) => {
             }
             object.ResultTypeName =
                 tasks[k].returnArgs[k] === 'Typ prosty'
-                    ? `${zmienNazwyTypow(tasks[k].args[j * 2 + 1])}`
-                    : `${zmienNazwyTypow(tasks[k].args[j * 2 + 1])}[]`;
+                    ? `${utils.zmienNazwyTypow(tasks[k].returnArgs[1])}`
+                    : `${utils.zmienNazwyTypow(tasks[k].returnArgs[1])}[]`;
 
-            object.ExpectedResult = 
+            object.ExpectedResult =
                 tasks[k].returnArgs[k] === 'Typ prosty'
                     ? `${tasks[k].wyniki[(tasks[k].iloscArg + 1) * (i + 1) - 1]}`
                     : `[${tasks[k].wyniki[(tasks[k].iloscArg + 1) * (i + 1) - 1]}]`;
-            object.CodeChecks = tasks[k].czyRekurencja ? ["RecursionCheck"] : []; 
+            object.CodeChecks = tasks[k].czyRekurencja ? ["RecursionCheck"] : [];
             result.push(object);
         }
         resultAll.push(result)
@@ -91,8 +91,8 @@ router.get('/ileostatnich/:x', async (req, res) => {
                     const paramObject = {};
                     paramObject.TypeName =
                         tasks[k].args[j * 2] === 'Typ prosty'
-                            ? `${zmienNazwyTypow(tasks[k].args[j * 2 + 1])}`
-                            : `${zmienNazwyTypow(tasks[k].args[j * 2 + 1])}[]`;
+                            ? `${utils.zmienNazwyTypow(tasks[k].args[j * 2 + 1])}`
+                            : `${utils.zmienNazwyTypow(tasks[k].args[j * 2 + 1])}[]`;
                     paramObject.Value =
                         tasks[k].args[j * 2] === 'Typ prosty'
                             ? `${tasks[k].wyniki[j]}`
@@ -101,14 +101,14 @@ router.get('/ileostatnich/:x', async (req, res) => {
                 }
                 object.ResultTypeName =
                     tasks[k].returnArgs[k] === 'Typ prosty'
-                        ? `${zmienNazwyTypow(tasks[k].args[j * 2 + 1])}`
-                        : `${zmienNazwyTypow(tasks[k].args[j * 2 + 1])}[]`;
+                        ? `${utils.zmienNazwyTypow(tasks[k].returnArgs[1])}`
+                        : `${utils.zmienNazwyTypow(tasks[k].returnArgs[1])}[]`;
 
-                object.ExpectedResult = 
+                object.ExpectedResult =
                     tasks[k].returnArgs[k] === 'Typ prosty'
                         ? `${tasks[k].wyniki[(tasks[k].iloscArg + 1) * (i + 1) - 1]}`
                         : `[${tasks[k].wyniki[(tasks[k].iloscArg + 1) * (i + 1) - 1]}]`;
-                object.CodeChecks = tasks[k].czyRekurencja ? ["RecursionCheck"] : []; 
+                object.CodeChecks = tasks[k].czyRekurencja ? ["RecursionCheck"] : [];
                 result.push(object);
             }
             resultAll.push(result)
@@ -117,7 +117,7 @@ router.get('/ileostatnich/:x', async (req, res) => {
         return res.json(resultAll);
     }
 
-    
+
 });
 
 // @route   GET api/tasks/
@@ -137,8 +137,8 @@ router.get('/unread', async (req, res) => {
                 const paramObject = {};
                 paramObject.TypeName =
                     tasks[k].args[j * 2] === 'Typ prosty'
-                        ? `${zmienNazwyTypow(tasks[k].args[j * 2 + 1])}`
-                        : `${zmienNazwyTypow(tasks[k].args[j * 2 + 1])}[]`;
+                        ? `${utils.zmienNazwyTypow(tasks[k].args[j * 2 + 1])}`
+                        : `${utils.zmienNazwyTypow(tasks[k].args[j * 2 + 1])}[]`;
                 paramObject.Value =
                     tasks[k].args[j * 2] === 'Typ prosty'
                         ? `${tasks[k].wyniki[j]}`
@@ -147,23 +147,23 @@ router.get('/unread', async (req, res) => {
             }
             object.ResultTypeName =
                 tasks[k].returnArgs[k] === 'Typ prosty'
-                    ? `${zmienNazwyTypow(tasks[k].args[j * 2 + 1])}`
-                    : `${zmienNazwyTypow(tasks[k].args[j * 2 + 1])}[]`;
+                    ? `${utils.zmienNazwyTypow(tasks[k].returnArgs[1])}`
+                    : `${utils.zmienNazwyTypow(tasks[k].returnArgs[1])}[]`;
 
-            object.ExpectedResult = 
+            object.ExpectedResult =
                 tasks[k].returnArgs[k] === 'Typ prosty'
                     ? `${tasks[k].wyniki[(tasks[k].iloscArg + 1) * (i + 1) - 1]}`
                     : `[${tasks[k].wyniki[(tasks[k].iloscArg + 1) * (i + 1) - 1]}]`;
-            object.CodeChecks = tasks[k].czyRekurencja ? ["RecursionCheck"] : []; 
+            object.CodeChecks = tasks[k].czyRekurencja ? ["RecursionCheck"] : [];
             result.push(object);
         }
         resultAll.push(result)
     }
 
     await Task.updateMany(
-        { czyPrzeczytano: false }, 
+        { czyPrzeczytano: false },
         { $set: { czyPrzeczytano: true } }
-    ) 
+    )
 
     res.json(resultAll);
 });
@@ -181,7 +181,7 @@ router.get('/days/:x', async (req, res) => {
     } else {
         let tasks = await Task.find({date: {$gte: olderDate } })
             .sort({ _id: -1 }) //zwróci od najnowszych
-        
+
         let resultAll = [];
         for(let k = 0; k < tasks.length; k++) {
             let result = [];
@@ -194,8 +194,8 @@ router.get('/days/:x', async (req, res) => {
                     const paramObject = {};
                     paramObject.TypeName =
                         tasks[k].args[j * 2] === 'Typ prosty'
-                            ? `${zmienNazwyTypow(tasks[k].args[j * 2 + 1])}`
-                            : `${zmienNazwyTypow(tasks[k].args[j * 2 + 1])}[]`;
+                            ? `${utils.zmienNazwyTypow(tasks[k].args[j * 2 + 1])}`
+                            : `${utils.zmienNazwyTypow(tasks[k].args[j * 2 + 1])}[]`;
                     paramObject.Value =
                         tasks[k].args[j * 2] === 'Typ prosty'
                             ? `${tasks[k].wyniki[j]}`
@@ -204,19 +204,19 @@ router.get('/days/:x', async (req, res) => {
                 }
                 object.ResultTypeName =
                     tasks[k].returnArgs[k] === 'Typ prosty'
-                        ? `${zmienNazwyTypow(tasks[k].args[j * 2 + 1])}`
-                        : `${zmienNazwyTypow(tasks[k].args[j * 2 + 1])}[]`;
+                        ? `${utils.zmienNazwyTypow(tasks[k].returnArgs[1])}`
+                        : `${utils.zmienNazwyTypow(tasks[k].returnArgs[1])}[]`;
 
-                object.ExpectedResult = 
+                object.ExpectedResult =
                     tasks[k].returnArgs[k] === 'Typ prosty'
                         ? `${tasks[k].wyniki[(tasks[k].iloscArg + 1) * (i + 1) - 1]}`
                         : `[${tasks[k].wyniki[(tasks[k].iloscArg + 1) * (i + 1) - 1]}]`;
-                object.CodeChecks = tasks[k].czyRekurencja ? ["RecursionCheck"] : []; 
+                object.CodeChecks = tasks[k].czyRekurencja ? ["RecursionCheck"] : [];
                 result.push(object);
             }
             resultAll.push(result)
         }
-            
+
             res.json(resultAll);
     }
 });

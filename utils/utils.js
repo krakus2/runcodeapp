@@ -19,7 +19,6 @@ const zmienNazwyTypow = typ => {
     if(returnType   === 'short') returnType = 'int16'
     if(returnType   === 'byte') returnType = 'uint8';
     return "System." + returnType.charAt(0).toUpperCase() + returnType.slice(1);
-
 }
 
-exports.splitArray = splitArray;
+exports.zmienNazwyTypow = zmienNazwyTypow;
