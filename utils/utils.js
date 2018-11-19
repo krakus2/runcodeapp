@@ -17,7 +17,8 @@ const zmienNazwyTypow = typ => {
     if(returnType === 'long') returnType = 'int64';
     if(returnType === 'int') returnType = 'int32';
     if(returnType   === 'short') returnType = 'int16'
-    if(returnType   === 'byte') returnType = 'uint8';
+    if(returnType   === 'byte') returnType = 'uInt8';
+    if(returnType === 'bool') returnType = 'boolean';
     return "System." + returnType.charAt(0).toUpperCase() + returnType.slice(1);
 }
 

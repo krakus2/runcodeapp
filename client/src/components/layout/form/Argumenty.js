@@ -34,7 +34,7 @@ export default function Argumenty({ iloscArg, handleArgTypeChange, args, handleS
                                 "short",
                                 "string",
                                 "char",
-                                "boolean",
+                                "bool",
                                 "byte"
                             ]}
                             title={`Typ B argumentu ${i + 1}`}
