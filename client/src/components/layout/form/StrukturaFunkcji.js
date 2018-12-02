@@ -10,8 +10,6 @@ export default function StrukturaFunkcji({
    wygenerujStruktureFunkcji,
    args
 }) {
-   console.log(nazwaFunkcji.length === 0, isEmpty(args) && iloscArg !== 0, isEmpty(returnArgs));
-   console.log('szczegolowo 2 argument', isEmpty(args), iloscArg !== 0);
    return (
       <>
          <RowWrapper leftMargin>
