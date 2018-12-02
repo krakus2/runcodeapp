@@ -12,14 +12,49 @@ const splitArray = (inputArray, perChunk) => {
    }, []);
 };
 
-const zmienNazwyTypow = typ => {
-    let returnType = typ;
-    if(returnType === 'long') returnType = 'int64';
-    if(returnType === 'int') returnType = 'int32';
-    if(returnType   === 'short') returnType = 'int16'
-    if(returnType   === 'byte') returnType = 'uInt8';
-    if(returnType === 'bool') returnType = 'boolean';
-    return "System." + returnType.charAt(0).toUpperCase() + returnType.slice(1);
+function isNumeric(n) {
+   return !isNaN(parseFloat(n)) && isFinite(n);
 }
 
-exports.zmienNazwyTypow = zmienNazwyTypow;
+function escapeRegExp(str) {
+   return str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, '\\$1');
+}
+
+function replaceAll(str, find, replace) {
+   return str.replace(new RegExp(escapeRegExp(find), 'g'), replace);
+}
+
+const zmienNazwyTypow = typ => {
+   let returnType = typ;
+   if (returnType === 'long') returnType = 'int64';
+   if (returnType === 'int') returnType = 'int32';
+   if (returnType === 'short') returnType = 'int16';
+   if (returnType === 'byte') returnType = 'uInt8';
+   if (returnType === 'bool') returnType = 'boolean';
+   return 'System.' + returnType.charAt(0).toUpperCase() + returnType.slice(1);
+};
+
+const returnValue = value => {
+   if (isNumeric(value)) {
+      return Number(value);
+   } else {
+      return replaceAll(value, '"', '').trim();
+   }
+};
+
+// prettier-ignore
+const returnArrayValue = value => {
+   return value.split(',').map(elem => {
+      if (isNumeric(elem)) {
+         return Number(elem);
+      } else {
+         return replaceAll(elem, '\"', '').trim();
+      }
+   });
+};
+
+module.exports = {
+   zmienNazwyTypow,
+   returnValue,
+   returnArrayValue
+};

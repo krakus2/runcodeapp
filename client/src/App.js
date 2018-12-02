@@ -6,7 +6,7 @@ import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import blue from "@material-ui/core/colors/blue";
 import teal from "@material-ui/core/colors/teal";
 import Header from "./components/layout/Header";
-import Footer from "./components/layout/Footer";
+//import Footer from "./components/layout/Footer";
 import Landing from "./components/layout/Landing";
 
 const theme = createMuiTheme({
