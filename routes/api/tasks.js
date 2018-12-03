@@ -72,7 +72,7 @@ router.get("/", async (req, res) => {
     res.json(resultAll);
 });
 
-// @route   GET api/tasks/
+// @route   GET api/tasks/ileostatnich/:x
 // @desc    Get x last tasks
 // @access  Public
 router.get("/ileostatnich/:x", async (req, res) => {
@@ -102,8 +102,8 @@ router.get("/ileostatnich/:x", async (req, res) => {
                             : `${utils.zmienNazwyTypow(tasks[k].args[j * 2 + 1])}[]`;
                     paramObject.Value =
                         tasks[k].args[j * 2] === "Typ prosty"
-                            ? `${tasks[k].wyniki[j]}`
-                            : `[${tasks[k].wyniki[j]}]`;
+                            ? utils.returnValue(tasks[k].wyniki[i * 2])
+                            : utils.returnArrayValue(tasks[k].wyniki[i * 2]);
                     object.Parameters.push(paramObject);
                 }
                 object.ResultTypeName =
@@ -113,8 +113,10 @@ router.get("/ileostatnich/:x", async (req, res) => {
 
                 object.ExpectedResult =
                     tasks[k].returnArgs[k] === "Typ prosty"
-                        ? `${tasks[k].wyniki[(tasks[k].iloscArg + 1) * (i + 1) - 1]}`
-                        : `[${tasks[k].wyniki[(tasks[k].iloscArg + 1) * (i + 1) - 1]}]`;
+                        ? utils.returnValue(tasks[k].wyniki[(tasks[k].iloscArg + 1) * (i + 1) - 1])
+                        : utils.returnArrayValue(
+                              tasks[k].wyniki[(tasks[k].iloscArg + 1) * (i + 1) - 1]
+                          );
                 if (tasks[k].czyRekurencja) {
                     object.CodeChecks = ["RecursionCheck"];
                 }
@@ -127,7 +129,7 @@ router.get("/ileostatnich/:x", async (req, res) => {
     }
 });
 
-// @route   GET api/tasks/
+// @route   GET api/tasks/unread
 // @desc    Get all unread tasks
 // @access  Public
 router.get("/unread", async (req, res) => {
@@ -148,8 +150,8 @@ router.get("/unread", async (req, res) => {
                         : `${utils.zmienNazwyTypow(tasks[k].args[j * 2 + 1])}[]`;
                 paramObject.Value =
                     tasks[k].args[j * 2] === "Typ prosty"
-                        ? `${tasks[k].wyniki[j]}`
-                        : `[${tasks[k].wyniki[j]}]`;
+                        ? utils.returnValue(tasks[k].wyniki[i * 2])
+                        : utils.returnArrayValue(tasks[k].wyniki[i * 2]);
                 object.Parameters.push(paramObject);
             }
             object.ResultTypeName =
@@ -159,8 +161,10 @@ router.get("/unread", async (req, res) => {
 
             object.ExpectedResult =
                 tasks[k].returnArgs[k] === "Typ prosty"
-                    ? `${tasks[k].wyniki[(tasks[k].iloscArg + 1) * (i + 1) - 1]}`
-                    : `[${tasks[k].wyniki[(tasks[k].iloscArg + 1) * (i + 1) - 1]}]`;
+                    ? utils.returnValue(tasks[k].wyniki[(tasks[k].iloscArg + 1) * (i + 1) - 1])
+                    : utils.returnArrayValue(
+                          tasks[k].wyniki[(tasks[k].iloscArg + 1) * (i + 1) - 1]
+                      );
             if (tasks[k].czyRekurencja) {
                 object.CodeChecks = ["RecursionCheck"];
             }
@@ -174,7 +178,7 @@ router.get("/unread", async (req, res) => {
     res.json(resultAll);
 });
 
-// @route   GET api/tasks/
+// @route   GET api/tasks/days/:x
 // @desc    Get all tasks from x days
 // @access  Public
 router.get("/days/:x", async (req, res) => {
@@ -205,8 +209,8 @@ router.get("/days/:x", async (req, res) => {
                             : `${utils.zmienNazwyTypow(tasks[k].args[j * 2 + 1])}[]`;
                     paramObject.Value =
                         tasks[k].args[j * 2] === "Typ prosty"
-                            ? `${tasks[k].wyniki[j]}`
-                            : `[${tasks[k].wyniki[j]}]`;
+                            ? utils.returnValue(tasks[k].wyniki[i * 2])
+                            : utils.returnArrayValue(tasks[k].wyniki[i * 2]);
                     object.Parameters.push(paramObject);
                 }
                 object.ResultTypeName =
@@ -216,8 +220,10 @@ router.get("/days/:x", async (req, res) => {
 
                 object.ExpectedResult =
                     tasks[k].returnArgs[k] === "Typ prosty"
-                        ? `${tasks[k].wyniki[(tasks[k].iloscArg + 1) * (i + 1) - 1]}`
-                        : `[${tasks[k].wyniki[(tasks[k].iloscArg + 1) * (i + 1) - 1]}]`;
+                        ? utils.returnValue(tasks[k].wyniki[(tasks[k].iloscArg + 1) * (i + 1) - 1])
+                        : utils.returnArrayValue(
+                              tasks[k].wyniki[(tasks[k].iloscArg + 1) * (i + 1) - 1]
+                          );
                 if (tasks[k].czyRekurencja) {
                     object.CodeChecks = ["RecursionCheck"];
                 }
