@@ -17,6 +17,7 @@
       "prod": "concurrently \"npm run build --prefix client\" \"npm run server\"",
       "delete": "node utils/clean.js",
       "prod-forever": "npm run delete && npm run build --prefix client && nohup nodemon dotenv/config index.js &",
+      "server-forever": "nohup nodemon dotenv/config index.js &",
       "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
    },
    "author": "Filip Krakowiak",
