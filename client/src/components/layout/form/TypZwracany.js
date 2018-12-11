@@ -34,7 +34,7 @@ export default function TypZwracany({ handleArgTypeChange, returnArgs }) {
                   'short',
                   'string',
                   'char',
-                  'boolean',
+                  'bool',
                   'byte'
                ]}
                title={`Typ zwracany B`}
