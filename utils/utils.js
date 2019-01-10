@@ -20,8 +20,8 @@ function escapeRegExp(str) {
    return str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, '\\$1');
 }
 
-function replaceAll(str, find, replace) {
-   return str.replace(new RegExp(escapeRegExp(find), 'g'), replace);
+function replaceAll(str, find, replaceArg) {
+   return str.replace(new RegExp(escapeRegExp(find), 'g'), replaceArg);
 }
 
 const zmienNazwyTypow = typ => {
@@ -35,6 +35,7 @@ const zmienNazwyTypow = typ => {
 };
 
 const returnValue = value => {
+   if (typeof value !== 'string') return '';
    if (isNumeric(value)) {
       return Number(value);
    } else {
@@ -44,6 +45,7 @@ const returnValue = value => {
 
 // prettier-ignore
 const returnArrayValue = value => {
+   if (typeof value !== 'string') return '';
    return value.split(',').map(elem => {
       if (isNumeric(elem)) {
          return Number(elem);

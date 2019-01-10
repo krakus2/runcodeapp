@@ -5,3 +5,5 @@
 *.env
 package-lock.json
 logfile.log
+tresciZadan.json
+/daneDoTestow/*
