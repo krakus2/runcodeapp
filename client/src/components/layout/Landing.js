@@ -41,12 +41,28 @@ class Landing extends Component {
       this.onSubmit = this.onSubmit.bind(this);
    }
 
+   stopReload = e => {
+      const { imieINazwisko, nazwaFunkcji, tytulZadania, opisZadania, code } = this.state;
+      if (imieINazwisko || nazwaFunkcji || tytulZadania || opisZadania || code) {
+         e.preventDefault();
+         /* tego wymaga Chrome */
+         e.returnValue = '';
+      }
+   };
+
+   componentDidMount() {
+      //zabezpieczenie przed przeładowaniem strony, w momencie kiedy coś znajduje sie w formularzu
+      window.addEventListener('beforeunload', this.stopReload);
+   }
+
+   componentWillUnmount() {
+      window.removeEventListener('beforeunload', this.stopReload);
+   }
+
    onEditorChange = (newValue, e) => {
       this.setState({ code: newValue });
       //console.log("onChange", newValue, e);
    };
-
-   componentDidMount() {}
 
    isEmpty = array => {
       const { iloscArg } = this.state;

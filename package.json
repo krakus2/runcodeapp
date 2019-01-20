@@ -15,7 +15,7 @@
       "client": "npm start --prefix client",
       "dev": "concurrently \"npm run server\" \"npm run client\"",
       "prod": "concurrently \"npm run build --prefix client\" \"npm run server\"",
-      "delete": "node utils/clean.js",
+      "delete": "node utils/clean.js client/build",
       "generateData": "node utils/downloadFile.js",
       "prod-forever": "npm run delete && npm run build --prefix client && nohup nodemon dotenv/config index.js &",
       "server-forever": "nohup nodemon dotenv/config index.js &",
