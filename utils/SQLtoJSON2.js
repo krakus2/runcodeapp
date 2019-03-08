@@ -1,15 +1,12 @@
-const _ = require('underscore');
-const s = require('underscore.string');
-const c = console;
-const _fs = require('fs');
-
-const _path = {
-   in: ['task_submit.sql'],
-   out: ['out2.json']
-};
-const _encode = 'utf-8';
-const errorEmpty = 'Please upload a file or type in something.';
-const inQuotes = new RegExp(/(^`.*`$)|(^'.*'$)|(^".*"$)/);
+//dependence libraries
+//fs underscore underscore.string
+const c = console,
+   _fs = require('fs'),
+   _path = {
+      in: ['task_submit.sql'],
+      out: ['out2.json']
+   },
+   _encode = 'utf-8';
 
 for (let _i in _path.in) {
    if (_path.out[_i]) {
@@ -27,7 +24,8 @@ for (let _i in _path.in) {
 }
 
 //
-
+const _ = require('underscore'),
+   s = require('underscore.string');
 function $convert(a) {
    if (0 == a.length) throw errorEmpty;
    a = a
@@ -51,7 +49,8 @@ function $convert(a) {
                'TABLE' == words[1].toUpperCase()
             ) {
                for (var f = 2; !words[f].match(inQuotes) && f < words.length; ) f++;
-               if (f >= words.length) throw 'Cannot find table name in CREATE TABLE statement.';
+               if (f >= words.length)
+                  throw 'Cannot find table name in CREATE TABLE statement.';
                var g = _.trim(words[f], '`\'"');
                c[g] = { header: [], values: [] };
                var h = _(e)
@@ -68,7 +67,9 @@ function $convert(a) {
                         if (!c.length) throw 'Cannot find columns for table ' + g;
                         var d = _.trim(c[0]);
                         return (
-                           (_.startsWith(d, "'") || _.startsWith(d, '`') || _.startsWith(d, '"')) &&
+                           (_.startsWith(d, "'") ||
+                              _.startsWith(d, '`') ||
+                              _.startsWith(d, '"')) &&
                               a.push(_.trim(d, '`\'"')),
                            a
                         );
@@ -87,7 +88,11 @@ function $convert(a) {
             ) {
                var g = _.trim(words[2], '`\'"');
                if (!c[g]) throw 'Table ' + g + ' was not defined in a CREATE TABLE.';
-               for (var f = (c[g], 3); 'VALUES' != words[f].toUpperCase() && f < words.length; )
+               for (
+                  var f = (c[g], 3);
+                  'VALUES' != words[f].toUpperCase() && f < words.length;
+
+               )
                   f++;
                if (f == words.length || 'VALUES' != words[f].toUpperCase())
                   throw 'Error parsing INSERT INTO statement. Cannot find VALUES.';
@@ -115,7 +120,11 @@ function $convert(a) {
             ) {
                var g = _.trim(words[2], '`\'"');
                if (!c[g]) throw 'Table ' + g + ' was not defined in a CREATE TABLE.';
-               for (var f = (c[g], 3); 'VALUES' != words[f].toUpperCase() && f < words.length; )
+               for (
+                  var f = (c[g], 3);
+                  'VALUES' != words[f].toUpperCase() && f < words.length;
+
+               )
                   f++;
                if (f == words.length || 'VALUES' != words[f].toUpperCase())
                   throw 'Error parsing INSERT INTO statement. Cannot find VALUES.';
@@ -166,3 +175,5 @@ function $convert(a) {
    );
 }
 _.mixin(s.exports());
+var errorEmpty = 'Please upload a file or type in something.',
+   inQuotes = new RegExp(/(^`.*`$)|(^'.*'$)|(^".*"$)/);

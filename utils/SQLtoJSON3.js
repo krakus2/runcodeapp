@@ -1,7 +1,4 @@
-const _ = require('underscore');
-const s = require('underscore.string');
-
-_.mixin(s.exports());
+const _ = require('underscore.string');
 
 var errorEmpty = 'Please upload a file or type in something.',
    inQuotes = new RegExp(/(^`.*`$)|(^'.*'$)|(^".*"$)/);
@@ -185,32 +182,34 @@ function convert(sql) {
    return objects;
 }
 
-// test
-const x = `  /**
-* Continents 
-*/
-SET FOREIGN_KEY_CHECKS=0;
-
--- ----------------------------
--- Table structure for `continents`
--- ----------------------------
-DROP TABLE IF EXISTS `continents`;
-CREATE TABLE `continents` (
- `code` char(2) NOT NULL COMMENT 'Continent code',
- `name` varchar(255) DEFAULT NULL,
- PRIMARY KEY (`code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
-
--- ----------------------------
--- Records of continents
--- ----------------------------
-INSERT INTO `continents` VALUES ('AF', 'Africa');
-INSERT INTO `continents` VALUES ('AN', 'Antarctica');
-INSERT INTO `continents` VALUES ('AS', 'Asia');
-INSERT INTO `continents` VALUES ('EU', 'Europe');
-INSERT INTO `continents` VALUES ('NA', 'North America');
-INSERT INTO `continents` VALUES ('OC', 'Oceania');
-INSERT INTO `continents` VALUES ('SA', 'South America');
-`;
+const x = `CREATE TABLE \`task_submit\` (
+   \`id\` int(11) NOT NULL,
+   \`id_user\` int(11) NOT NULL,
+   \`id_task\` int(11) NOT NULL,
+   \`date_uploaded\` datetime NOT NULL,
+   \`error_count\` int(11) NOT NULL,
+   \`warning_count\` int(11) NOT NULL,
+   \`test_count\` int(11) NOT NULL,
+   \`error_list\` longtext COLLATE utf8_unicode_ci,
+   \`warning_list\` longtext COLLATE utf8_unicode_ci,
+   \`test_list\` longtext COLLATE utf8_unicode_ci
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+ 
+INSERT INTO \`task_submit\` (\`date_uploaded\`, \`error_count\`, \`test_count\`, \`test_list\`) VALUES
+('2018-12-04 09:30:40', 0, 4, 
+   '[
+      "ID: 1 T: 0 F: ZwrocPodzielne P: System.Int32[]: [3,4,5,6,7,2,3], System.Int32: 4, System.Int32: 0 O: System.String: \\"[4]\\" Z: System.String: \\"[,4]\\"",
+      "ID: 3 T: 1 F: ZwrocPodzielne P: System.Int32[]: [], System.Int32: 44, System.Int32: 0 O: System.String: \\"[]\\" Z: System.String: \\"[]\\"",
+      "ID: 2 T: 1 F: ZwrocPodzielne P: System.Int32[]: [3,4,5,6,7,2,3], System.Int32: 44, System.Int32: 0 O: System.String: \\"[]\\" Z: System.String: \\"[]\\"",
+      "ID: 4 T: 1 F: ZwrocPodzielne P: System.Int32[]: [9], System.Int32: 9, System.Int32: 0 O: System.String: \\"[9]\\" Z: System.String: \\"[9]\\""
+   ]'),
+('2018-12-04 09:23:22', 1, 4, 
+   '[
+      "ID: 1 T: 0 F: ZwrocPodzielne P: System.Int32[]: [3,4,5,6,7,2,3], System.Int32: 4, System.Int32: 0 O: System.String: \\"[4]\\" Z: System.String: \\"[,4]\\"",
+      "ID: 3 T: 1 F: ZwrocPodzielne P: System.Int32[]: [], System.Int32: 44, System.Int32: 0 O: System.String: \\"[]\\" Z: System.String: \\"[]\\"",
+      "ID: 2 T: 1 F: ZwrocPodzielne P: System.Int32[]: [3,4,5,6,7,2,3], System.Int32: 44, System.Int32: 0 O: System.String: \\"[]\\" Z: System.String: \\"[]\\"",
+      "ID: 4 T: 1 F: ZwrocPodzielne P: System.Int32[]: [9], System.Int32: 9, System.Int32: 0 O: System.String: \\"[9]\\" Z: System.String: \\"[9]\\""]
+   ')
+;`;
 
 console.log(convert(x));
