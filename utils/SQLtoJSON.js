@@ -1,5 +1,9 @@
+const fs = require('fs');
+const path = require('path');
+const util = require('util');
 const _ = require('underscore');
 const s = require('underscore.string');
+const { writeConverted } = require('./korektor');
 
 _.mixin(s.exports());
 
@@ -8,6 +12,8 @@ var errorEmpty = 'Please upload a file or type in something.',
 
 function convert(sql) {
    if (sql.length == 0) throw errorEmpty;
+
+   var matches = [];
 
    // Remove comments and empty lines, and collapse statements on one line
    sql = sql
@@ -19,7 +25,13 @@ function convert(sql) {
       // Collapse statements (TO DO: Convert this to a single regex)
       .replace(/;\s*[\r\n]/gm, ';;')
       .replace(/[\r\n]/gm, ' ')
-      .replace(/;;\s?/gm, ';\n');
+      .replace(/;;\s?/gm, ';\n')
+      // Extract quoted string values and replace with placeholders
+      .replace(/(["'])(?:(?=(\\?))\2.)*?\1/g, function(m) {
+         matches.push(_.trim(m, '\'"'));
+         return "'{{" + (matches.length - 1) + "}}'";
+      });
+
    //throw sql;
    var lines = _.lines(sql);
    if (lines.length == 0) throw errorEmpty;
@@ -99,7 +111,9 @@ function convert(sql) {
             var records = _.trim(words.slice(i).join(' '))
                .replace(/(\))\s*,\s*(\()/g, '),(')
                .replace(/^\(/, '')
-               .replace(/\)$/, '')
+               .replace(/\)\s*;?$/, '')
+               .replace(/\(\s*(NULL)\s*/gi, '({{NULL}}')
+               .replace(/,\s*(NULL)\s*/gi, ',{{NULL}}')
                .split('),(');
 
             _.each(records, function(str) {
@@ -147,16 +161,15 @@ function convert(sql) {
             var records = _.trim(words.slice(i).join(' '))
                .replace(/(\))\s*,\s*(\()/g, '),(')
                .replace(/^\(/, '')
-               .replace(/\)$/, '')
+               .replace(/\)\s*;?$/, '')
+               .replace(/\(\s*(NULL)\s*/gi, '({{NULL}}')
+               .replace(/,\s*(NULL)\s*/gi, ',{{NULL}}')
                .split('),(');
 
             _.each(records, function(str) {
                var values = _.words(str, ',');
-               if (values.length != cols.length)
-                  throw 'Error parsing INSERT INTO statement. Values ' +
-                     str +
-                     ' does not have the same number of items as columns ' +
-                     words[3];
+               /* if (values.length != cols.length)
+							throw "Error parsing INSERT INTO statement. Values " + str + " does not have the same number of items as columns " + words[3]; */
                var record = {};
                _.each(tables[name].header, function(col) {
                   var index = _.indexOf(cols, col),
@@ -171,13 +184,21 @@ function convert(sql) {
       throw 'Error: ' + error + '\n...' + line;
    }
 
-   // Convert to objects now
+   // Convert to objects now and re-introduce quoted string values
    var objects = {};
    _.each(tables, function(table, name) {
       var keys = table.header;
       objects[name] = _.map(table.values, function(values) {
          var o = {};
-         for (var k = 0; k < keys.length; k++) o[keys[k]] = values[k];
+         for (var k = 0; k < keys.length; k++) {
+            o[keys[k]] =
+               typeof values[k] == 'string'
+                  ? values[k].replace(/^{{([0-9]+)}}$/, function(m, i) {
+                       return matches[i];
+                    })
+                  : values[k];
+            if (o[keys[k]] == '{{NULL}}') o[keys[k]] = null;
+         }
          return o;
       });
    });
@@ -192,25 +213,98 @@ const x = `  /**
 SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
--- Table structure for `continents`
+-- Table structure for \`continents\`
 -- ----------------------------
-DROP TABLE IF EXISTS `continents`;
-CREATE TABLE `continents` (
- `code` char(2) NOT NULL COMMENT 'Continent code',
- `name` varchar(255) DEFAULT NULL,
- PRIMARY KEY (`code`)
+DROP TABLE IF EXISTS \`continents\`;
+CREATE TABLE \`continents\` (
+ \`code\` char(2) NOT NULL COMMENT 'Continent code',
+ \`name\` varchar(255) DEFAULT NULL,
+ PRIMARY KEY (\`code\`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of continents
 -- ----------------------------
-INSERT INTO `continents` VALUES ('AF', 'Africa');
-INSERT INTO `continents` VALUES ('AN', 'Antarctica');
-INSERT INTO `continents` VALUES ('AS', 'Asia');
-INSERT INTO `continents` VALUES ('EU', 'Europe');
-INSERT INTO `continents` VALUES ('NA', 'North America');
-INSERT INTO `continents` VALUES ('OC', 'Oceania');
-INSERT INTO `continents` VALUES ('SA', 'South America');
+INSERT INTO \`continents\` VALUES ('AF', 'Africa');
+INSERT INTO \`continents\` VALUES ('AN', 'Antarctica');
+INSERT INTO \`continents\` VALUES ('AS', 'Asia');
+INSERT INTO \`continents\` VALUES ('EU', 'Europe');
+INSERT INTO \`continents\` VALUES ('NA', 'North America');
+INSERT INTO \`continents\` VALUES ('OC', 'Oceania');
+INSERT INTO \`continents\` VALUES ('SA', 'South America');
 `;
 
-console.log(convert(x));
+const y = `CREATE TABLE \`task_submit\` (
+   \`id\` int(11) NOT NULL,
+   \`id_user\` int(11) NOT NULL,
+   \`id_task\` int(11) NOT NULL,
+   \`date_uploaded\` datetime NOT NULL,
+   \`error_count\` int(11) NOT NULL,
+   \`warning_count\` int(11) NOT NULL,
+   \`test_count\` int(11) NOT NULL,
+   \`error_list\` longtext COLLATE utf8_unicode_ci,
+   \`warning_list\` longtext COLLATE utf8_unicode_ci,
+   \`test_list\` longtext COLLATE utf8_unicode_ci
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+ 
+ INSERT INTO \`task_submit\` (\`date_uploaded\`, \`error_count\`, \`test_count\`, \`test_list\`) VALUES
+ ('2018-12-04 09:30:40', 0, 4, 
+    '[
+       "ID: 1 T: 0 F: ZwrocPodzielne P: System.Int32[]: [3,4,5,6,7,2,3]
+
+    ]'),
+ ('2018-12-04 09:23:22', 1, 4, 
+    '[
+       "ID: 1 T: 0 F: ZwrocPodzielne P: System.Int32[]: [3,4,5,6,7,2,3]
+    ')
+`;
+/* const promisify = path => {
+   return new Promise((accept, reject) => {
+      fs.readdir(path, { reject, accept });
+   });
+};
+ */
+const readdir = util.promisify(fs.readdir);
+const mkdir = util.promisify(fs.mkdir);
+const stat = util.promisify(fs.stat);
+
+const toJsonFromSQL = async () => {
+   const sqlFolderPath = './sql';
+   const sqlToJSONFolderName = './JSONfromSQL';
+   const specifiedSQLFilePath = path.join(__dirname, '../', sqlFolderPath);
+   let files;
+   try {
+      files = await readdir(specifiedSQLFilePath);
+   } catch (err) {
+      throw new Error("Something went wrong with folder's file names scanning!", err);
+   }
+
+   //check whether the folder exists, if not create new one
+   stat(path.join(__dirname, '../', sqlToJSONFolderName), async (err, stats) => {
+      if (err) {
+         try {
+            await mkdir(path.join(__dirname, '../', sqlToJSONFolderName));
+         } catch (err) {
+            throw new Error(err);
+         }
+      }
+   });
+
+   files.forEach(elem => {
+      let pathName = path.join(specifiedSQLFilePath, elem);
+      let readStream = fs.createReadStream(pathName, 'utf8');
+      let data = '';
+      readStream
+         .on('data', function(chunk) {
+            data += chunk;
+         })
+         .on('end', function() {
+            const obj = convert(data);
+            writeConverted(elem.replace('.sql', ''), obj[Object.keys(obj)[0]]);
+         });
+   });
+};
+
+toJsonFromSQL();
+
+module.exports = { toJsonFromSQL };

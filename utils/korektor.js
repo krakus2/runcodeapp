@@ -1,33 +1,42 @@
 const fs = require('fs');
 const path = require('path');
-const sql = require('./task_submit');
+const util = require('util');
 
-const corrected = sql.map(elem => {
-   const obj = {
-      ...elem
-   };
-   obj.error_count = parseInt(elem.error_count);
-   obj.test_count = parseInt(elem.test_count);
-   if (elem.test_list.length > 1) {
-      let test_list = elem.test_list.split('ID');
-      test_list.shift();
-      test_list = test_list.map(elem_list => {
-         let x = `ID${elem_list}`.replace(/\\\\/g, '');
-         //console.log(x.substring(x.length - 3));
-         // prettier-ignore
-         if ((x.substring(x.length - 3) === '","') || (x.substring(x.length - 3) === '""]')) {
-            x = x.slice(0, x.length - 3);
-         }
-         return x;
-      });
-      obj.test_list = test_list;
-   }
-   return obj;
-});
+const korektor = data => {
+   return (corrected = data.map(elem => {
+      const obj = {
+         ...elem
+      };
+      obj.error_count = parseInt(elem.error_count);
+      obj.test_count = parseInt(elem.test_count);
+      if (elem.test_list.length > 1) {
+         let test_list = elem.test_list.split(/\"ID/);
+         test_list.shift();
+         test_list = test_list.map(elem_list =>
+            `ID${elem_list.trim()}`.replace(/\\\\|\",|\"]/g, '')
+         );
+         obj.test_list = test_list;
+      }
+      return obj;
+   }));
+};
 
-fs.writeFile('zwrotkaZBazy.json', JSON.stringify(corrected, null, '\t'), function(err) {
-   if (err) throw err;
-   console.log('complete');
-});
+const mkdir = util.promisify(fs.mkdir);
 
-//console.log(corrected);
+const writeConverted = (name, data) => {
+   const sqlToJSONFolderName = './JSONfromSQL';
+   const sqlToJSONFileName = `${name}.json`;
+   const specifiedFilePath = path.join(
+      path.join(__dirname, '../'),
+      sqlToJSONFolderName,
+      sqlToJSONFileName
+   );
+
+   //correct data and save to the file
+   fs.writeFile(specifiedFilePath, JSON.stringify(korektor(data), null, '\t'), err => {
+      if (err) throw new Error(err);
+      console.log('complete');
+   });
+};
+
+module.exports = { writeConverted };
