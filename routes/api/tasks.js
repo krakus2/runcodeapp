@@ -57,7 +57,9 @@ router.get('/', async (req, res) => {
          object.ExpectedResult =
             tasks[k].returnArgs[k] === 'Typ prosty'
                ? utils.returnValue(tasks[k].wyniki[(tasks[k].iloscArg + 1) * (i + 1) - 1])
-               : utils.returnArrayValue(tasks[k].wyniki[(tasks[k].iloscArg + 1) * (i + 1) - 1]);
+               : utils.returnArrayValue(
+                    tasks[k].wyniki[(tasks[k].iloscArg + 1) * (i + 1) - 1]
+                 );
          if (tasks[k].czyRekurencja) {
             object.CodeChecks = ['RecursionCheck'];
          }
@@ -110,8 +112,12 @@ router.get('/ileostatnich/:x', async (req, res) => {
 
             object.ExpectedResult =
                tasks[k].returnArgs[k] === 'Typ prosty'
-                  ? utils.returnValue(tasks[k].wyniki[(tasks[k].iloscArg + 1) * (i + 1) - 1])
-                  : utils.returnArrayValue(tasks[k].wyniki[(tasks[k].iloscArg + 1) * (i + 1) - 1]);
+                  ? utils.returnValue(
+                       tasks[k].wyniki[(tasks[k].iloscArg + 1) * (i + 1) - 1]
+                    )
+                  : utils.returnArrayValue(
+                       tasks[k].wyniki[(tasks[k].iloscArg + 1) * (i + 1) - 1]
+                    );
             if (tasks[k].czyRekurencja) {
                object.CodeChecks = ['RecursionCheck'];
             }
@@ -157,7 +163,9 @@ router.get('/unread', async (req, res) => {
          object.ExpectedResult =
             tasks[k].returnArgs[k] === 'Typ prosty'
                ? utils.returnValue(tasks[k].wyniki[(tasks[k].iloscArg + 1) * (i + 1) - 1])
-               : utils.returnArrayValue(tasks[k].wyniki[(tasks[k].iloscArg + 1) * (i + 1) - 1]);
+               : utils.returnArrayValue(
+                    tasks[k].wyniki[(tasks[k].iloscArg + 1) * (i + 1) - 1]
+                 );
          if (tasks[k].czyRekurencja) {
             object.CodeChecks = ['RecursionCheck'];
          }
@@ -213,8 +221,12 @@ router.get('/days/:x', async (req, res) => {
 
             object.ExpectedResult =
                tasks[k].returnArgs[k] === 'Typ prosty'
-                  ? utils.returnValue(tasks[k].wyniki[(tasks[k].iloscArg + 1) * (i + 1) - 1])
-                  : utils.returnArrayValue(tasks[k].wyniki[(tasks[k].iloscArg + 1) * (i + 1) - 1]);
+                  ? utils.returnValue(
+                       tasks[k].wyniki[(tasks[k].iloscArg + 1) * (i + 1) - 1]
+                    )
+                  : utils.returnArrayValue(
+                       tasks[k].wyniki[(tasks[k].iloscArg + 1) * (i + 1) - 1]
+                    );
             if (tasks[k].czyRekurencja) {
                object.CodeChecks = ['RecursionCheck'];
             }
@@ -259,8 +271,9 @@ router.post('/', async (req, res) => {
 // @route   GET api/tasks/zipTresc
 // @desc    Get task details
 // @access  Public
-router.get('/zipTresc', async (req, res) => {
+const zipTrescFunc = async () => {
    let tasks = await Task.find().sort({ _id: -1 }); //zwróci od najnowszych
+   //console.log('resultAll');
    let resultAll = [];
    for (let k = 0; k < tasks.length; k++) {
       let object = {};
@@ -271,14 +284,18 @@ router.get('/zipTresc', async (req, res) => {
       object.Code = tasks[k].code.replace(/  |\r\n|\n|\r/gm, ''); //usuwa wszystkie tabulacje i znaki nowej linii
       resultAll.push(object);
    }
+   return resultAll;
+};
 
+router.get('/zipTresc', async (req, res) => {
+   const resultAll = await zipTrescFunc();
    res.json(resultAll);
 });
 
 // @route   GET api/tasks/zipTesty
 // @desc    Get task tests
 // @access  Public
-router.get('/zipTesty', async (req, res) => {
+const zipTestyFunc = async () => {
    let tasks = await Task.find().sort({ _id: -1 }); //zwróci od najnowszych
    let resultAll = [];
    for (let k = 0; k < tasks.length; k++) {
@@ -307,7 +324,9 @@ router.get('/zipTesty', async (req, res) => {
          object.ExpectedResult =
             tasks[k].returnArgs[k] === 'Typ prosty'
                ? utils.returnValue(tasks[k].wyniki[(tasks[k].iloscArg + 1) * (i + 1) - 1])
-               : utils.returnArrayValue(tasks[k].wyniki[(tasks[k].iloscArg + 1) * (i + 1) - 1]);
+               : utils.returnArrayValue(
+                    tasks[k].wyniki[(tasks[k].iloscArg + 1) * (i + 1) - 1]
+                 );
          if (tasks[k].czyRekurencja) {
             object.CodeChecks = ['RecursionCheck'];
          }
@@ -315,8 +334,16 @@ router.get('/zipTesty', async (req, res) => {
       }
       resultAll.push(result);
    }
+   return resultAll;
+};
 
-   res.json(resultAll);
+router.get('/zipTesty', async (req, res) => {
+   const testy = await zipTestyFunc();
+   res.json(testy);
 });
 
-module.exports = router;
+module.exports = {
+   router,
+   zipTestyFunc,
+   zipTrescFunc
+};

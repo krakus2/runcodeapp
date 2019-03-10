@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, lazy, Suspense } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import { compose } from 'recompose';
@@ -8,12 +8,13 @@ import Argumenty from './form/Argumenty';
 import TypZwracany from './form/TypZwracany';
 import SubmitButton from './form/SubmitButton';
 import StrukturaFunkcji from './form/StrukturaFunkcji';
-import Editor from './form/Editor';
 import Testy from './form/Testy';
+import Editor from './form/Editor';
 import Rekurencja from './form/Rekurencja';
 import BladLubKomunikat from './form/BladLubKomunikat';
 import { styles, FormWrapper, Wrapper, MyPaper } from '../../styles/layout/Landing';
 import { withStyles } from '@material-ui/core/styles';
+//const Editor = lazy(() => import('./form/Editor'));
 
 class Landing extends Component {
    constructor(props) {
@@ -68,7 +69,10 @@ class Landing extends Component {
       const { iloscArg } = this.state;
       let result = false;
       array.some((elem, i) => {
-         if ((elem === undefined || elem === '' || elem === null) && i <= iloscArg * 2 - 1)
+         if (
+            (elem === undefined || elem === '' || elem === null) &&
+            i <= iloscArg * 2 - 1
+         )
             result = true;
       });
       return result;
@@ -367,7 +371,9 @@ class Landing extends Component {
          code
       } = this.state;
       const argsCheck =
-         (this.isEmpty(args) && iloscArg !== 0) || this.isEmpty(returnArgs) || this.isEmpty(wyniki);
+         (this.isEmpty(args) && iloscArg !== 0) ||
+         this.isEmpty(returnArgs) ||
+         this.isEmpty(wyniki);
       const isInvalid =
          opisZadania === '' ||
          tytulZadania === '' ||
@@ -378,7 +384,9 @@ class Landing extends Component {
       return (
          <Wrapper>
             <MyPaper
-               isMobile={context.isMobile} /*classes={{ root: classes.paper }} elevation={1}*/
+               isMobile={
+                  context.isMobile
+               } /*classes={{ root: classes.paper }} elevation={1}*/
             >
                <FormWrapper onSubmit={this.onSubmit}>
                   <PolaTekstowe

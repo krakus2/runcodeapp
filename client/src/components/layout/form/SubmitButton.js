@@ -1,10 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
-import Tooltip from '@material-ui/core/Tooltip';
-import Zoom from '@material-ui/core/Zoom';
-import Fade from '@material-ui/core/Fade';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import Tooltip from '../../utils/Tooltip';
 import { ButtonWrapper } from '../../../styles/layout/Landing';
 import { withStyles } from '@material-ui/core/styles';
 
@@ -13,21 +10,13 @@ const styles = theme => ({
       margin: theme.spacing.unit,
       fontSize: '16px',
       width: '125px'
-   },
-   tooltip: {
-      fontSize: theme.spacing.tooltipSize
    }
 });
 
 const Submit = ({ isInvalid, loading, onSubmitClick, classes, isMobile }) => (
    <ButtonWrapper isMobile={isMobile}>
       {isInvalid ? (
-         <Tooltip
-            title="Wypełnij wszystkie obowiązkowe pola, aby przesłać zadanie"
-            classes={{ tooltip: classes.tooltip }}
-            TransitionComponent={Zoom}
-            placement="bottom"
-         >
+         <Tooltip title="Wypełnij wszystkie obowiązkowe pola, aby przesłać zadanie">
             <div>
                <Button
                   variant="contained"
@@ -39,15 +28,12 @@ const Submit = ({ isInvalid, loading, onSubmitClick, classes, isMobile }) => (
                   onClick={onSubmitClick}
                >
                   {loading ? (
-                     <Fade
-                        in={loading}
-                        style={{
-                           transitionDelay: loading ? '200ms' : '0ms'
-                        }}
-                        unmountOnExit
-                     >
-                        <CircularProgress color="inherit" size={24} />
-                     </Fade>
+                     <div className="lds-ring">
+                        <div />
+                        <div />
+                        <div />
+                        <div />
+                     </div>
                   ) : (
                      'Prześlij'
                   )}
@@ -64,15 +50,12 @@ const Submit = ({ isInvalid, loading, onSubmitClick, classes, isMobile }) => (
             onClick={onSubmitClick}
          >
             {loading ? (
-               <Fade
-                  in={loading}
-                  style={{
-                     transitionDelay: loading ? '200ms' : '0ms'
-                  }}
-                  unmountOnExit
-               >
-                  <CircularProgress color="inherit" size={24} />
-               </Fade>
+               <div className="lds-ring">
+                  <div />
+                  <div />
+                  <div />
+                  <div />
+               </div>
             ) : (
                'Prześlij'
             )}

@@ -6,9 +6,8 @@ import AddRemoveButtons from './AddRemoveButtons';
 import { GridWrapper, RowWrapper } from '../../../styles/layout/Landing';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import Tooltip from '@material-ui/core/Tooltip';
+import Tooltip from '../../utils/Tooltip';
 import Typography from '@material-ui/core/Typography';
-import Zoom from '@material-ui/core/Zoom';
 import '../../../styles/form/WynikiRow.css';
 
 const styles = theme => ({
@@ -37,10 +36,10 @@ const styles = theme => ({
       fontSize: 14,
       fontWeight: 400,
       transform: 'translate(12px, 14px) scale(1)'
-   },
-   tooltip: {
-      fontSize: theme.spacing.tooltipSize
    }
+   /*    tooltip: {
+      fontSize: theme.spacing.tooltipSize
+   } */
 });
 
 class Testy extends Component {
@@ -80,13 +79,7 @@ class Testy extends Component {
       for (var i = 0; i < iloscWynikow * (iloscArg + 1); i++) {
          if (indeksyTablic.some(el => el === i)) {
             fieldsArray.push(
-               <Tooltip
-                  key={i}
-                  title="Wartości tablicy oddziel przecinkami"
-                  classes={{ tooltip: classes.tooltip }}
-                  TransitionComponent={Zoom}
-                  placement="top"
-               >
+               <Tooltip key={i} title="Wartości tablicy oddziel przecinkami">
                   <div className="array" key={i}>
                      <TextField
                         key={i}
@@ -122,7 +115,9 @@ class Testy extends Component {
                      InputLabelProps={{
                         classes: {
                            root:
-                              (i + 1) % (iloscArg + 1) === 0 ? classes.TheLabel3 : classes.TheLabel2
+                              (i + 1) % (iloscArg + 1) === 0
+                                 ? classes.TheLabel3
+                                 : classes.TheLabel2
                         }
                      }}
                      value={wyniki[i] != undefined ? wyniki[i] : ''}
@@ -140,14 +135,20 @@ class Testy extends Component {
             <RowWrapper column leftMargin>
                <Typography variant="h6">Zestawy testów i wartość zwracana</Typography>
                <Typography variant="caption" gutterBottom>
-                  Zdefiniuj testy. Podaj wartości parametrów wywołania funkcji oraz wartość zwracaną
-                  przez funkcję dla tych parametrów.
+                  Zdefiniuj testy. Podaj wartości parametrów wywołania funkcji oraz
+                  wartość zwracaną przez funkcję dla tych parametrów.
                </Typography>
             </RowWrapper>
-            <GridWrapper isMobile={context.isMobile} grid={this.generateGrid(iloscArg + 1)}>
+            <GridWrapper
+               isMobile={context.isMobile}
+               grid={this.generateGrid(iloscArg + 1)}
+            >
                {fieldsArray}
             </GridWrapper>
-            <AddRemoveButtons zmienIloscWynikow={zmienIloscWynikow} iloscWynikow={iloscWynikow} />
+            <AddRemoveButtons
+               zmienIloscWynikow={zmienIloscWynikow}
+               iloscWynikow={iloscWynikow}
+            />
          </>
       );
    }

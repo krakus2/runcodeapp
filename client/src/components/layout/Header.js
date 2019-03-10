@@ -7,7 +7,7 @@ import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { HeaderWrapper, FormWrapper, MyAppBar, Title } from '../../styles/layout/Header';
-import InlineMessage from '../messages/InlineMessage';
+import InlineMessage from '../utils/InlineMessage';
 
 const styles = theme => ({
    AppBar: {

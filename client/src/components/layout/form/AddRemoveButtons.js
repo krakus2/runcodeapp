@@ -5,27 +5,18 @@ import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
-import Tooltip from '@material-ui/core/Tooltip';
-import Zoom from '@material-ui/core/Zoom';
+import Tooltip from '../../utils/Tooltip';
 
 const styles = theme => ({
    button2: {
       margin: theme.spacing.unit,
       color: 'white'
-   },
-   tooltip: {
-      fontSize: theme.spacing.tooltipSize
    }
 });
 
 const AddRemoveButtons = ({ zmienIloscWynikow, iloscWynikow, classes }) => (
    <RowWrapper>
-      <Tooltip
-         title="Dodaj wiersz"
-         classes={{ tooltip: classes.tooltip }}
-         TransitionComponent={Zoom}
-         placement="bottom"
-      >
+      <Tooltip title={'Dodaj wiersz'}>
          <Button
             variant="fab"
             mini
@@ -37,12 +28,7 @@ const AddRemoveButtons = ({ zmienIloscWynikow, iloscWynikow, classes }) => (
             <AddIcon />
          </Button>
       </Tooltip>
-      <Tooltip
-         title="Usuń wiersz"
-         classes={{ tooltip: classes.tooltip }}
-         TransitionComponent={Zoom}
-         placement="bottom"
-      >
+      <Tooltip title="Usuń wiersz">
          <Button
             variant="fab"
             mini
