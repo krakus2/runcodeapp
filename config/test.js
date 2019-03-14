@@ -1,5 +1,5 @@
 require('dotenv').config();
 
 module.exports = {
-   mongoUrl: process.env.MONGOURL_PROD
+   mongoUrl: process.env.MONGOURL_TEST
 };

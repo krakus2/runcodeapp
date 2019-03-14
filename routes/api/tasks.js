@@ -71,6 +71,22 @@ router.get('/', async (req, res) => {
    res.json(resultAll);
 });
 
+// @route   GET api/tasks/id/:id
+// @desc    Get task with given id
+// @access  Public
+router.get('/id/:id', async (req, res) => {
+   /* const ObjectId = mongoose.Types.ObjectId;
+   const ID = new ObjectId(); */
+   //res.send(mongoose.Types.ObjectId);
+   if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(404).send('Given ID is not valid');
+   }
+   const genre = await Task.findById(req.params.id);
+   if (!genre) {
+      return res.status(404).send("The task with the given ID doesn't exist");
+   }
+});
+
 // @route   GET api/tasks/ileostatnich/:x
 // @desc    Get x last tasks
 // @access  Public

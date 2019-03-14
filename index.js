@@ -20,7 +20,8 @@ if (process.env.NODE_ENV === 'production') {
 
 const port = process.env.PORT || 5000;
 
-app.listen(port, () => {
-   console.log(`Port is listening on ${port}`);
+const server = app.listen(port, () => {
    winston.info(`Port is listening on ${port}`);
 });
+
+module.exports = server;

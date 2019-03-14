@@ -1,4 +1,4 @@
-import React, { Component, lazy, Suspense } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import { compose } from 'recompose';
@@ -14,7 +14,6 @@ import Rekurencja from './form/Rekurencja';
 import BladLubKomunikat from './form/BladLubKomunikat';
 import { styles, FormWrapper, Wrapper, MyPaper } from '../../styles/layout/Landing';
 import { withStyles } from '@material-ui/core/styles';
-//const Editor = lazy(() => import('./form/Editor'));
 
 class Landing extends Component {
    constructor(props) {

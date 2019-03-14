@@ -2,7 +2,8 @@ import styled from 'styled-components';
 
 export const HeaderWrapper = styled.div`
    display: grid;
-   ${props => (props.isMobile ? 'grid-template-columns:100%' : 'grid-template-columns: 30% 70%')};
+   ${props =>
+      props.isMobile ? 'grid-template-columns:100%' : 'grid-template-columns: 30% 70%'};
 `;
 
 export const FormWrapper = styled.form`
@@ -15,7 +16,7 @@ export const FormWrapper = styled.form`
    ${props => !props.error && 'padding-bottom: 19px'};
 `;
 
-export const MyAppBar = styled.div`
+export const MyAppBar = styled.header`
    width: 100%;
    background: #fff;
    border-bottom: 1px solid #e0e4e7;
@@ -29,5 +30,6 @@ export const Title = styled.div`
    font-family: 'Open Sans', 'Helvetica Neue', sans-serif;
    font-weight: 700;
    text-transform: uppercase;
-   ${props => (props.isMobile ? 'padding: 15px 0 10px 0' : 'padding: 33px 23px 30px 24px;')};
+   ${props =>
+      props.isMobile ? 'padding: 15px 0 10px 0' : 'padding: 33px 23px 30px 24px;'};
 `;

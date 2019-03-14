@@ -30,7 +30,7 @@ const defaultTheme = createMuiTheme({
    }
 });
 
-export const Wrapper = styled.div`
+export const Wrapper = styled.main`
    font-size: 18px;
    display: flex;
    flex-direction: column;
