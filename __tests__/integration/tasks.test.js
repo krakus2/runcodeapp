@@ -1,21 +1,25 @@
 const request = require('supertest');
 const mongoose = require('mongoose');
-const fs = require('fs');
 const Task = require('../../models/Task');
 const sampleData = require('../../utils/sampleTestingData');
 let server;
 
-describe('GET /', () => {
-   beforeEach(() => {
-      //jest.setTimeout(1000);
-      server = require('../../index');
-   });
-   afterEach(async () => {
-      server.close();
-      //usuwa wszystkie taski z bazy
-      await Task.deleteMany({});
-   });
+/* beforeAll(async () => {
+   server = require('../../index');
+   await Task.deleteMany({});
+   server.close();
+});
 
+beforeEach(() => {
+   server = require('../../index');
+});
+afterEach(async () => {
+   server.close();
+   //usuwa wszystkie taski z bazy
+   await Task.deleteMany({});
+}); */
+
+xdescribe('GET /', () => {
    it('/api/tasks/all -- should return array with the length the same as number of added tasks', async () => {
       const taskData = { ...sampleData.taskData };
       const task = new Task(taskData);
@@ -43,7 +47,6 @@ describe('GET /', () => {
       const res = await request(server)
          .get('/api/tasks/')
          .set('Accept', 'application/json');
-      console.log(res.body[0].length);
 
       expect(res.body[0][0]).toHaveProperty('ResultTypeName', 'System.Int32');
       expect(res.body[0][0]).toHaveProperty('Parameters', [
@@ -61,18 +64,19 @@ describe('GET /', () => {
       expect(res.body[0].length).toBe(taskData.iloscWynikow);
    });
 
-   it('/api/tasks/:id -- should return a task if valid id is passed', async () => {
+   it('/api/tasks/id/:id -- should return a task if valid id is passed', async () => {
       const taskData = { ...sampleData.taskData };
-      const task = new Task(taskData);
-      await task.save();
-      request(server)
-         .get(`/api/tasks/id/${task._id}`)
-         .end((err, res) => {
-            expect(res.status).toEqual(200);
-         });
+      let task = new Task(taskData);
+      task = await task.save();
+      //console.log(`/api/tasks/id/${task._id.toHexString()}`);
+      const res = await request(server)
+         .get(`/api/tasks/id/${task._id.toHexString()}`)
+         .set('Accept', 'application/json');
+      expect(res.status).toBe(200);
+      expect(res.body).toHaveProperty('imieINazwisko', task.imieINazwisko);
    });
 
-   it("/api/tasks/:id -- should return a 404 if task with the given id doesn't exists", async () => {
+   it("/api/tasks/id/:id -- should return a 404 if task with the given id doesn't exist", async () => {
       const ObjectId = mongoose.Types.ObjectId;
       const ID = new ObjectId();
       try {
@@ -129,7 +133,7 @@ describe('GET /', () => {
       expect(res.status).toEqual(200);
    });
 
-   fit('/api/tasks/days/:x -- check if setting unread flag works', async () => {
+   it('/api/tasks/days/:x -- check if setting unread flag works', async () => {
       //TODO - zrob kilka ze straszymi datami i sprawdz czy zwraca odpowiednia ilosc
       const taskData = { ...sampleData.taskData };
       const data = [];
@@ -147,7 +151,7 @@ describe('GET /', () => {
    });
 });
 
-describe('POST /', () => {
+xdescribe('POST /', () => {
    it('/api/tasks/ -- should post new task1', async () => {
       const taskData = { ...sampleData.taskData };
       const res = await request(server)
@@ -186,7 +190,7 @@ describe('POST /', () => {
             .post('/api/tasks/')
             .send(taskDataError);
       } catch (err) {
-         console.log(typeof err.response.text);
+         //console.log(typeof err.response.text); //string
          expect(err.status).toEqual(500);
          expect(err.response.text).toMatch(
             /TypeError: Expected string but received a undefined./

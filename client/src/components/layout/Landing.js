@@ -370,9 +370,8 @@ class Landing extends Component {
          code
       } = this.state;
       const argsCheck =
-         (this.isEmpty(args) && iloscArg !== 0) ||
-         this.isEmpty(returnArgs) ||
-         this.isEmpty(wyniki);
+         (this.isEmpty(args) && iloscArg !== 0) || this.isEmpty(returnArgs); //|| this.isEmpty(wyniki);
+
       const isInvalid =
          opisZadania === '' ||
          tytulZadania === '' ||

@@ -41,6 +41,7 @@
       "winston": "^2.4.0"
    },
    "devDependencies": {
+      "casual": "^1.6.0",
       "jest": "^24.4.0",
       "nodemon": "^1.18.4",
       "supertest": "^4.0.0"

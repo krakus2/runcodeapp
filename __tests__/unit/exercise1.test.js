@@ -1,7 +1,7 @@
 const exercise1 = require('../../exercises/exercise1');
 
 describe('fizzBuz tests', () => {
-   it('throwing an error', () => {
+   xit('throwing an error', () => {
       expect(() => {
          exercise1.fizzBuzz('3');
       }).toThrow();
@@ -16,7 +16,7 @@ describe('fizzBuz tests', () => {
       }).toThrow();
    });
 
-   it('divisible by 3 and 5', () => {
+   xit('divisible by 3 and 5', () => {
       expect(exercise1.fizzBuzz(3)).not.toBe('FizzBuzz');
       expect(exercise1.fizzBuzz(5)).not.toBe('FizzBuzz');
       expect(exercise1.fizzBuzz(7)).not.toBe('FizzBuzz');
@@ -24,21 +24,21 @@ describe('fizzBuz tests', () => {
       expect(exercise1.fizzBuzz(45)).toBe('FizzBuzz');
    });
 
-   it('divisible by 3', () => {
+   xit('divisible by 3', () => {
       expect(exercise1.fizzBuzz(3)).toBe('Fizz');
       expect(exercise1.fizzBuzz(9)).toBe('Fizz');
       expect(exercise1.fizzBuzz(5)).not.toBe('Fizz');
       expect(exercise1.fizzBuzz(7)).not.toBe('Fizz');
    });
 
-   it('divisible by 5', () => {
+   xit('divisible by 5', () => {
       expect(exercise1.fizzBuzz(5)).toBe('Buzz');
       expect(exercise1.fizzBuzz(25)).toBe('Buzz');
       expect(exercise1.fizzBuzz(2)).not.toBe('Buzz');
       expect(exercise1.fizzBuzz(8)).not.toBe('Buzz');
    });
 
-   it('not divisible by 3 or 5', () => {
+   xit('not divisible by 3 or 5', () => {
       expect(exercise1.fizzBuzz(7)).toBe(7);
       expect(exercise1.fizzBuzz(9)).not.toBe(9);
       expect(exercise1.fizzBuzz(101)).toBe(101);

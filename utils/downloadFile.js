@@ -1,31 +1,28 @@
 const fs = require('fs');
 const path = require('path');
-const fetch = require('node-fetch');
-const tasks = require('../routes/api/tasks');
-
-const trescUrl = 'http://localhost:5000/api/tasks/zipTresc'; //absolute path to specified port, might not work on other machines
-const testyUrl = 'http://localhost:5000/api/tasks/zipTesty'; //absolute path to specified port, might not work on other machines
+const taskRouteUtils = require('./tasksRouteUtils');
+const server = require('../index');
+const { zipTrescFunc, zipTestyFunc } = taskRouteUtils;
 
 const apiCall = async () => {
-   //TODO - skorzystac z wyeksportowanych funkcji z tasks robiacych zapytanie do bazy, a nie z wlasnego endpointa
-   //nie wiem czemu te zaimportowane funkcje nie chca nic zwrocic
-   const response1 = await fetch(trescUrl);
-   const zadania = await response1.json();
-   const response2 = await fetch(testyUrl);
-   const testy = await response2.json();
-   console.log(JSON.stringify(testy, null, '\t'));
-
-   fs.writeFile('tresciZadan.json', JSON.stringify(zadania, null, '\t'), function(err) {
-      if (err) throw err;
-      console.log('complete 1');
-   });
+   const zadania = await zipTrescFunc();
+   const testy = await zipTestyFunc();
 
    const testsPath = path.join(__dirname, '..', 'daneDoTestow');
    ensureExists(testsPath, 0744, function(err) {
       //tworzy nowy folder z testami
       if (err) throw err;
-      else console.log('complete 2');
+      else console.log(`Created new folder - ${testsPath}`);
    });
+
+   fs.writeFile(
+      path.join(testsPath, 'tresciZadan.json'),
+      JSON.stringify(zadania, null, '\t'),
+      function(err) {
+         if (err) throw err;
+         console.log('Saved file with tasks content');
+      }
+   );
 
    testy.forEach(zadanie => {
       const nazwaPliku = `${zadanie[0]}.json`;
@@ -36,12 +33,13 @@ const apiCall = async () => {
       fs.writeFile(
          `${testsPath}/${nazwaPliku}`,
          JSON.stringify(tablicaTestow, null, '\t'),
-         function(err) {
+         err => {
             if (err) throw err;
-            console.log('complete 3');
+            console.log(`Saved file with tests content ${testsPath}\\${nazwaPliku}`);
          }
       );
    });
+   server.close();
 };
 
 function ensureExists(path, mask, cb) {

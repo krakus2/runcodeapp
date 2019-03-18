@@ -5,6 +5,7 @@ const app = express();
 const winston = require('winston');
 const path = require('path');
 
+require('express-async-errors');
 require('./startup/logging')();
 require('./startup/routes')(app);
 require('./startup/db')();

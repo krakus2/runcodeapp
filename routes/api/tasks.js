@@ -1,16 +1,23 @@
 const express = require('express');
 const router = express.Router();
-const mongoose = require('mongoose');
 const validateProfileInput = require('../../validators/task');
-const utils = require('../../utils/utils');
-
-const Task = require('../../models/Task');
+const tasksRouteUtils = require('../../utils/tasksRouteUtils');
+const TaskService = require('../../models/index');
+const {
+   createTask,
+   listTasks,
+   listXTasks,
+   findTaskById,
+   listTasksWithConditions,
+   listTasksFromXDays
+} = TaskService;
+const { generateStructure, zipTestyFunc, zipTrescFunc } = tasksRouteUtils;
 
 // @route   GET api/tasks/test
 // @desc    Test tasks route
 // @access  Public
 router.get('/test', (req, res) => {
-   res.json({
+   return res.json({
       msg: 'profiles test work'
    });
 });
@@ -19,240 +26,57 @@ router.get('/test', (req, res) => {
 // @desc    Get all tasks
 // @access  Public
 router.get('/all', async (req, res) => {
-   let tasks = await Task.find().sort({ _id: -1 }); //zwróci od najnowszych
-
-   res.json(tasks);
+   let tasks = await listTasks(); //zwróci od najnowszych
+   return res.json(tasks);
 });
 
 // @route   GET api/tasks/
 // @desc    Get all tasks
 // @access  Public
 router.get('/', async (req, res) => {
-   let tasks = await Task.find().sort({ _id: -1 }); //zwróci od najnowszych
-   let resultAll = [];
-   for (let k = 0; k < tasks.length; k++) {
-      let result = [];
-      for (let i = 0; i < tasks[k].iloscWynikow; i++) {
-         let object = {};
-         object.MethodName = tasks[k].nazwaFunkcji;
-         object.Code = tasks[k].code.replace(/  |\r\n|\n|\r/gm, ''); //usuwa wszystkie tabulacje i znaki nowej linii
-         object.Parameters = [];
-         for (let j = 0; j < tasks[k].iloscArg; j++) {
-            let paramObject = {};
-            paramObject.TypeName =
-               tasks[k].args[j * 2] === 'Typ prosty'
-                  ? `${utils.zmienNazwyTypow(tasks[k].args[j * 2 + 1])}`
-                  : `${utils.zmienNazwyTypow(tasks[k].args[j * 2 + 1])}[]`;
-            paramObject.Value =
-               tasks[k].args[j * 2] === 'Typ prosty'
-                  ? utils.returnValue(tasks[k].wyniki[i * 2])
-                  : utils.returnArrayValue(tasks[k].wyniki[i * 2]);
-            object.Parameters.push(paramObject);
-         }
-         object.ResultTypeName =
-            tasks[k].returnArgs[k] === 'Typ prosty'
-               ? `${utils.zmienNazwyTypow(tasks[k].returnArgs[1])}`
-               : `${utils.zmienNazwyTypow(tasks[k].returnArgs[1])}[]`;
-
-         object.ExpectedResult =
-            tasks[k].returnArgs[k] === 'Typ prosty'
-               ? utils.returnValue(tasks[k].wyniki[(tasks[k].iloscArg + 1) * (i + 1) - 1])
-               : utils.returnArrayValue(
-                    tasks[k].wyniki[(tasks[k].iloscArg + 1) * (i + 1) - 1]
-                 );
-         if (tasks[k].czyRekurencja) {
-            object.CodeChecks = ['RecursionCheck'];
-         }
-         result.push(object);
-      }
-      resultAll.push(result);
-   }
-
-   res.json(resultAll);
+   let tasks = await listTasks(); //zwróci od najnowszych
+   let resultAll = generateStructure(tasks);
+   return res.json(resultAll);
 });
 
 // @route   GET api/tasks/id/:id
 // @desc    Get task with given id
 // @access  Public
 router.get('/id/:id', async (req, res) => {
-   /* const ObjectId = mongoose.Types.ObjectId;
-   const ID = new ObjectId(); */
-   //res.send(mongoose.Types.ObjectId);
-   if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
-      return res.status(404).send('Given ID is not valid');
-   }
-   const genre = await Task.findById(req.params.id);
-   if (!genre) {
-      return res.status(404).send("The task with the given ID doesn't exist");
-   }
+   const task = await findTaskById(req.params.id);
+   return res.json(task);
 });
 
 // @route   GET api/tasks/ileostatnich/:x
 // @desc    Get x last tasks
 // @access  Public
 router.get('/ileostatnich/:x', async (req, res) => {
-   const ile = parseInt(req.params.x);
-   if (!Number.isInteger(ile) || ile <= 0) {
-      return res
-         .status(400)
-         .send('Podałeś błędny parametr, to musi być liczba całkowita większa od 0');
-   } else {
-      let tasks = await Task.find()
-         .sort({ _id: -1 }) //zwróci od najnowszych
-         .limit(Number(req.params.x));
-
-      let resultAll = [];
-      for (let k = 0; k < tasks.length; k++) {
-         let result = [];
-         for (let i = 0; i < tasks[k].iloscWynikow; i++) {
-            let object = {};
-            object.MethodName = tasks[k].nazwaFunkcji;
-            object.Code = tasks[k].code.replace(/  |\r\n|\n|\r/gm, ''); //usuwa wszystkie tabulacje i znaki nowej linii
-            object.Parameters = [];
-            for (let j = 0; j < tasks[k].iloscArg; j++) {
-               const paramObject = {};
-               paramObject.TypeName =
-                  tasks[k].args[j * 2] === 'Typ prosty'
-                     ? `${utils.zmienNazwyTypow(tasks[k].args[j * 2 + 1])}`
-                     : `${utils.zmienNazwyTypow(tasks[k].args[j * 2 + 1])}[]`;
-               paramObject.Value =
-                  tasks[k].args[j * 2] === 'Typ prosty'
-                     ? utils.returnValue(tasks[k].wyniki[i * 2])
-                     : utils.returnArrayValue(tasks[k].wyniki[i * 2]);
-               object.Parameters.push(paramObject);
-            }
-            object.ResultTypeName =
-               tasks[k].returnArgs[k] === 'Typ prosty'
-                  ? `${utils.zmienNazwyTypow(tasks[k].returnArgs[1])}`
-                  : `${utils.zmienNazwyTypow(tasks[k].returnArgs[1])}[]`;
-
-            object.ExpectedResult =
-               tasks[k].returnArgs[k] === 'Typ prosty'
-                  ? utils.returnValue(
-                       tasks[k].wyniki[(tasks[k].iloscArg + 1) * (i + 1) - 1]
-                    )
-                  : utils.returnArrayValue(
-                       tasks[k].wyniki[(tasks[k].iloscArg + 1) * (i + 1) - 1]
-                    );
-            if (tasks[k].czyRekurencja) {
-               object.CodeChecks = ['RecursionCheck'];
-            }
-            result.push(object);
-         }
-         resultAll.push(result);
-      }
-
-      return res.json(resultAll);
-   }
+   const tasks = await listXTasks(req.params.x);
+   const resultAll = generateStructure(tasks);
+   return res.json(resultAll);
 });
 
 // @route   GET api/tasks/unread
 // @desc    Get all unread tasks
 // @access  Public
 router.get('/unread', async (req, res) => {
-   let tasks = await Task.find({ czyPrzeczytano: false }).sort({ _id: -1 }); //zwróci od najnowszych
-   let resultAll = [];
-   for (let k = 0; k < tasks.length; k++) {
-      let result = [];
-      for (let i = 0; i < tasks[k].iloscWynikow; i++) {
-         let object = {};
-         object.MethodName = tasks[k].nazwaFunkcji;
-         object.Code = tasks[k].code.replace(/  |\r\n|\n|\r/gm, ''); //usuwa wszystkie tabulacje i znaki nowej linii
-         object.Parameters = [];
-         for (let j = 0; j < tasks[k].iloscArg; j++) {
-            const paramObject = {};
-            paramObject.TypeName =
-               tasks[k].args[j * 2] === 'Typ prosty'
-                  ? `${utils.zmienNazwyTypow(tasks[k].args[j * 2 + 1])}`
-                  : `${utils.zmienNazwyTypow(tasks[k].args[j * 2 + 1])}[]`;
-            paramObject.Value =
-               tasks[k].args[j * 2] === 'Typ prosty'
-                  ? utils.returnValue(tasks[k].wyniki[i * 2])
-                  : utils.returnArrayValue(tasks[k].wyniki[i * 2]);
-            object.Parameters.push(paramObject);
-         }
-         object.ResultTypeName =
-            tasks[k].returnArgs[k] === 'Typ prosty'
-               ? `${utils.zmienNazwyTypow(tasks[k].returnArgs[1])}`
-               : `${utils.zmienNazwyTypow(tasks[k].returnArgs[1])}[]`;
+   const tasks = await listTasksWithConditions({ czyPrzeczytano: false });
+   const resultAll = generateStructure(tasks);
+   tasks.forEach(async elem => {
+      elem.czyPrzeczytano = true;
+      await elem.save();
+   });
 
-         object.ExpectedResult =
-            tasks[k].returnArgs[k] === 'Typ prosty'
-               ? utils.returnValue(tasks[k].wyniki[(tasks[k].iloscArg + 1) * (i + 1) - 1])
-               : utils.returnArrayValue(
-                    tasks[k].wyniki[(tasks[k].iloscArg + 1) * (i + 1) - 1]
-                 );
-         if (tasks[k].czyRekurencja) {
-            object.CodeChecks = ['RecursionCheck'];
-         }
-         result.push(object);
-      }
-      resultAll.push(result);
-   }
-
-   await Task.updateMany({ czyPrzeczytano: false }, { $set: { czyPrzeczytano: true } });
-
-   res.json(resultAll);
+   return res.json(resultAll);
 });
 
 // @route   GET api/tasks/days/:x
 // @desc    Get all tasks from x days
 // @access  Public
 router.get('/days/:x', async (req, res) => {
-   const ile = parseInt(req.params.x);
-   const date = new Date();
-   const olderDate = new Date(date.setDate(date.getDate() - ile));
-
-   if (!Number.isInteger(ile) || ile < 0) {
-      return res
-         .status(400)
-         .send('Podałeś błędny parametr, to musi być liczba całkowita większa od 0');
-   } else {
-      let tasks = await Task.find({ date: { $gte: olderDate } }).sort({ _id: -1 }); //zwróci od najnowszych
-
-      let resultAll = [];
-      for (let k = 0; k < tasks.length; k++) {
-         let result = [];
-         for (let i = 0; i < tasks[k].iloscWynikow; i++) {
-            let object = {};
-            object.MethodName = tasks[k].nazwaFunkcji;
-            object.Code = tasks[k].code.replace(/  |\r\n|\n|\r/gm, ''); //usuwa wszystkie tabulacje i znaki nowej linii
-            object.Parameters = [];
-            for (let j = 0; j < tasks[k].iloscArg; j++) {
-               const paramObject = {};
-               paramObject.TypeName =
-                  tasks[k].args[j * 2] === 'Typ prosty'
-                     ? `${utils.zmienNazwyTypow(tasks[k].args[j * 2 + 1])}`
-                     : `${utils.zmienNazwyTypow(tasks[k].args[j * 2 + 1])}[]`;
-               paramObject.Value =
-                  tasks[k].args[j * 2] === 'Typ prosty'
-                     ? utils.returnValue(tasks[k].wyniki[i * 2])
-                     : utils.returnArrayValue(tasks[k].wyniki[i * 2]);
-               object.Parameters.push(paramObject);
-            }
-            object.ResultTypeName =
-               tasks[k].returnArgs[k] === 'Typ prosty'
-                  ? `${utils.zmienNazwyTypow(tasks[k].returnArgs[1])}`
-                  : `${utils.zmienNazwyTypow(tasks[k].returnArgs[1])}[]`;
-
-            object.ExpectedResult =
-               tasks[k].returnArgs[k] === 'Typ prosty'
-                  ? utils.returnValue(
-                       tasks[k].wyniki[(tasks[k].iloscArg + 1) * (i + 1) - 1]
-                    )
-                  : utils.returnArrayValue(
-                       tasks[k].wyniki[(tasks[k].iloscArg + 1) * (i + 1) - 1]
-                    );
-            if (tasks[k].czyRekurencja) {
-               object.CodeChecks = ['RecursionCheck'];
-            }
-            result.push(object);
-         }
-         resultAll.push(result);
-      }
-
-      res.json(resultAll);
-   }
+   const tasks = await listTasksFromXDays(req.params.x);
+   const resultAll = generateStructure(tasks);
+   return res.json(resultAll);
 });
 
 // @route   POST api/tasks/
@@ -260,14 +84,13 @@ router.get('/days/:x', async (req, res) => {
 // @access  Public
 router.post('/', async (req, res) => {
    const { errors, isValid } = validateProfileInput(req.body);
-
    // Check Validation
    if (!isValid) {
       // Return any errors with 400 status
       return res.status(400).json(errors);
    }
 
-   let task = new Task({
+   const task = await createTask({
       imieINazwisko: req.body.imieINazwisko,
       nazwaFunkcji: req.body.nazwaFunkcji,
       tytulZadania: req.body.tytulZadania,
@@ -280,86 +103,39 @@ router.post('/', async (req, res) => {
       wyniki: req.body.wyniki,
       czyRekurencja: req.body.czyRekurencja
    });
-   task = await task.save();
-   res.send(task);
+   return res.send(task);
 });
 
 // @route   GET api/tasks/zipTresc
 // @desc    Get task details
 // @access  Public
-const zipTrescFunc = async () => {
-   let tasks = await Task.find().sort({ _id: -1 }); //zwróci od najnowszych
-   //console.log('resultAll');
-   let resultAll = [];
-   for (let k = 0; k < tasks.length; k++) {
-      let object = {};
-      object.id = tasks[k]._id;
-      object.imieINazwisko = tasks[k].imieINazwisko;
-      object.MethodName = tasks[k].nazwaFunkcji;
-      object.opisZadania = tasks[k].opisZadania;
-      object.Code = tasks[k].code.replace(/  |\r\n|\n|\r/gm, ''); //usuwa wszystkie tabulacje i znaki nowej linii
-      resultAll.push(object);
-   }
-   return resultAll;
-};
 
 router.get('/zipTresc', async (req, res) => {
    const resultAll = await zipTrescFunc();
-   res.json(resultAll);
+   return res.json(resultAll);
 });
 
 // @route   GET api/tasks/zipTesty
 // @desc    Get task tests
 // @access  Public
-const zipTestyFunc = async () => {
-   let tasks = await Task.find().sort({ _id: -1 }); //zwróci od najnowszych
-   let resultAll = [];
-   for (let k = 0; k < tasks.length; k++) {
-      let result = [];
-      result.push(tasks[k]._id);
-      for (let i = 0; i < tasks[k].iloscWynikow; i++) {
-         let object = {};
-         object.Parameters = [];
-         for (let j = 0; j < tasks[k].iloscArg; j++) {
-            let paramObject = {};
-            paramObject.TypeName =
-               tasks[k].args[j * 2] === 'Typ prosty'
-                  ? `${utils.zmienNazwyTypow(tasks[k].args[j * 2 + 1])}`
-                  : `${utils.zmienNazwyTypow(tasks[k].args[j * 2 + 1])}[]`;
-            paramObject.Value =
-               tasks[k].args[j * 2] === 'Typ prosty'
-                  ? utils.returnValue(tasks[k].wyniki[i * 2])
-                  : utils.returnArrayValue(tasks[k].wyniki[i * 2]);
-            object.Parameters.push(paramObject);
-         }
-         object.ResultTypeName =
-            tasks[k].returnArgs[k] === 'Typ prosty'
-               ? `${utils.zmienNazwyTypow(tasks[k].returnArgs[1])}`
-               : `${utils.zmienNazwyTypow(tasks[k].returnArgs[1])}[]`;
-
-         object.ExpectedResult =
-            tasks[k].returnArgs[k] === 'Typ prosty'
-               ? utils.returnValue(tasks[k].wyniki[(tasks[k].iloscArg + 1) * (i + 1) - 1])
-               : utils.returnArrayValue(
-                    tasks[k].wyniki[(tasks[k].iloscArg + 1) * (i + 1) - 1]
-                 );
-         if (tasks[k].czyRekurencja) {
-            object.CodeChecks = ['RecursionCheck'];
-         }
-         result.push(object);
-      }
-      resultAll.push(result);
-   }
-   return resultAll;
-};
 
 router.get('/zipTesty', async (req, res) => {
    const testy = await zipTestyFunc();
-   res.json(testy);
+   return res.json(testy);
+});
+
+router.post('/exceptionRoute', async (req, res) => {
+   console.log('no elo z tasks');
+   const { username } = req.body;
+   /* since we are not passing username, any operation on undefined will result in error,
+   any unhandled error/exception in async await will result 😢😢😢
+   [DEP0018] DeprecationWarning: Unhandled promise rejections are deprecated. In the future, 
+   promise rejections that are not handled will terminate the Node.js process with a non-zero exit code
+   */
+   const lengthOfSUername = username.length;
+   return res.json({ status: true, length: lengthOfSUername });
 });
 
 module.exports = {
-   router,
-   zipTestyFunc,
-   zipTrescFunc
+   router
 };
