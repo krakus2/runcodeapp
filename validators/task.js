@@ -3,7 +3,7 @@ const isEmpty = require('./is-empty');
 
 module.exports = function validateProfileInput(data) {
    let errors = {};
-   if (Validator.isEmpty(data.imieINazwisko)) {
+   if (isEmpty(data.imieINazwisko) || Validator.isEmpty(data.imieINazwisko)) {
       errors.imieINazwisko = 'Imię i nazwisko jest wymagane';
    }
    if (!errors.imieINazwisko) {
@@ -12,7 +12,7 @@ module.exports = function validateProfileInput(data) {
       }
    }
 
-   if (Validator.isEmpty(data.nazwaFunkcji)) {
+   if (isEmpty(data.nazwaFunkcji) || Validator.isEmpty(data.nazwaFunkcji)) {
       errors.nazwaFunkcji = 'Nazwa funkcji jest wymagana';
    }
 
@@ -22,7 +22,7 @@ module.exports = function validateProfileInput(data) {
       }
    }
 
-   if (Validator.isEmpty(data.tytulZadania)) {
+   if (isEmpty(data.tytulZadania) || Validator.isEmpty(data.tytulZadania)) {
       errors.tytulZadania = 'Tytuł zadania jest wymagany';
    }
    if (!errors.tytulZadania) {
@@ -31,7 +31,7 @@ module.exports = function validateProfileInput(data) {
       }
    }
 
-   if (Validator.isEmpty(data.opisZadania)) {
+   if (isEmpty(data.opisZadania) || Validator.isEmpty(data.opisZadania)) {
       errors.opisZadania = 'Opis zadania jest wymagany';
    }
    if (!errors.opisZadania) {
@@ -40,7 +40,7 @@ module.exports = function validateProfileInput(data) {
       }
    }
 
-   if (Validator.isEmpty(data.code)) {
+   if (isEmpty(data.code) || Validator.isEmpty(data.code)) {
       errors.code = 'Przykładowy kod zadania jest wymagany';
    }
    if (!errors.code) {
@@ -75,7 +75,7 @@ module.exports = function validateProfileInput(data) {
    if (isEmpty(data.returnArgs)) {
       errors.returnArgs = 'Typ zwracany przez funkcję jest wymagany';
    }
-
+   //TODO - wywala sie blad przy probie dodania nowego taska z pustymi tablicami
    if (isEmpty(data.wyniki)) {
       errors.wyniki = 'Dane do testów są wymagane';
    }

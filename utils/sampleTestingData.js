@@ -128,7 +128,64 @@ module.exports = {
       czyRekurencja: undefined,
       czyPrzeczytano: undefined
    },
+   taskDataErrors3: {
+      imieINazwisko: null,
+      tytulZadania: null,
+      opisZadania: null,
+      nazwaFunkcji: null,
+      iloscArg: null,
+      iloscWynikow: null,
+      args: null,
+      returnArgs: null,
+      code: null,
+      wyniki: null,
+      czyRekurencja: null,
+      czyPrzeczytano: null
+   },
 
+   taskDataErrors4: {
+      imieINazwisko: undefined,
+      tytulZadania: undefined,
+      opisZadania: undefined,
+      nazwaFunkcji: undefined,
+      iloscArg: undefined,
+      iloscWynikow: undefined,
+      args: undefined,
+      returnArgs: undefined,
+      code: undefined,
+      wyniki: undefined,
+      czyRekurencja: undefined,
+      czyPrzeczytano: undefined
+   },
+
+   taskDataErrors5: {
+      imieINazwisko: [],
+      tytulZadania: [],
+      opisZadania: [],
+      nazwaFunkcji: [],
+      iloscArg: [],
+      iloscWynikow: [],
+      args: [],
+      returnArgs: [],
+      code: [],
+      wyniki: [],
+      czyRekurencja: [],
+      czyPrzeczytano: []
+   },
+   taskDataErrors6: {
+      imieINazwisko: [],
+      tytulZadania: [],
+      opisZadania: [],
+      nazwaFunkcji: [],
+      iloscArg: [],
+      iloscWynikow: [],
+      args: [],
+      returnArgs: [],
+      code: [],
+      wyniki: [null],
+      czyRekurencja: [],
+      czyPrzeczytano: []
+   },
    types: splitArray(
       [
          'int',

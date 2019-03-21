@@ -14,7 +14,6 @@ const createTask = Task => data => {
       wyniki: data.wyniki,
       czyRekurencja: data.czyRekurencja
    });
-   //console.log(task);
    return task.save();
 };
 
@@ -24,7 +23,12 @@ const listTasks = Task => () => {
 };
 
 const listXTasks = Task => x => {
-   const ile = parseInt(x);
+   if (typeof x !== 'string') {
+      throw new Error(
+         'Podałeś błędny parametr, to musi być liczba całkowita większa od 0'
+      );
+   }
+   const ile = Number(x);
    if (!Number.isInteger(ile) || ile <= 0) {
       throw new Error(
          'Podałeś błędny parametr, to musi być liczba całkowita większa od 0'
@@ -37,38 +41,46 @@ const listXTasks = Task => x => {
 };
 
 const listTasksWithConditions = Task => condition => {
-   if (typeof condition !== 'object') {
+   if (
+      condition === null ||
+      condition === undefined ||
+      condition.constructor !== Object
+   ) {
       throw new Error('Wrong type of passed argument');
    }
    return Task.find(condition).sort({ _id: -1 }); //zwróci od najnowszych
 };
 
 const listTasksFromXDays = Task => (x = 7) => {
-   if (typeof x !== 'string') {
+   if (typeof x !== 'string' || isNaN(Number(x))) {
       throw new Error(
          'Podałeś błędny parametr, to musi być liczba całkowita większa od 0'
       );
    }
-   const ile = parseInt(x);
+   const ile = Number(x);
+   if (!Number.isInteger(ile) || ile <= 0) {
+      throw new Error(
+         'Podałeś błędny parametr, to musi być liczba całkowita większa od 0'
+      );
+   }
    const date = new Date();
    const olderDate = new Date(date.setDate(date.getDate() - ile));
 
-   if (!Number.isInteger(ile) || ile < 0) {
-      throw new Error(
-         'Podałeś błędny parametr, to musi być liczba całkowita większa od 0'
-      );
-   }
    return Task.find({ date: { $gte: olderDate } }).sort({ _id: -1 });
 };
 
 const findTaskById = Task => async id => {
-   if (!mongoose.Types.ObjectId.isValid(id)) {
+   if (
+      !mongoose.Types.ObjectId.isValid(id) ||
+      id !== new mongoose.Types.ObjectId(id).toHexString()
+   ) {
       throw new Error('Given ID is not valid');
    }
    const task = await Task.findById(id);
    if (!task) {
       throw new Error("The task with the given ID doesn't exist");
    }
+
    return task;
 };
 
