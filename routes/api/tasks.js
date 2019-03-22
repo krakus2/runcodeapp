@@ -61,7 +61,7 @@ router.get('/ileostatnich/:x', async (req, res) => {
 // @access  Public
 router.get('/unread', async (req, res) => {
    const tasks = await listTasksWithConditions({ czyPrzeczytano: false });
-   if (tasks.length) {
+   if (!tasks.length) {
       return res.json(tasks);
    }
    const resultAll = generateStructure(tasks);
@@ -92,7 +92,6 @@ router.post('/', async (req, res) => {
       // Return any errors with 400 status
       return res.status(400).json(errors);
    }
-   console.log(req.body.wyniki);
    const task = await createTask({
       imieINazwisko: req.body.imieINazwisko,
       nazwaFunkcji: req.body.nazwaFunkcji,

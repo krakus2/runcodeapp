@@ -96,74 +96,50 @@ describe('taskRouteUtils', () => {
          expect(mockSort).toHaveBeenCalledTimes(1);
       });
 
-      it('listTasksFromXDays -- lists a Tasks from x last days', async () => {
+      it('listTasksFromXDays -- wrong argument passed', async () => {
          await expect(() => taskService.listTasksFromXDays({})).toThrow(
-            new Error(
-               'Podałeś błędny parametr, to musi być liczba całkowita większa od 0'
-            )
+            new Error('Podałeś błędny parametr, to musi być liczba całkowita większa od 0')
          );
          await expect(() => taskService.listTasksFromXDays([])).toThrow(
-            new Error(
-               'Podałeś błędny parametr, to musi być liczba całkowita większa od 0'
-            )
+            new Error('Podałeś błędny parametr, to musi być liczba całkowita większa od 0')
          );
 
          await expect(() => taskService.listTasksFromXDays('')).toThrow(
-            new Error(
-               'Podałeś błędny parametr, to musi być liczba całkowita większa od 0'
-            )
+            new Error('Podałeś błędny parametr, to musi być liczba całkowita większa od 0')
          );
 
          await expect(() => taskService.listTasksFromXDays(' abc')).toThrow(
-            new Error(
-               'Podałeś błędny parametr, to musi być liczba całkowita większa od 0'
-            )
+            new Error('Podałeś błędny parametr, to musi być liczba całkowita większa od 0')
          );
 
          await expect(() => taskService.listTasksFromXDays('4.76')).toThrow(
-            new Error(
-               'Podałeś błędny parametr, to musi być liczba całkowita większa od 0'
-            )
+            new Error('Podałeś błędny parametr, to musi być liczba całkowita większa od 0')
          );
          await expect(() => taskService.listTasksFromXDays('0')).toThrow(
-            new Error(
-               'Podałeś błędny parametr, to musi być liczba całkowita większa od 0'
-            )
+            new Error('Podałeś błędny parametr, to musi być liczba całkowita większa od 0')
          );
 
          await expect(() => taskService.listTasksFromXDays('-1012')).toThrow(
-            new Error(
-               'Podałeś błędny parametr, to musi być liczba całkowita większa od 0'
-            )
+            new Error('Podałeś błędny parametr, to musi być liczba całkowita większa od 0')
          );
          //nie przechodzi, bo to musi byc string
          await expect(() => taskService.listTasksFromXDays(123)).toThrow(
-            new Error(
-               'Podałeś błędny parametr, to musi być liczba całkowita większa od 0'
-            )
+            new Error('Podałeś błędny parametr, to musi być liczba całkowita większa od 0')
          );
          await expect(() => taskService.listTasksFromXDays(1.23)).toThrow(
-            new Error(
-               'Podałeś błędny parametr, to musi być liczba całkowita większa od 0'
-            )
+            new Error('Podałeś błędny parametr, to musi być liczba całkowita większa od 0')
          );
 
          await expect(() => taskService.listTasksFromXDays(-2)).toThrow(
-            new Error(
-               'Podałeś błędny parametr, to musi być liczba całkowita większa od 0'
-            )
+            new Error('Podałeś błędny parametr, to musi być liczba całkowita większa od 0')
          );
 
          await expect(() => taskService.listTasksFromXDays(null)).toThrow(
-            new Error(
-               'Podałeś błędny parametr, to musi być liczba całkowita większa od 0'
-            )
+            new Error('Podałeś błędny parametr, to musi być liczba całkowita większa od 0')
          );
 
          await expect(() => taskService.listTasksFromXDays(undefined)).toThrow(
-            new Error(
-               'Podałeś błędny parametr, to musi być liczba całkowita większa od 0'
-            )
+            new Error('Podałeś błędny parametr, to musi być liczba całkowita większa od 0')
          );
       });
    });
@@ -204,41 +180,27 @@ describe('taskRouteUtils', () => {
          };
          const taskService = TaskService(MockModel);
          await expect(() => taskService.listXTasks(-10)).toThrow(
-            new Error(
-               'Podałeś błędny parametr, to musi być liczba całkowita większa od 0'
-            )
+            new Error('Podałeś błędny parametr, to musi być liczba całkowita większa od 0')
          );
          await expect(() => taskService.listXTasks('-10')).toThrow(
-            new Error(
-               'Podałeś błędny parametr, to musi być liczba całkowita większa od 0'
-            )
+            new Error('Podałeś błędny parametr, to musi być liczba całkowita większa od 0')
          );
          await expect(() => taskService.listXTasks('4.76')).toThrow(
-            new Error(
-               'Podałeś błędny parametr, to musi być liczba całkowita większa od 0'
-            )
+            new Error('Podałeś błędny parametr, to musi być liczba całkowita większa od 0')
          );
          await expect(() => taskService.listXTasks('abc')).toThrow(
-            new Error(
-               'Podałeś błędny parametr, to musi być liczba całkowita większa od 0'
-            )
+            new Error('Podałeś błędny parametr, to musi być liczba całkowita większa od 0')
          );
          await expect(() => taskService.listXTasks([1, 2, 3])).toThrow(
-            new Error(
-               'Podałeś błędny parametr, to musi być liczba całkowita większa od 0'
-            )
+            new Error('Podałeś błędny parametr, to musi być liczba całkowita większa od 0')
          );
 
          await expect(() => taskService.listXTasks(null)).toThrow(
-            new Error(
-               'Podałeś błędny parametr, to musi być liczba całkowita większa od 0'
-            )
+            new Error('Podałeś błędny parametr, to musi być liczba całkowita większa od 0')
          );
 
          await expect(() => taskService.listXTasks(undefined)).toThrow(
-            new Error(
-               'Podałeś błędny parametr, to musi być liczba całkowita większa od 0'
-            )
+            new Error('Podałeś błędny parametr, to musi być liczba całkowita większa od 0')
          );
       });
 
